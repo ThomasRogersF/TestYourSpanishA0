@@ -6,6 +6,9 @@ export const sampleQuiz: QuizConfig = {
   title: "Learning Style Assessment",
   description: "Discover your ideal learning style and get personalized recommendations",
   logoUrl: "/placeholder.svg",
+  introImageUrl: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=800&q=80",
+  introText: "This quiz will help you discover your learning style and provide personalized recommendations to enhance your educational journey. Take a few minutes to answer these simple questions and get insights tailored just for you.",
+  estimatedTime: "2-3 minutes",
   primaryColor: "#7E69AB",
   secondaryColor: "#9B87F5",
   webhookUrl: "https://webhook.site/your-unique-id",
@@ -88,11 +91,17 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q5",
       type: "audio",
-      title: "Listen to this sample lecture",
-      subtitle: "Play the audio to hear a sample of our teaching style",
-      helpText: "Please listen to understand our instructional approach",
-      required: false,
-      audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+      title: "Listen to the pronunciation and select the correct word",
+      subtitle: "Play the audio and choose the word you hear",
+      helpText: "Listen carefully to the pronunciation before selecting your answer",
+      required: true,
+      audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      options: [
+        { id: "a1", text: "Pronunciation", value: "pronunciation" },
+        { id: "a2", text: "Enunciation", value: "enunciation" },
+        { id: "a3", text: "Articulation", value: "articulation" },
+        { id: "a4", text: "Phonetics", value: "phonetics" }
+      ]
     }
   ],
   resultTemplates: [
