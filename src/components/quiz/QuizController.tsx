@@ -3,20 +3,20 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { QuizConfig, QuizParticipant, QuizAnswer, ResultTemplate } from "@/types/quiz";
 import { getNextQuestionId, getPersonalizedResult, sendDataToWebhook } from "@/utils/quizUtils";
-import LandingPage from "./LandingPage";
 import QuestionCard from "./QuestionCard";
 import ResultsPage from "./ResultsPage";
 import ThankYouPage from "./ThankYouPage";
+import UserInfoForm from "./UserInfoForm";
 
 interface QuizControllerProps {
   config: QuizConfig;
 }
 
-type QuizStage = "landing" | "questions" | "results" | "thank-you";
+type QuizStage = "questions" | "user-info" | "results" | "thank-you";
 
 const QuizController = ({ config }: QuizControllerProps) => {
-  const [stage, setStage] = useState<QuizStage>("landing");
-  const [currentQuestionId, setCurrentQuestionId] = useState<string | null>(null);
+  const [stage, setStage] = useState<QuizStage>("questions");
+  const [currentQuestionId, setCurrentQuestionId] = useState<string | null>(config.questions[0].id);
   const [participant, setParticipant] = useState<QuizParticipant>({
     name: "",
     email: "",
@@ -25,12 +25,6 @@ const QuizController = ({ config }: QuizControllerProps) => {
   const [personalizedResult, setPersonalizedResult] = useState<ResultTemplate | null>(null);
   const { toast } = useToast();
 
-  const handleStart = (name: string, email: string) => {
-    setParticipant({ ...participant, name, email });
-    setCurrentQuestionId(config.questions[0].id);
-    setStage("questions");
-  };
-  
   const handleAnswer = (answer: QuizAnswer) => {
     // Update or add the answer
     const existingIndex = participant.answers.findIndex(
@@ -61,24 +55,36 @@ const QuizController = ({ config }: QuizControllerProps) => {
     if (nextQuestionId) {
       setCurrentQuestionId(nextQuestionId);
     } else {
-      // End of questions, proceed to results
+      // End of questions, proceed to user info collection
       const result = getPersonalizedResult(participant.answers, config.resultTemplates);
       setPersonalizedResult(result);
-      
-      // Send data to webhook
-      sendDataToWebhook(config.webhookUrl, participant)
-        .then((success) => {
-          if (!success) {
-            toast({
-              title: "Data submission issue",
-              description: "There was an issue sending your responses. Please try again later.",
-              variant: "destructive"
-            });
-          }
-        });
-      
-      setStage("results");
+      setStage("user-info");
     }
+  };
+
+  const handleUserInfoSubmit = (name: string, email: string) => {
+    // Update participant info
+    const updatedParticipant = {
+      ...participant,
+      name,
+      email
+    };
+    
+    setParticipant(updatedParticipant);
+    
+    // Send data to webhook
+    sendDataToWebhook(config.webhookUrl, updatedParticipant)
+      .then((success) => {
+        if (!success) {
+          toast({
+            title: "Data submission issue",
+            description: "There was an issue sending your responses. Please try again later.",
+            variant: "destructive"
+          });
+        }
+      });
+    
+    setStage("results");
   };
   
   const handleContinueToThankYou = () => {
@@ -108,8 +114,6 @@ const QuizController = ({ config }: QuizControllerProps) => {
   // Render the appropriate stage
   const renderStage = () => {
     switch (stage) {
-      case "landing":
-        return <LandingPage config={config} onStart={handleStart} />;
       case "questions":
         return currentQuestion ? (
           <QuestionCard
@@ -120,6 +124,13 @@ const QuizController = ({ config }: QuizControllerProps) => {
             onNext={handleNext}
           />
         ) : null;
+      case "user-info":
+        return (
+          <UserInfoForm 
+            onSubmit={handleUserInfoSubmit}
+            config={config}
+          />
+        );
       case "results":
         return (
           <ResultsPage
