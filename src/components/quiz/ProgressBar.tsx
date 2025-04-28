@@ -1,5 +1,6 @@
 
 import { cn } from "@/lib/utils";
+import { Progress } from "@/components/ui/progress";
 
 interface ProgressBarProps {
   progress: number;
@@ -11,11 +12,11 @@ const ProgressBar = ({ progress, className }: ProgressBarProps) => {
   const safeProgress = Math.max(0, Math.min(100, progress));
   
   return (
-    <div className={cn("quiz-progress-bar", className)}>
-      <div 
-        className="quiz-progress-indicator" 
-        style={{ width: `${safeProgress}%` }}
-      />
+    <div className={cn("w-full mb-6", className)}>
+      <Progress value={safeProgress} className="h-2" />
+      <div className="text-xs text-gray-500 mt-1 text-right">
+        {safeProgress}% complete
+      </div>
     </div>
   );
 };

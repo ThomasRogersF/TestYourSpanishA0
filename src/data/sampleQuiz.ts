@@ -88,10 +88,11 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q5",
       type: "audio",
-      title: "Describe your ideal learning experience",
-      subtitle: "Record a brief audio response (optional)",
-      helpText: "This helps us understand your preferences better",
-      required: false
+      title: "Listen to this sample lecture",
+      subtitle: "Play the audio to hear a sample of our teaching style",
+      helpText: "Please listen to understand our instructional approach",
+      required: false,
+      audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
     }
   ],
   resultTemplates: [

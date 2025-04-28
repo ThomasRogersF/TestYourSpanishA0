@@ -17,6 +17,7 @@ export interface QuizQuestion {
   required: boolean;
   options?: QuizOption[];
   imageOptions?: QuizImageOption[];
+  audioUrl?: string;
   conditionalLogic?: ConditionRule[];
 }
 

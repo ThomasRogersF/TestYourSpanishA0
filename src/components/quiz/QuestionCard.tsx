@@ -4,7 +4,7 @@ import { QuizQuestion, QuizAnswer } from "@/types/quiz";
 import ProgressBar from "./ProgressBar";
 import MultipleChoice from "./QuestionTypes/MultipleChoice";
 import ImageSelection from "./QuestionTypes/ImageSelection";
-import AudioRecording from "./QuestionTypes/AudioRecording";
+import AudioQuestion from "./QuestionTypes/AudioQuestion";
 import TextInput from "./QuestionTypes/TextInput";
 
 interface QuestionCardProps {
@@ -44,7 +44,7 @@ const QuestionCard = ({
         );
       case 'audio':
         return (
-          <AudioRecording
+          <AudioQuestion
             question={question}
             currentAnswer={currentAnswer}
             onAnswer={onAnswer}
