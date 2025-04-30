@@ -61,6 +61,7 @@ const QuizController = ({ config }: QuizControllerProps) => {
       setCurrentQuestionId(nextQuestionId);
     } else {
       // End of questions, proceed to user info collection
+      console.log("Quiz completed, proceeding to user info form");
       const result = getPersonalizedResult(participant.answers, config.resultTemplates);
       setPersonalizedResult(result);
       setStage("user-info");
@@ -78,22 +79,31 @@ const QuizController = ({ config }: QuizControllerProps) => {
     setParticipant(updatedParticipant);
     
     // Send data to webhook
-    sendDataToWebhook(config.webhookUrl, updatedParticipant)
-      .then((success) => {
-        if (!success) {
-          toast({
-            title: "Data submission issue",
-            description: "There was an issue sending your responses. Please try again later.",
-            variant: "destructive"
-          });
-        }
-      });
+    if (config.webhookUrl) {
+      sendDataToWebhook(config.webhookUrl, updatedParticipant)
+        .then((success) => {
+          if (!success) {
+            toast({
+              title: "Data submission issue",
+              description: "There was an issue sending your responses. Please try again later.",
+              variant: "destructive"
+            });
+          }
+        });
+    }
     
     setStage("results");
   };
   
   const handleContinueToThankYou = () => {
     setStage("thank-you");
+  };
+
+  const handleExternalRedirect = () => {
+    // Redirect to external URL if provided
+    if (config.externalRedirectUrl) {
+      window.location.href = config.externalRedirectUrl;
+    }
   };
   
   // Calculate progress
@@ -153,7 +163,12 @@ const QuizController = ({ config }: QuizControllerProps) => {
           />
         );
       case "thank-you":
-        return <ThankYouPage config={config} />;
+        return (
+          <ThankYouPage 
+            config={config} 
+            onExternalRedirect={handleExternalRedirect}
+          />
+        );
       default:
         return null;
     }

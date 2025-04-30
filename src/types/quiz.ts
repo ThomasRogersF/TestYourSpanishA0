@@ -50,6 +50,7 @@ export interface QuizConfig {
   incentiveEnabled: boolean;
   incentiveTitle?: string;
   incentiveUrl?: string;
+  externalRedirectUrl?: string;
 }
 
 export interface ResultTemplate {

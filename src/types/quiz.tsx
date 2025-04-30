@@ -36,7 +36,7 @@ export interface QuizAnswer {
   optionId: string | string[];
 }
 
-// Extend the QuizConfig interface to add properties for the introduction page
+// Extend the QuizConfig interface to add properties for the introduction page and external redirect
 export interface QuizConfig {
   id: string;
   title: string;
@@ -51,4 +51,5 @@ export interface QuizConfig {
   webhookUrl?: string;
   thankYouMessage?: string;
   thankYouHeading?: string;
+  externalRedirectUrl?: string;  // Property for external redirect URL
 }
