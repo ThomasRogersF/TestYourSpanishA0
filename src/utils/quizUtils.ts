@@ -34,6 +34,7 @@ export const getPersonalizedResult = (
       id: "default",
       title: "Thank you for completing the quiz!",
       description: "We appreciate your participation.",
+      conditions: [] // Add the missing conditions property
     };
   }
   
