@@ -1,68 +1,128 @@
 
-import { QuizAnswer, QuizQuestion, ResultTemplate } from "@/types/quiz";
+import { ConditionRule, QuizAnswer, QuizConfig, QuizParticipant, ResultTemplate } from "@/types/quiz";
 
+/**
+ * Determines the next question based on conditional logic
+ */
 export const getNextQuestionId = (
   currentQuestionId: string,
   answers: QuizAnswer[],
-  questions: QuizQuestion[]
+  questions: QuizConfig['questions']
 ): string | null => {
-  // Find the current question's index
-  const currentIndex = questions.findIndex((q) => q.id === currentQuestionId);
+  const currentQuestionIndex = questions.findIndex(q => q.id === currentQuestionId);
   
-  if (currentIndex === -1) {
-    console.error("Current question not found in questions array");
-    return null;
+  if (currentQuestionIndex === -1) return null;
+  
+  const currentQuestion = questions[currentQuestionIndex];
+  
+  // Check if there's conditional logic for the current question
+  if (currentQuestion.conditionalLogic && currentQuestion.conditionalLogic.length > 0) {
+    const currentAnswer = answers.find(a => a.questionId === currentQuestionId);
+    
+    if (currentAnswer) {
+      // Find matching condition
+      const matchedCondition = currentQuestion.conditionalLogic.find(condition => {
+        if (condition.answerId && Array.isArray(currentAnswer.value)) {
+          return (currentAnswer.value as string[]).includes(condition.answerId);
+        }
+        
+        if (condition.answerId && typeof currentAnswer.value === 'string') {
+          return currentAnswer.value === condition.answerId;
+        }
+        
+        if (condition.value && typeof currentAnswer.value === 'string') {
+          return currentAnswer.value === condition.value;
+        }
+        
+        return false;
+      });
+      
+      if (matchedCondition) {
+        return matchedCondition.nextQuestionId;
+      }
+    }
   }
   
-  console.log(`Current question index: ${currentIndex}, total questions: ${questions.length}`);
-  
-  // Check if there is a next question
-  if (currentIndex < questions.length - 1) {
-    return questions[currentIndex + 1].id;
+  // If no conditional logic matched or exists, go to the next question
+  if (currentQuestionIndex < questions.length - 1) {
+    return questions[currentQuestionIndex + 1].id;
   }
   
-  // No more questions
-  console.log("No more questions, quiz completed");
+  // If this was the last question
   return null;
 };
 
+/**
+ * Calculate quiz progress percentage
+ */
+export const calculateProgress = (
+  currentQuestionIndex: number,
+  totalQuestions: number
+): number => {
+  return Math.round((currentQuestionIndex / totalQuestions) * 100);
+};
+
+/**
+ * Send quiz data to webhook
+ */
+export const sendDataToWebhook = async (
+  webhookUrl: string,
+  participant: QuizParticipant
+): Promise<boolean> => {
+  try {
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(participant),
+    });
+    
+    return response.ok;
+  } catch (error) {
+    console.error('Failed to send data to webhook:', error);
+    return false;
+  }
+};
+
+/**
+ * Get personalized result based on answers
+ */
 export const getPersonalizedResult = (
   answers: QuizAnswer[],
   resultTemplates: ResultTemplate[]
-): ResultTemplate => {
-  // If no templates, return a default
-  if (resultTemplates.length === 0) {
-    return {
-      id: "default",
-      title: "Thank you for completing the quiz!",
-      description: "We appreciate your participation.",
-      conditions: [] // Add the missing conditions property
-    };
-  }
-  
-  // For now, we'll just return the first result template
-  // In a real application, you would implement logic to determine the best result
-  return resultTemplates[0];
-};
-
-export const sendDataToWebhook = async (
-  webhookUrl: string,
-  participant: { name: string; email: string; answers: QuizAnswer[] }
-): Promise<boolean> => {
-  try {
-    // Only simulate sending data if we have a webhook URL
-    if (!webhookUrl) {
-      console.log("No webhook URL provided, skipping data submission");
-      return true;
+): ResultTemplate | null => {
+  // Check each result template
+  for (const template of resultTemplates) {
+    let allConditionsMet = true;
+    
+    // For each condition in the template
+    for (const condition of template.conditions) {
+      const answer = answers.find(a => a.questionId === condition.questionId);
+      
+      if (!answer) {
+        allConditionsMet = false;
+        break;
+      }
+      
+      if (condition.answerId && Array.isArray(answer.value)) {
+        if (!(answer.value as string[]).includes(condition.answerId)) {
+          allConditionsMet = false;
+          break;
+        }
+      } else if (condition.answerId && answer.value !== condition.answerId) {
+        allConditionsMet = false;
+        break;
+      } else if (condition.value && answer.value !== condition.value) {
+        allConditionsMet = false;
+        break;
+      }
     }
     
-    console.log("Sending data to webhook:", webhookUrl, participant);
-    
-    // In a real application, you would make an actual API call here
-    // For this demo, we'll simulate a successful submission
-    return true;
-  } catch (error) {
-    console.error("Error sending data to webhook:", error);
-    return false;
+    if (allConditionsMet) {
+      return template;
+    }
   }
+  
+  return null;
 };

@@ -1,14 +1,13 @@
 
 import { Button } from "@/components/ui/button";
 import { QuizConfig } from "@/types/quiz";
-import { ArrowDown, ExternalLink } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 
 interface ThankYouPageProps {
   config: QuizConfig;
-  onExternalRedirect?: () => void;
 }
 
-const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
+const ThankYouPage = ({ config }: ThankYouPageProps) => {
   return (
     <div className="quiz-container w-full max-w-2xl">
       <div className="flex justify-center mb-10">
@@ -42,24 +41,11 @@ const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
         </div>
       )}
       
-      {config.externalRedirectUrl && (
-        <div className="text-center mt-8">
-          <Button 
-            onClick={onExternalRedirect}
-            className="quiz-button inline-flex items-center"
-          >
-            Continue to Website <ExternalLink className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      )}
-      
-      {!config.externalRedirectUrl && (
-        <div className="text-center mt-10">
-          <Button asChild variant="outline" className="quiz-button-secondary">
-            <a href="/">Return to Homepage</a>
-          </Button>
-        </div>
-      )}
+      <div className="text-center mt-10">
+        <Button asChild variant="outline" className="quiz-button-secondary">
+          <a href="/">Return to Homepage</a>
+        </Button>
+      </div>
     </div>
   );
 };

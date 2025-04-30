@@ -1,7 +1,8 @@
 
-import { useState, useEffect } from "react";
-import { QuizQuestion, QuizAnswer } from "@/types/quiz";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { QuizQuestion, QuizAnswer } from "@/types/quiz";
+import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 
 interface MultipleChoiceProps {
@@ -13,83 +14,64 @@ interface MultipleChoiceProps {
 
 const MultipleChoice = ({ 
   question, 
-  currentAnswer,
+  currentAnswer, 
   onAnswer, 
   onNext 
 }: MultipleChoiceProps) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(
-    currentAnswer?.value as string || null
+    currentAnswer ? currentAnswer.value as string : null
   );
   
-  // Reset selected option when question changes
-  useEffect(() => {
-    setSelectedOption(currentAnswer?.value as string || null);
-  }, [question.id, currentAnswer]);
-
-  const handleOptionSelect = (optionId: string) => {
+  const handleSelect = (optionId: string) => {
     setSelectedOption(optionId);
     
     onAnswer({
       questionId: question.id,
-      type: 'mcq',
+      type: question.type,
       value: optionId
     });
   };
-
+  
   const handleNext = () => {
-    // Ensure an option is selected before proceeding or allow skipping if not required
     if (selectedOption || !question.required) {
-      console.log("Moving to next question from MultipleChoice");
       onNext();
-    } else {
-      console.log("Cannot proceed: No option selected and question is required");
     }
   };
-
-  const isOptionSelected = (optionId: string) => {
-    return selectedOption === optionId;
-  };
-
+  
   return (
     <div className="space-y-6">
       {question.options && question.options.map((option) => (
-        <div
+        <div 
           key={option.id}
-          onClick={() => handleOptionSelect(option.value)}
-          className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-            isOptionSelected(option.value)
-              ? "border-quiz-purple bg-quiz-purple bg-opacity-10"
-              : "border-gray-200 hover:border-quiz-purple-light"
-          }`}
+          className={cn(
+            "quiz-option",
+            selectedOption === option.id && "quiz-option-selected"
+          )}
+          onClick={() => handleSelect(option.id)}
         >
-          <div className="flex items-center space-x-3">
-            <div
-              className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                isOptionSelected(option.value)
-                  ? "bg-quiz-purple text-white"
-                  : "border border-gray-300"
-              }`}
-            >
-              {isOptionSelected(option.value) && <Check className="h-4 w-4" />}
-            </div>
-            <span className="font-medium">{option.text}</span>
+          <div className="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+            {selectedOption === option.id && (
+              <Check className="w-4 h-4 text-quiz-purple" />
+            )}
           </div>
+          <span>{option.text}</span>
         </div>
       ))}
-
-      <div className="flex justify-between pt-4">
-        {!question.required && (
-          <Button
-            variant="ghost"
-            onClick={onNext}
-            className="text-gray-500"
-          >
-            Skip
-          </Button>
-        )}
+      
+      <div className="flex justify-between mt-8">
         <Button 
+          type="button" 
+          variant="outline" 
+          className="quiz-button-secondary"
+          onClick={onNext}
+          disabled={question.required && !selectedOption}
+        >
+          Skip
+        </Button>
+        <Button 
+          type="button" 
+          className="quiz-button"
           onClick={handleNext}
-          className="quiz-button ml-auto"
           disabled={question.required && !selectedOption}
         >
           Continue
