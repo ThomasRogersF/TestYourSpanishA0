@@ -2,7 +2,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { QuizQuestion, QuizAnswer } from "@/types/quiz";
-import { Volume2, Play, Pause } from "lucide-react";
+import { Volume2, Play, Pause, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface AudioQuestionProps {
   question: QuizQuestion;
@@ -20,6 +22,9 @@ const AudioQuestion = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioCompleted, setAudioCompleted] = useState(false);
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string | null>(
+    currentAnswer ? currentAnswer.value as string : null
+  );
   
   // Create the audio element if it doesn't exist yet
   const handlePlayAudio = () => {
@@ -29,13 +34,6 @@ const AudioQuestion = ({
       audio.addEventListener('ended', () => {
         setIsPlaying(false);
         setAudioCompleted(true);
-        
-        // Mark as answered once audio is completed
-        onAnswer({
-          questionId: question.id,
-          type: question.type,
-          value: "completed"
-        });
       });
       
       audio.addEventListener('pause', () => {
@@ -60,16 +58,23 @@ const AudioQuestion = ({
     }
   };
   
+  const handleSelect = (optionId: string) => {
+    setSelectedOption(optionId);
+    
+    onAnswer({
+      questionId: question.id,
+      type: question.type,
+      value: optionId
+    });
+  };
+  
   const handleNext = () => {
     if (audioElement) {
       audioElement.pause();
     }
     
-    if (audioCompleted || !question.required) {
+    if ((audioCompleted && selectedOption) || !question.required) {
       onNext();
-    } else if (question.required) {
-      // We can either require them to listen or make it optional
-      onNext(); // For now, we'll make listening optional
     }
   };
 
@@ -97,6 +102,30 @@ const AudioQuestion = ({
         </Button>
       </div>
       
+      {question.options && question.options.length > 0 && (
+        <div className="space-y-4 mt-6">
+          <p className="font-medium">Select the correct answer:</p>
+          
+          {question.options.map((option) => (
+            <div 
+              key={option.id}
+              className={cn(
+                "quiz-option",
+                selectedOption === option.id && "quiz-option-selected"
+              )}
+              onClick={() => handleSelect(option.id)}
+            >
+              <div className="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                {selectedOption === option.id && (
+                  <Check className="w-4 h-4 text-quiz-purple" />
+                )}
+              </div>
+              <span>{option.text}</span>
+            </div>
+          ))}
+        </div>
+      )}
+      
       <div className="flex justify-between mt-8">
         {!question.required && (
           <Button 
@@ -110,8 +139,9 @@ const AudioQuestion = ({
         )}
         <Button 
           type="button" 
-          className={`quiz-button ml-auto ${audioCompleted ? "" : "opacity-90"}`}
+          className={`quiz-button ml-auto ${(audioCompleted && (selectedOption || !question.options?.length)) ? "" : "opacity-90"}`}
           onClick={handleNext}
+          disabled={question.required && question.options?.length > 0 && !selectedOption}
         >
           Continue
         </Button>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { QuizConfig, QuizParticipant, QuizAnswer, ResultTemplate } from "@/types/quiz";
 import { getNextQuestionId, getPersonalizedResult, sendDataToWebhook } from "@/utils/quizUtils";
+import IntroductionPage from "./IntroductionPage";
 import QuestionCard from "./QuestionCard";
 import ResultsPage from "./ResultsPage";
 import ThankYouPage from "./ThankYouPage";
@@ -12,10 +13,10 @@ interface QuizControllerProps {
   config: QuizConfig;
 }
 
-type QuizStage = "questions" | "user-info" | "results" | "thank-you";
+type QuizStage = "intro" | "questions" | "user-info" | "results" | "thank-you";
 
 const QuizController = ({ config }: QuizControllerProps) => {
-  const [stage, setStage] = useState<QuizStage>("questions");
+  const [stage, setStage] = useState<QuizStage>("intro");
   const [currentQuestionId, setCurrentQuestionId] = useState<string | null>(config.questions[0].id);
   const [participant, setParticipant] = useState<QuizParticipant>({
     name: "",
@@ -24,6 +25,10 @@ const QuizController = ({ config }: QuizControllerProps) => {
   });
   const [personalizedResult, setPersonalizedResult] = useState<ResultTemplate | null>(null);
   const { toast } = useToast();
+
+  const handleStartQuiz = () => {
+    setStage("questions");
+  };
 
   const handleAnswer = (answer: QuizAnswer) => {
     // Update or add the answer
@@ -114,6 +119,13 @@ const QuizController = ({ config }: QuizControllerProps) => {
   // Render the appropriate stage
   const renderStage = () => {
     switch (stage) {
+      case "intro":
+        return (
+          <IntroductionPage 
+            config={config}
+            onStart={handleStartQuiz}
+          />
+        );
       case "questions":
         return currentQuestion ? (
           <QuestionCard

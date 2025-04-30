@@ -39,6 +39,9 @@ export interface QuizConfig {
   title: string;
   description?: string;
   logoUrl?: string;
+  introImageUrl?: string;
+  introText?: string;
+  estimatedTime?: string;
   primaryColor?: string;
   secondaryColor?: string;
   webhookUrl: string;
