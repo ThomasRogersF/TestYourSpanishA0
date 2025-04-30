@@ -26,24 +26,29 @@ const QuizController = ({ config }: QuizControllerProps) => {
     answers: []
   });
   const [personalizedResult, setPersonalizedResult] = useState<ResultTemplate | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // Effect to handle quiz completion
+  // Effect to handle completion of questions and transition to user info stage
   useEffect(() => {
-    // If we're in questions stage but there's no current question, move to user-info
+    console.log("Effect triggered - Stage:", stage, "Current Question ID:", currentQuestionId);
+    
     if (stage === "questions" && currentQuestionId === null && participant.answers.length > 0) {
-      console.log("All questions completed, moving to user info form");
+      console.log("Quiz questions completed. Transitioning to user info stage.");
       const result = getPersonalizedResult(participant.answers, config.resultTemplates);
       setPersonalizedResult(result);
       setStage("user-info");
     }
-  }, [currentQuestionId, stage, participant.answers, config.resultTemplates]);
+  }, [stage, currentQuestionId, participant.answers, config.resultTemplates]);
 
   const handleStartQuiz = () => {
+    console.log("Starting quiz");
     setStage("questions");
   };
 
   const handleAnswer = (answer: QuizAnswer) => {
+    console.log("Answer received:", answer);
+    
     // Update or add the answer
     const existingIndex = participant.answers.findIndex(
       (a) => a.questionId === answer.questionId
@@ -67,7 +72,10 @@ const QuizController = ({ config }: QuizControllerProps) => {
       return;
     }
     
-    console.log("Attempting to move to next question from:", currentQuestionId);
+    setIsLoading(true);
+    console.log("Moving from question:", currentQuestionId);
+    
+    // Find next question ID
     const nextQuestionId = getNextQuestionId(
       currentQuestionId,
       participant.answers,
@@ -77,15 +85,22 @@ const QuizController = ({ config }: QuizControllerProps) => {
     console.log("Next question ID determined:", nextQuestionId);
     
     if (nextQuestionId) {
-      setCurrentQuestionId(nextQuestionId);
+      // Move to next question
+      setTimeout(() => {
+        setCurrentQuestionId(nextQuestionId);
+        setIsLoading(false);
+      }, 100); // Small delay for better UX
     } else {
-      // End of questions, proceed to user info collection
-      console.log("Quiz completed, proceeding to user info form");
-      setCurrentQuestionId(null); // Explicitly set to null to trigger the useEffect
+      // End of questions
+      console.log("No more questions. Proceeding to user info form.");
+      setCurrentQuestionId(null);
+      setIsLoading(false);
     }
   };
 
   const handleUserInfoSubmit = (name: string, email: string) => {
+    console.log("User info submitted:", name, email);
+    
     // Update participant info
     const updatedParticipant = {
       ...participant,
@@ -95,7 +110,7 @@ const QuizController = ({ config }: QuizControllerProps) => {
     
     setParticipant(updatedParticipant);
     
-    // Send data to webhook
+    // Send data to webhook if configured
     if (config.webhookUrl) {
       sendDataToWebhook(config.webhookUrl, updatedParticipant)
         .then((success) => {
@@ -106,9 +121,18 @@ const QuizController = ({ config }: QuizControllerProps) => {
               variant: "destructive"
             });
           }
+        })
+        .catch(error => {
+          console.error("Error sending data to webhook:", error);
+          toast({
+            title: "Data submission error",
+            description: "There was an error submitting your data.",
+            variant: "destructive"
+          });
         });
     }
     
+    // Proceed to results page
     setStage("results");
   };
   
@@ -156,6 +180,17 @@ const QuizController = ({ config }: QuizControllerProps) => {
           />
         );
       case "questions":
+        if (isLoading) {
+          return (
+            <div className="quiz-container flex items-center justify-center">
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-t-primary border-r-transparent border-b-primary border-l-transparent"></div>
+                <p className="mt-2 text-gray-600">Loading next question...</p>
+              </div>
+            </div>
+          );
+        }
+        
         return currentQuestion ? (
           <QuestionCard
             question={currentQuestion}
@@ -165,7 +200,12 @@ const QuizController = ({ config }: QuizControllerProps) => {
             onNext={handleNext}
           />
         ) : (
-          <div className="quiz-container">Loading next question...</div>
+          <div className="quiz-container">
+            <div className="text-center">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-t-primary border-r-transparent border-b-primary border-l-transparent"></div>
+              <p className="mt-2 text-gray-600">Preparing your results...</p>
+            </div>
+          </div>
         );
       case "user-info":
         return (

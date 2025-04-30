@@ -6,6 +6,8 @@ export const getNextQuestionId = (
   answers: QuizAnswer[],
   questions: QuizQuestion[]
 ): string | null => {
+  console.log(`Finding next question after ${currentQuestionId}`);
+  
   // Find the current question's index
   const currentIndex = questions.findIndex((q) => q.id === currentQuestionId);
   
@@ -16,14 +18,16 @@ export const getNextQuestionId = (
   
   console.log(`Current question index: ${currentIndex}, total questions: ${questions.length}`);
   
-  // Check if there is a next question
-  if (currentIndex < questions.length - 1) {
-    return questions[currentIndex + 1].id;
+  // Check if this is the last question
+  if (currentIndex >= questions.length - 1) {
+    console.log("This is the last question. Quiz completed.");
+    return null;
   }
   
-  // No more questions
-  console.log("No more questions, quiz completed");
-  return null;
+  // Return next question ID
+  const nextQuestionId = questions[currentIndex + 1].id;
+  console.log(`Next question will be: ${nextQuestionId}`);
+  return nextQuestionId;
 };
 
 export const getPersonalizedResult = (
@@ -36,7 +40,7 @@ export const getPersonalizedResult = (
       id: "default",
       title: "Thank you for completing the quiz!",
       description: "We appreciate your participation.",
-      conditions: [] // Add the missing conditions property
+      conditions: [] // Required by the ResultTemplate interface
     };
   }
   
@@ -50,16 +54,22 @@ export const sendDataToWebhook = async (
   participant: { name: string; email: string; answers: QuizAnswer[] }
 ): Promise<boolean> => {
   try {
+    console.log("Attempting to send data to webhook:", webhookUrl);
+    
     // Only simulate sending data if we have a webhook URL
     if (!webhookUrl) {
       console.log("No webhook URL provided, skipping data submission");
       return true;
     }
     
-    console.log("Sending data to webhook:", webhookUrl, participant);
-    
     // In a real application, you would make an actual API call here
     // For this demo, we'll simulate a successful submission
+    console.log("Data being sent:", participant);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    console.log("Data sent successfully");
     return true;
   } catch (error) {
     console.error("Error sending data to webhook:", error);
