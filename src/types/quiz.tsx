@@ -1,4 +1,3 @@
-
 export interface Option {
   id: string;
   label: string;
@@ -42,9 +41,9 @@ export interface QuizConfig {
   title: string;
   description?: string;
   logoUrl?: string;
-  introImageUrl?: string;  // Property for intro image
-  introText?: string;      // Property for detailed intro text
-  estimatedTime?: string;  // Property for estimated completion time
+  introImageUrl?: string;  // New property for intro image
+  introText?: string;      // New property for detailed intro text
+  estimatedTime?: string;  // New property for estimated completion time
   primaryColor?: string;
   questions: Question[];
   resultTemplates: ResultTemplate[];
