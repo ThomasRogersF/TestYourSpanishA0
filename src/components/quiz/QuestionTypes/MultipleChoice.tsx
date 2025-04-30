@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { QuizQuestion, QuizAnswer, QuizOption } from "@/types/quiz";
+import { QuizQuestion, QuizAnswer } from "@/types/quiz";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 
@@ -37,10 +37,12 @@ const MultipleChoice = ({
   };
 
   const handleNext = () => {
-    // Ensure an option is selected before proceeding
-    if (selectedOption) {
-      console.log("Moving to next question");
+    // Ensure an option is selected before proceeding or allow skipping if not required
+    if (selectedOption || !question.required) {
+      console.log("Moving to next question from MultipleChoice");
       onNext();
+    } else {
+      console.log("Cannot proceed: No option selected and question is required");
     }
   };
 
@@ -50,7 +52,7 @@ const MultipleChoice = ({
 
   return (
     <div className="space-y-6">
-      {question.options && question.options.map((option: QuizOption) => (
+      {question.options && question.options.map((option) => (
         <div
           key={option.id}
           onClick={() => handleOptionSelect(option.value)}
@@ -76,17 +78,18 @@ const MultipleChoice = ({
       ))}
 
       <div className="flex justify-between pt-4">
-        <Button
-          variant="ghost"
-          onClick={onNext}
-          className="text-gray-500"
-          disabled={question.required}
-        >
-          Skip
-        </Button>
+        {!question.required && (
+          <Button
+            variant="ghost"
+            onClick={onNext}
+            className="text-gray-500"
+          >
+            Skip
+          </Button>
+        )}
         <Button 
           onClick={handleNext}
-          className="quiz-button"
+          className="quiz-button ml-auto"
           disabled={question.required && !selectedOption}
         >
           Continue

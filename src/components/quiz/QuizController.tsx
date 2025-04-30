@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { QuizConfig, QuizParticipant, QuizAnswer, ResultTemplate } from "@/types/quiz";
 import { getNextQuestionId, getPersonalizedResult, sendDataToWebhook } from "@/utils/quizUtils";
@@ -17,7 +17,9 @@ type QuizStage = "intro" | "questions" | "user-info" | "results" | "thank-you";
 
 const QuizController = ({ config }: QuizControllerProps) => {
   const [stage, setStage] = useState<QuizStage>("intro");
-  const [currentQuestionId, setCurrentQuestionId] = useState<string | null>(config.questions[0].id);
+  const [currentQuestionId, setCurrentQuestionId] = useState<string | null>(
+    config.questions.length > 0 ? config.questions[0].id : null
+  );
   const [participant, setParticipant] = useState<QuizParticipant>({
     name: "",
     email: "",
@@ -25,6 +27,17 @@ const QuizController = ({ config }: QuizControllerProps) => {
   });
   const [personalizedResult, setPersonalizedResult] = useState<ResultTemplate | null>(null);
   const { toast } = useToast();
+
+  // Effect to handle quiz completion
+  useEffect(() => {
+    // If we're in questions stage but there's no current question, move to user-info
+    if (stage === "questions" && currentQuestionId === null && participant.answers.length > 0) {
+      console.log("All questions completed, moving to user info form");
+      const result = getPersonalizedResult(participant.answers, config.resultTemplates);
+      setPersonalizedResult(result);
+      setStage("user-info");
+    }
+  }, [currentQuestionId, stage, participant.answers, config.resultTemplates]);
 
   const handleStartQuiz = () => {
     setStage("questions");
@@ -49,22 +62,26 @@ const QuizController = ({ config }: QuizControllerProps) => {
   };
   
   const handleNext = () => {
-    if (!currentQuestionId) return;
+    if (!currentQuestionId) {
+      console.log("No current question ID, cannot proceed to next question");
+      return;
+    }
     
+    console.log("Attempting to move to next question from:", currentQuestionId);
     const nextQuestionId = getNextQuestionId(
       currentQuestionId,
       participant.answers,
       config.questions
     );
     
+    console.log("Next question ID determined:", nextQuestionId);
+    
     if (nextQuestionId) {
       setCurrentQuestionId(nextQuestionId);
     } else {
       // End of questions, proceed to user info collection
       console.log("Quiz completed, proceeding to user info form");
-      const result = getPersonalizedResult(participant.answers, config.resultTemplates);
-      setPersonalizedResult(result);
-      setStage("user-info");
+      setCurrentQuestionId(null); // Explicitly set to null to trigger the useEffect
     }
   };
 
@@ -108,7 +125,7 @@ const QuizController = ({ config }: QuizControllerProps) => {
   
   // Calculate progress
   const calculateProgress = () => {
-    if (!currentQuestionId) return 0;
+    if (!currentQuestionId || config.questions.length === 0) return 0;
     
     const currentIndex = config.questions.findIndex(q => q.id === currentQuestionId);
     if (currentIndex === -1) return 0;
@@ -125,6 +142,8 @@ const QuizController = ({ config }: QuizControllerProps) => {
   const currentAnswer = currentQuestionId
     ? participant.answers.find(a => a.questionId === currentQuestionId)
     : undefined;
+
+  console.log("Current stage:", stage, "Current question ID:", currentQuestionId, "Answers count:", participant.answers.length);
 
   // Render the appropriate stage
   const renderStage = () => {
@@ -145,7 +164,9 @@ const QuizController = ({ config }: QuizControllerProps) => {
             onAnswer={handleAnswer}
             onNext={handleNext}
           />
-        ) : null;
+        ) : (
+          <div className="quiz-container">Loading next question...</div>
+        );
       case "user-info":
         return (
           <UserInfoForm 

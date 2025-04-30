@@ -14,6 +14,8 @@ export const getNextQuestionId = (
     return null;
   }
   
+  console.log(`Current question index: ${currentIndex}, total questions: ${questions.length}`);
+  
   // Check if there is a next question
   if (currentIndex < questions.length - 1) {
     return questions[currentIndex + 1].id;
