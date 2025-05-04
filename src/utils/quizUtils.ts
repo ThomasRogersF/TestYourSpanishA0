@@ -56,20 +56,36 @@ export const sendDataToWebhook = async (
   try {
     console.log("Attempting to send data to webhook:", webhookUrl);
     
-    // Only simulate sending data if we have a webhook URL
+    // Only attempt to send data if we have a webhook URL
     if (!webhookUrl) {
       console.log("No webhook URL provided, skipping data submission");
       return true;
     }
     
-    // In a real application, you would make an actual API call here
-    // For this demo, we'll simulate a successful submission
     console.log("Data being sent:", participant);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // Make the actual API call to the webhook
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        participant: {
+          name: participant.name,
+          email: participant.email,
+          answers: participant.answers,
+          submittedAt: new Date().toISOString()
+        }
+      }),
+    });
     
-    console.log("Data sent successfully");
+    if (!response.ok) {
+      console.error("Webhook response not OK:", response.status);
+      return false;
+    }
+    
+    console.log("Data sent successfully to webhook");
     return true;
   } catch (error) {
     console.error("Error sending data to webhook:", error);
