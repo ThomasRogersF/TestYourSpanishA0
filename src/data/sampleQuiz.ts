@@ -1,4 +1,3 @@
-
 import { QuizConfig } from "@/types/quiz";
 
 export const sampleQuiz: QuizConfig = {
@@ -13,8 +12,9 @@ export const sampleQuiz: QuizConfig = {
   secondaryColor: "#1DD3B0",
   webhookUrl: "https://webhook.site/your-unique-id",
   incentiveEnabled: true,
-  incentiveTitle: "Free Learning Style Guide PDF",
-  incentiveUrl: "https://example.com/free-guide.pdf",
+  incentiveTitle: "Spanish Shortcuts Guide",
+  incentiveUrl: "https://spanishvip.com/wp-content/uploads/2022/02/Easy-Spanish-Shortcuts-Updated.pdf",
+  externalRedirectUrl: "https://spanishvip.com/",
   questions: [
     {
       id: "q1",

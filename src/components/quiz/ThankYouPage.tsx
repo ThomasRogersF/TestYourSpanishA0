@@ -24,9 +24,9 @@ const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
       </p>
       
       {config.incentiveEnabled && config.incentiveTitle && config.incentiveUrl && (
-        <div className="border-2 border-brand-secondary rounded-[1rem] p-6 bg-brand-background mb-8 shadow-sm">
+        <div className="border-2 border-brand-secondary rounded-[1rem] p-6 bg-brand-background mb-8 shadow-soft">
           <h3 className="text-xl font-bold text-brand-primary mb-4">
-            Your Free Resource 🎁
+            Your Free Spanish Book 📚
           </h3>
           <p className="text-gray-600 mb-6">
             As promised, here's your free {config.incentiveTitle}. Click the button below to download.
@@ -37,7 +37,7 @@ const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
             rel="noopener noreferrer"
             className="quiz-button inline-flex items-center shadow-soft"
           >
-            Download Now <ArrowDown className="ml-2 h-4 w-4" />
+            Download Book <ArrowDown className="ml-2 h-4 w-4" />
           </a>
         </div>
       )}
@@ -48,7 +48,7 @@ const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
             onClick={onExternalRedirect}
             className="quiz-button inline-flex items-center shadow-soft"
           >
-            Continue to Website <ExternalLink className="ml-2 h-4 w-4" />
+            Continue to Spanish VIP <ExternalLink className="ml-2 h-4 w-4" />
           </Button>
         </div>
       )}

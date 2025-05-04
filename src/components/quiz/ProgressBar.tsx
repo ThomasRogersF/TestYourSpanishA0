@@ -16,7 +16,6 @@ const ProgressBar = ({ progress, className }: ProgressBarProps) => {
       <Progress 
         value={safeProgress} 
         className="h-2 bg-brand-background" 
-        indicatorClassName="bg-brand-primary" 
       />
       <div className="text-xs text-gray-500 mt-1 text-right">
         {safeProgress}% complete
