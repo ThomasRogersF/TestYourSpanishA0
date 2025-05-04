@@ -95,7 +95,7 @@ export const sampleQuiz: QuizConfig = {
       subtitle: "Play the audio and choose the word you hear",
       helpText: "Listen carefully to the pronunciation before selecting your answer",
       required: true,
-      audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      audioUrl: "https://assets.mixkit.co/active_storage/sfx/2568/2568.wav",
       options: [
         { id: "a1", text: "Pronunciation", value: "pronunciation" },
         { id: "a2", text: "Enunciation", value: "enunciation" },
@@ -139,3 +139,4 @@ export const sampleQuiz: QuizConfig = {
     }
   ]
 };
+
