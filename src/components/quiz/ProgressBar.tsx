@@ -13,7 +13,11 @@ const ProgressBar = ({ progress, className }: ProgressBarProps) => {
   
   return (
     <div className={cn("w-full mb-6", className)}>
-      <Progress value={safeProgress} className="h-2" />
+      <Progress 
+        value={safeProgress} 
+        className="h-2 bg-brand-background" 
+        indicatorClassName="bg-brand-primary" 
+      />
       <div className="text-xs text-gray-500 mt-1 text-right">
         {safeProgress}% complete
       </div>

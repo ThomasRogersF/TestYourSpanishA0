@@ -17,13 +17,21 @@ const ResultsPage = ({
   onContinue 
 }: ResultsPageProps) => {
   return (
-    <div className="quiz-container w-full max-w-2xl">
-      <h1 className="quiz-title">Your Results</h1>
+    <div className="quiz-container w-full max-w-2xl shadow-soft">
+      <div className="flex justify-center mb-6">
+        <img 
+          src={config.logoUrl || "/placeholder.svg"} 
+          alt={`${config.title} logo`}
+          className="h-14 w-auto"
+        />
+      </div>
+      
+      <h1 className="quiz-title">Your Results 🎉</h1>
       
       {personalizedResult ? (
         <>
-          <h2 className="text-2xl font-semibold mb-4">{personalizedResult.title}</h2>
-          <p className="text-gray-600 mb-6 text-left">{personalizedResult.description}</p>
+          <h2 className="text-2xl font-bold mb-4 text-brand-primary">{personalizedResult.title}</h2>
+          <p className="text-gray-600 mb-6 text-left p-4 bg-brand-background rounded-[1rem]">{personalizedResult.description}</p>
         </>
       ) : (
         <p className="text-gray-600 mb-6">
@@ -32,10 +40,10 @@ const ResultsPage = ({
       )}
       
       <div className="border-t border-gray-200 my-6 pt-6">
-        <h3 className="text-lg font-medium mb-4">Personal Summary</h3>
-        <div className="bg-quiz-gray-light p-4 rounded-lg mb-6">
-          <p className="font-medium">Name: <span className="font-normal">{participant.name}</span></p>
-          <p className="font-medium">Email: <span className="font-normal">{participant.email}</span></p>
+        <h3 className="text-lg font-bold mb-4 text-brand-secondary">Personal Summary</h3>
+        <div className="bg-brand-background p-5 rounded-[1rem] mb-6">
+          <p className="font-medium">👤 Name: <span className="font-normal">{participant.name}</span></p>
+          <p className="font-medium">✉️ Email: <span className="font-normal">{participant.email}</span></p>
         </div>
       </div>
       
@@ -47,7 +55,7 @@ const ResultsPage = ({
       </div>
       
       <Button 
-        className="quiz-button w-full"
+        className="quiz-button w-full shadow-soft"
         onClick={onContinue}
       >
         Continue <ArrowRight className="ml-2 h-4 w-4" />

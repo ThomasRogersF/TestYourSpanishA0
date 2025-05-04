@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { QuizConfig } from "@/types/quiz";
 import ProgressBar from "./ProgressBar";
 
@@ -49,7 +49,7 @@ const UserInfoForm = ({ config, onSubmit }: UserInfoFormProps) => {
   };
 
   return (
-    <div className="quiz-container w-full max-w-md">
+    <div className="quiz-container w-full max-w-md shadow-soft">
       <ProgressBar progress={100} />
       
       {config.logoUrl && (
@@ -57,18 +57,18 @@ const UserInfoForm = ({ config, onSubmit }: UserInfoFormProps) => {
           <img 
             src={config.logoUrl} 
             alt={`${config.title} logo`}
-            className="h-12 w-auto"
+            className="h-14 w-auto"
           />
         </div>
       )}
       
-      <h1 className="quiz-title">Almost Done!</h1>
+      <h1 className="quiz-title">Almost Done! 🙌</h1>
       
       <p className="quiz-subtitle mb-6">Please enter your contact information to see your personalized results.</p>
       
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5 bg-brand-background p-6 rounded-[1rem] shadow-sm">
         <div className="space-y-2">
-          <Label htmlFor="name">Your Name</Label>
+          <Label htmlFor="name" className="font-medium">👤 Your Name</Label>
           <Input
             id="name"
             placeholder="Enter your full name"
@@ -79,7 +79,7 @@ const UserInfoForm = ({ config, onSubmit }: UserInfoFormProps) => {
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="email">Your Email</Label>
+          <Label htmlFor="email" className="font-medium">✉️ Your Email</Label>
           <Input
             id="email"
             type="email"
@@ -92,10 +92,10 @@ const UserInfoForm = ({ config, onSubmit }: UserInfoFormProps) => {
         
         <Button 
           type="submit" 
-          className="quiz-button w-full mt-6"
+          className="quiz-button w-full mt-6 shadow-soft"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Processing..." : "See My Results"}
+          {isSubmitting ? "Processing..." : "See My Results ✨"}
         </Button>
       </form>
     </div>

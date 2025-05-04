@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,49 +7,51 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 39 33% 95%;
+    --foreground: 240 10% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 240 10% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 240 10% 12%;
 
-    --primary: 260 33% 54%;
+    --primary: 17 100% 54%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 165 77% 47%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
+    --muted: 39 33% 90%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 260 33% 75%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 240 5% 12%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 260 33% 54%;
+    --border: 39 33% 85%;
+    --input: 39 33% 85%;
+    --ring: 17 100% 54%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
   }
 
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Kumbh Sans', sans-serif;
+    background-color: #F7F4EE;
+    color: #1E1E1E;
   }
 }
 
 @layer components {
   .quiz-container {
-    @apply max-w-3xl mx-auto p-6 md:p-8 bg-white rounded-xl shadow-lg animate-fade-in;
+    @apply max-w-3xl mx-auto p-6 md:p-8 bg-white rounded-[1rem] shadow-md animate-fade-in;
   }
 
   .quiz-title {
-    @apply text-3xl md:text-4xl font-playfair font-bold text-quiz-purple mb-6 text-center;
+    @apply text-3xl md:text-4xl font-bold text-[#FF5913] mb-6 text-center;
   }
 
   .quiz-subtitle {
@@ -57,44 +59,45 @@
   }
 
   .quiz-progress-bar {
-    @apply w-full h-2 bg-quiz-gray-light rounded-full mb-8;
+    @apply w-full h-2 bg-[#F7F4EE] rounded-full mb-8;
   }
 
   .quiz-progress-indicator {
-    @apply h-full bg-quiz-purple-light rounded-full transition-all duration-300;
+    @apply h-full bg-[#FF5913] rounded-full transition-all duration-300;
   }
 
   .quiz-button {
-    @apply px-8 py-3 bg-quiz-purple text-white font-medium rounded-lg 
-           hover:bg-quiz-purple-dark transition-colors duration-200 
-           focus:outline-none focus:ring-2 focus:ring-quiz-purple-light focus:ring-opacity-50;
+    @apply px-8 py-3 bg-[#FF5913] text-white font-medium rounded-[32px] 
+           hover:bg-[#e84c09] transition-colors duration-200 
+           focus:outline-none focus:ring-2 focus:ring-[#FF5913] focus:ring-opacity-50;
   }
 
   .quiz-button-secondary {
-    @apply px-8 py-3 bg-white text-quiz-purple border border-quiz-purple font-medium rounded-lg 
-           hover:bg-quiz-gray-light transition-colors duration-200 
-           focus:outline-none focus:ring-2 focus:ring-quiz-purple-light focus:ring-opacity-50;
+    @apply px-8 py-3 bg-white text-[#FF5913] border border-[#FF5913] font-medium rounded-[32px] 
+           hover:bg-[#F7F4EE] transition-colors duration-200 
+           focus:outline-none focus:ring-2 focus:ring-[#FF5913] focus:ring-opacity-50;
   }
   
   .quiz-input {
-    @apply w-full p-3 border border-gray-300 rounded-lg focus:outline-none 
-           focus:ring-2 focus:ring-quiz-purple-light focus:border-quiz-purple;
+    @apply w-full p-3 border border-gray-300 rounded-[1rem] focus:outline-none 
+           focus:ring-2 focus:ring-[#1DD3B0] focus:border-[#1DD3B0];
   }
   
   .quiz-option {
-    @apply flex items-center p-4 border border-gray-200 rounded-lg mb-3 cursor-pointer 
-           hover:border-quiz-purple hover:bg-quiz-gray-light transition-colors duration-200;
+    @apply flex items-center p-4 border border-gray-200 rounded-[1rem] mb-3 cursor-pointer 
+           hover:border-[#FF5913] hover:bg-[#F7F4EE] transition-colors duration-200;
   }
   
   .quiz-option-selected {
-    @apply border-quiz-purple bg-quiz-gray-light;
+    @apply border-[#FF5913] bg-[#F7F4EE];
   }
 
   .quiz-image-option {
-    @apply border-2 rounded-lg overflow-hidden cursor-pointer transition-all duration-200;
+    @apply border-2 rounded-[1rem] overflow-hidden cursor-pointer transition-all duration-200;
   }
   
   .quiz-image-option-selected {
-    @apply border-quiz-purple-light ring-4 ring-quiz-purple-light ring-opacity-30;
+    @apply border-[#FF5913] ring-4 ring-[#FF5913] ring-opacity-30;
   }
 }
+

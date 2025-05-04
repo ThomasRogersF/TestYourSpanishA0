@@ -5,12 +5,12 @@ export const sampleQuiz: QuizConfig = {
   id: "education-assessment",
   title: "Learning Style Assessment",
   description: "Discover your ideal learning style and get personalized recommendations",
-  logoUrl: "/placeholder.svg",
+  logoUrl: "https://lwfiles.mycourse.app/6409eb5798e53550d7acd5f1-public/1bfa7bb23c37499f0d5908f0a004c50e.png",
   introImageUrl: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=800&q=80",
   introText: "This quiz will help you discover your learning style and provide personalized recommendations to enhance your educational journey. Take a few minutes to answer these simple questions and get insights tailored just for you.",
   estimatedTime: "2-3 minutes",
-  primaryColor: "#7E69AB",
-  secondaryColor: "#9B87F5",
+  primaryColor: "#FF5913",
+  secondaryColor: "#1DD3B0",
   webhookUrl: "https://webhook.site/your-unique-id",
   incentiveEnabled: true,
   incentiveTitle: "Free Learning Style Guide PDF",
@@ -139,4 +139,3 @@ export const sampleQuiz: QuizConfig = {
     }
   ]
 };
-

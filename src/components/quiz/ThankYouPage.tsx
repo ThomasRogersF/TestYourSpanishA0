@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { QuizConfig } from "@/types/quiz";
-import { ArrowDown, ExternalLink } from "lucide-react";
+import { ArrowDown, ExternalLink, Check } from "lucide-react";
 
 interface ThankYouPageProps {
   config: QuizConfig;
@@ -10,23 +10,23 @@ interface ThankYouPageProps {
 
 const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
   return (
-    <div className="quiz-container w-full max-w-2xl">
+    <div className="quiz-container w-full max-w-2xl shadow-soft">
       <div className="flex justify-center mb-10">
-        <div className="w-20 h-20 bg-quiz-purple rounded-full flex items-center justify-center">
+        <div className="w-20 h-20 bg-brand-primary rounded-full flex items-center justify-center shadow-md">
           <Check className="w-10 h-10 text-white" />
         </div>
       </div>
       
-      <h1 className="quiz-title">Thank You!</h1>
+      <h1 className="quiz-title">Thank You! 🎉</h1>
       
       <p className="text-center text-lg text-gray-600 mb-10">
         Your responses have been successfully submitted. We appreciate your time and input!
       </p>
       
       {config.incentiveEnabled && config.incentiveTitle && config.incentiveUrl && (
-        <div className="border border-quiz-purple-light rounded-lg p-6 bg-quiz-gray-light mb-8">
-          <h3 className="text-xl font-medium text-quiz-purple mb-4">
-            Your Free Resource
+        <div className="border-2 border-brand-secondary rounded-[1rem] p-6 bg-brand-background mb-8 shadow-sm">
+          <h3 className="text-xl font-bold text-brand-primary mb-4">
+            Your Free Resource 🎁
           </h3>
           <p className="text-gray-600 mb-6">
             As promised, here's your free {config.incentiveTitle}. Click the button below to download.
@@ -35,7 +35,7 @@ const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
             href={config.incentiveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="quiz-button inline-flex items-center"
+            className="quiz-button inline-flex items-center shadow-soft"
           >
             Download Now <ArrowDown className="ml-2 h-4 w-4" />
           </a>
@@ -46,7 +46,7 @@ const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
         <div className="text-center mt-8">
           <Button 
             onClick={onExternalRedirect}
-            className="quiz-button inline-flex items-center"
+            className="quiz-button inline-flex items-center shadow-soft"
           >
             Continue to Website <ExternalLink className="ml-2 h-4 w-4" />
           </Button>
@@ -65,6 +65,3 @@ const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
 };
 
 export default ThankYouPage;
-
-// Import Check icon
-import { Check } from "lucide-react";

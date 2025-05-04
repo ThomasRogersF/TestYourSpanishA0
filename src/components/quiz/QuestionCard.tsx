@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import { QuizQuestion, QuizAnswer } from "@/types/quiz";
 import ProgressBar from "./ProgressBar";
 import MultipleChoice from "./QuestionTypes/MultipleChoice";
@@ -22,6 +21,22 @@ const QuestionCard = ({
   onAnswer, 
   onNext 
 }: QuestionCardProps) => {
+  // Emoji mapping for different question types
+  const getQuestionEmoji = () => {
+    switch (question.type) {
+      case 'mcq':
+        return '✅';
+      case 'image-selection':
+        return '🖼️';
+      case 'audio':
+        return '🔊';
+      case 'text':
+        return '📝';
+      default:
+        return '❓';
+    }
+  };
+
   const renderQuestionType = () => {
     switch (question.type) {
       case 'mcq':
@@ -66,10 +81,12 @@ const QuestionCard = ({
   };
 
   return (
-    <div className="quiz-container w-full max-w-2xl">
+    <div className="quiz-container w-full max-w-2xl animate-scale-in shadow-soft">
       <ProgressBar progress={progress} />
       
-      <h2 className="text-2xl font-semibold mb-4">{question.title}</h2>
+      <h2 className="text-2xl font-bold mb-4 text-brand-primary">
+        {getQuestionEmoji()} {question.title}
+      </h2>
       
       {question.subtitle && (
         <p className="text-gray-600 mb-6">{question.subtitle}</p>
