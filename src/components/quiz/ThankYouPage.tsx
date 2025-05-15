@@ -49,14 +49,14 @@ const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
             onClick={onExternalRedirect}
             className="quiz-button inline-flex items-center shadow-soft"
           >
-            Continue to Spanish VIP <ExternalLink className="ml-2 h-4 w-4" />
+            Visit us <ExternalLink className="ml-2 h-4 w-4" />
           </Button>
           
           <Link to="/schedule">
             <Button 
               className="quiz-button-secondary inline-flex items-center shadow-soft w-full"
             >
-              Schedule a 1:1 Free Class with Us <Calendar className="ml-2 h-4 w-4" />
+              Book a free class <Calendar className="ml-2 h-4 w-4" />
             </Button>
           </Link>
         </div>
@@ -68,7 +68,7 @@ const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
             <Button 
               className="quiz-button inline-flex items-center shadow-soft w-full"
             >
-              Schedule a 1:1 Free Class with Us <Calendar className="ml-2 h-4 w-4" />
+              Book a free class <Calendar className="ml-2 h-4 w-4" />
             </Button>
           </Link>
           

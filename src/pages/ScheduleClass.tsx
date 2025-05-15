@@ -35,17 +35,15 @@ const ScheduleClass = () => {
           </Link>
         </div>
         
-        <div className="bg-white rounded-lg shadow-soft p-4 mb-8">
-          <h1 className="text-3xl font-bold text-center text-brand-primary mb-6">
-            Schedule a 1:1 Free Class with SpanishVIP
-          </h1>
-          
-          <div 
-            className="meetings-iframe-container" 
-            data-src="https://meetings.hubspot.com/support558/free-class-with-spanishvip?embed=true" 
-            style={{ width: "100%", minHeight: "600px", overflow: "auto", position: "relative" }}
-          ></div>
-        </div>
+        <h1 className="text-3xl font-bold text-center text-brand-primary mb-6">
+          Schedule a 1:1 Free Class with SpanishVIP
+        </h1>
+        
+        <div 
+          className="meetings-iframe-container" 
+          data-src="https://meetings.hubspot.com/support558/free-class-with-spanishvip?embed=true" 
+          style={{ width: "100%", minHeight: "600px", overflow: "auto", position: "relative" }}
+        ></div>
       </div>
     </div>
   );
