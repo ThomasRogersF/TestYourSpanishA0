@@ -102,17 +102,25 @@ export const getQuestionText = (questionId: string, config: QuizConfig): string 
   return question ? question.title : `Unknown Question (${questionId})`;
 };
 
-export const getOptionText = (questionId: string, optionValue: string | string[], config: QuizConfig): string => {
+export const getOptionText = (questionId: string, optionValue: string | string[] | File | null, config: QuizConfig): string => {
+  // Handle null values
+  if (optionValue === null) return "No answer provided";
+  
+  // Handle File type
+  if (optionValue instanceof File) {
+    return optionValue.name;
+  }
+  
   const question = config.questions.find(q => q.id === questionId);
-  if (!question) return `Unknown Option (${optionValue})`;
+  if (!question) return `Unknown Option (${String(optionValue)})`;
 
   // Handle different question types
   if (question.type === 'mcq' && question.options) {
     const option = question.options.find(o => o.value === optionValue);
-    return option ? option.text : `Unknown Option (${optionValue})`;
+    return option ? option.text : `Unknown Option (${String(optionValue)})`;
   } else if (question.type === 'image-selection' && question.imageOptions) {
     const option = question.imageOptions.find(o => o.value === optionValue);
-    return option ? option.alt : `Unknown Option (${optionValue})`;
+    return option ? option.alt : `Unknown Option (${String(optionValue)})`;
   }
   
   // Return the raw value if no match is found
@@ -171,7 +179,7 @@ export const sendDataToWebhook = async (
         questionId: answer.questionId,
         questionText: questionText,
         questionType: answer.type,
-        selectedValue: answer.value,
+        selectedValue: answer.value instanceof File ? answer.value.name : answer.value,
         selectedOptionText: selectedOptionText,
         isCorrect: isCorrect
       };
