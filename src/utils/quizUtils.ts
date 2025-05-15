@@ -1,5 +1,5 @@
 
-import { QuizAnswer, QuizQuestion, ResultTemplate } from "@/types/quiz";
+import { QuizAnswer, QuizQuestion, ResultTemplate, QuizConfig } from "@/types/quiz";
 
 export const getNextQuestionId = (
   currentQuestionId: string,
@@ -44,14 +44,85 @@ export const getPersonalizedResult = (
     };
   }
   
-  // For now, we'll just return the first result template
-  // In a real application, you would implement logic to determine the best result
-  return resultTemplates[0];
+  // Calculate the score
+  const score = calculateScore(answers);
+  console.log(`Calculated score: ${score}`);
+  
+  // Find appropriate result template based on score
+  if (score <= 3) {
+    const beginnerTemplate = resultTemplates.find(t => t.id === "absolute-beginner");
+    return beginnerTemplate || resultTemplates[0];
+  } else if (score <= 6) {
+    const intermediateTemplate = resultTemplates.find(t => t.id === "beginner");
+    return intermediateTemplate || resultTemplates[0];
+  } else {
+    const advancedTemplate = resultTemplates.find(t => t.id === "elementary");
+    return advancedTemplate || resultTemplates[0];
+  }
+};
+
+// Helper function to calculate score based on correct answers
+export const calculateScore = (answers: QuizAnswer[]): number => {
+  // For this implementation, we'll count answers that match correct values
+  // This is a simple implementation - in a real app, you'd have a more sophisticated scoring system
+  const correctAnswerMap: Record<string, string | string[]> = {
+    "q1": "hola",
+    "q2": "me_llamo",
+    "q3": "cuatro",
+    "q4": "manzana",
+    "q5": "estoy",
+    "q6": "vamos",
+    "q7": "bathroom",
+    "q8": "hungry",
+    "q9": "coffee",
+    "q10": "el_gato_negro"
+  };
+
+  let score = 0;
+  
+  answers.forEach(answer => {
+    const correctAnswer = correctAnswerMap[answer.questionId];
+    if (correctAnswer) {
+      if (
+        (typeof answer.value === 'string' && answer.value === correctAnswer) ||
+        (Array.isArray(answer.value) && Array.isArray(correctAnswer) && 
+         JSON.stringify(answer.value.sort()) === JSON.stringify(correctAnswer.sort()))
+      ) {
+        score++;
+      }
+    }
+  });
+  
+  return score;
+};
+
+// Get the question and option text by their IDs
+export const getQuestionText = (questionId: string, config: QuizConfig): string => {
+  const question = config.questions.find(q => q.id === questionId);
+  return question ? question.title : `Unknown Question (${questionId})`;
+};
+
+export const getOptionText = (questionId: string, optionValue: string | string[], config: QuizConfig): string => {
+  const question = config.questions.find(q => q.id === questionId);
+  if (!question) return `Unknown Option (${optionValue})`;
+
+  // Handle different question types
+  if (question.type === 'mcq' && question.options) {
+    const option = question.options.find(o => o.value === optionValue);
+    return option ? option.text : `Unknown Option (${optionValue})`;
+  } else if (question.type === 'image-selection' && question.imageOptions) {
+    const option = question.imageOptions.find(o => o.value === optionValue);
+    return option ? option.alt : `Unknown Option (${optionValue})`;
+  }
+  
+  // Return the raw value if no match is found
+  return Array.isArray(optionValue) ? optionValue.join(', ') : String(optionValue);
 };
 
 export const sendDataToWebhook = async (
   webhookUrl: string,
-  participant: { name: string; email: string; answers: QuizAnswer[] }
+  participant: { name: string; email: string; answers: QuizAnswer[] },
+  quizConfig: QuizConfig
 ): Promise<boolean> => {
   try {
     console.log("Attempting to send data to webhook:", webhookUrl);
@@ -62,7 +133,68 @@ export const sendDataToWebhook = async (
       return true;
     }
     
-    console.log("Data being sent:", participant);
+    // Calculate score
+    const score = calculateScore(participant.answers);
+    
+    // Determine result level
+    let resultLevel = "Unknown";
+    if (score <= 3) resultLevel = "Absolute Beginner";
+    else if (score <= 6) resultLevel = "Beginner";
+    else resultLevel = "Elementary (A2)";
+    
+    // Build enhanced data structure
+    const enhancedAnswers = participant.answers.map(answer => {
+      const questionText = getQuestionText(answer.questionId, quizConfig);
+      const selectedOptionText = getOptionText(answer.questionId, answer.value, quizConfig);
+      
+      // Determine if the answer is correct
+      const correctAnswerMap: Record<string, string | string[]> = {
+        "q1": "hola",
+        "q2": "me_llamo",
+        "q3": "cuatro",
+        "q4": "manzana",
+        "q5": "estoy",
+        "q6": "vamos",
+        "q7": "bathroom",
+        "q8": "hungry",
+        "q9": "coffee",
+        "q10": "el_gato_negro"
+      };
+      
+      const correctValue = correctAnswerMap[answer.questionId];
+      const isCorrect = 
+        (typeof answer.value === 'string' && answer.value === correctValue) ||
+        (Array.isArray(answer.value) && Array.isArray(correctValue) && 
+         JSON.stringify(answer.value.sort()) === JSON.stringify(correctValue.sort()));
+      
+      return {
+        questionId: answer.questionId,
+        questionText: questionText,
+        questionType: answer.type,
+        selectedValue: answer.value,
+        selectedOptionText: selectedOptionText,
+        isCorrect: isCorrect
+      };
+    });
+    
+    const enhancedData = {
+      participant: {
+        name: participant.name,
+        email: participant.email,
+        submittedAt: new Date().toISOString(),
+        quizId: quizConfig.id,
+        quizTitle: quizConfig.title,
+      },
+      results: {
+        score: score,
+        totalQuestions: quizConfig.questions.length,
+        percentageCorrect: Math.round((score / quizConfig.questions.length) * 100),
+        resultLevel: resultLevel
+      },
+      detailedAnswers: enhancedAnswers
+    };
+    
+    console.log("Enhanced data being sent:", enhancedData);
     
     // Make the actual API call to the webhook
     const response = await fetch(webhookUrl, {
@@ -70,14 +202,7 @@ export const sendDataToWebhook = async (
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        participant: {
-          name: participant.name,
-          email: participant.email,
-          answers: participant.answers,
-          submittedAt: new Date().toISOString()
-        }
-      }),
+      body: JSON.stringify(enhancedData),
     });
     
     if (!response.ok) {

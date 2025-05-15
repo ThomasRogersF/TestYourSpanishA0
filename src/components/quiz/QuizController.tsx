@@ -112,7 +112,7 @@ const QuizController = ({ config }: QuizControllerProps) => {
     
     // Send data to webhook if configured
     if (config.webhookUrl) {
-      sendDataToWebhook(config.webhookUrl, updatedParticipant)
+      sendDataToWebhook(config.webhookUrl, updatedParticipant, config)
         .then((success) => {
           if (!success) {
             toast({
