@@ -36,6 +36,15 @@ const ImageSelection = ({
       onNext();
     }
   };
+  
+  const handleSkip = () => {
+    onAnswer({
+      questionId: question.id,
+      type: question.type,
+      value: null
+    });
+    onNext();
+  };
 
   return (
     <div className="space-y-6">
@@ -64,8 +73,7 @@ const ImageSelection = ({
           type="button" 
           variant="outline" 
           className="quiz-button-secondary"
-          onClick={onNext}
-          disabled={question.required && !selectedImage}
+          onClick={handleSkip}
         >
           Skip
         </Button>

@@ -1,7 +1,8 @@
 
 import { Button } from "@/components/ui/button";
 import { QuizConfig } from "@/types/quiz";
-import { ArrowDown, ExternalLink, Check } from "lucide-react";
+import { ArrowDown, ExternalLink, Calendar, Check } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface ThankYouPageProps {
   config: QuizConfig;
@@ -43,18 +44,34 @@ const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
       )}
       
       {config.externalRedirectUrl && (
-        <div className="text-center mt-8">
+        <div className="text-center mt-8 space-y-4">
           <Button 
             onClick={onExternalRedirect}
             className="quiz-button inline-flex items-center shadow-soft"
           >
             Continue to Spanish VIP <ExternalLink className="ml-2 h-4 w-4" />
           </Button>
+          
+          <Link to="/schedule">
+            <Button 
+              className="quiz-button-secondary inline-flex items-center shadow-soft w-full"
+            >
+              Schedule a 1:1 Free Class with Us <Calendar className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       )}
       
       {!config.externalRedirectUrl && (
-        <div className="text-center mt-10">
+        <div className="text-center mt-10 space-y-4">
+          <Link to="/schedule">
+            <Button 
+              className="quiz-button inline-flex items-center shadow-soft w-full"
+            >
+              Schedule a 1:1 Free Class with Us <Calendar className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
+          
           <Button asChild variant="outline" className="quiz-button-secondary">
             <a href="/">Return to Homepage</a>
           </Button>

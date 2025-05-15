@@ -37,6 +37,15 @@ const TextInput = ({
       onNext();
     }
   };
+  
+  const handleSkip = () => {
+    onAnswer({
+      questionId: question.id,
+      type: question.type,
+      value: null
+    });
+    onNext();
+  };
 
   return (
     <div className="space-y-6">
@@ -56,8 +65,7 @@ const TextInput = ({
           type="button" 
           variant="outline" 
           className="quiz-button-secondary"
-          onClick={onNext}
-          disabled={question.required && (!text || !text.trim())}
+          onClick={handleSkip}
         >
           Skip
         </Button>

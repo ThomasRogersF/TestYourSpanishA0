@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { QuizQuestion, QuizAnswer } from "@/types/quiz";
@@ -122,6 +121,24 @@ const AudioQuestion = ({
     }
   };
 
+  const handleSkip = () => {
+    console.log("Skip button clicked in AudioQuestion");
+    
+    // Stop audio if playing
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    
+    onAnswer({
+      questionId: question.id,
+      type: question.type,
+      value: null
+    });
+    
+    onNext();
+  };
+
   return (
     <div className="space-y-6">
       <div className="border border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center">
@@ -172,15 +189,13 @@ const AudioQuestion = ({
       )}
       
       <div className="flex justify-between mt-8">
-        {!question.required && (
-          <Button 
-            type="button" 
-            variant="outline"
-            onClick={onNext}
-          >
-            Skip
-          </Button>
-        )}
+        <Button 
+          type="button" 
+          variant="outline"
+          onClick={handleSkip}
+        >
+          Skip
+        </Button>
         <Button 
           type="button"
           className="quiz-button ml-auto"

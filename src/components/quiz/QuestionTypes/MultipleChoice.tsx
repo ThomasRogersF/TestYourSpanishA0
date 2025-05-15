@@ -50,6 +50,16 @@ const MultipleChoice = ({
     }
   };
 
+  const handleSkip = () => {
+    console.log("MultipleChoice: Skip button clicked");
+    onAnswer({
+      questionId: question.id,
+      type: 'mcq',
+      value: null
+    });
+    onNext();
+  };
+
   return (
     <div className="space-y-6">
       {question.options && question.options.map((option) => (
@@ -80,15 +90,13 @@ const MultipleChoice = ({
       ))}
 
       <div className="flex justify-between pt-4">
-        {!question.required && (
-          <Button
-            variant="outline"
-            onClick={onNext}
-            className="text-gray-500"
-          >
-            Skip
-          </Button>
-        )}
+        <Button
+          variant="outline"
+          onClick={handleSkip}
+          className="text-gray-500"
+        >
+          Skip
+        </Button>
         <Button 
           onClick={handleNext}
           className="quiz-button ml-auto shadow-soft"
