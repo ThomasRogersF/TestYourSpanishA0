@@ -44,37 +44,41 @@ const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
       )}
       
       {config.externalRedirectUrl && (
-        <div className="text-center mt-8 space-y-4">
-          <Button 
-            onClick={onExternalRedirect}
-            className="quiz-button inline-flex items-center shadow-soft"
-          >
-            Visit us <ExternalLink className="ml-2 h-4 w-4" />
-          </Button>
-          
-          <Link to="/schedule">
+        <div className="text-center mt-8">
+          <div className="flex flex-wrap gap-4 justify-center">
             <Button 
-              className="quiz-button-secondary inline-flex items-center shadow-soft w-full"
+              onClick={onExternalRedirect}
+              className="quiz-button inline-flex items-center shadow-soft"
             >
-              Book a free class <Calendar className="ml-2 h-4 w-4" />
+              Visit us <ExternalLink className="ml-2 h-4 w-4" />
             </Button>
-          </Link>
+            
+            <Link to="/schedule">
+              <Button 
+                className="quiz-button-secondary inline-flex items-center shadow-soft"
+              >
+                Book a free class <Calendar className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
         </div>
       )}
       
       {!config.externalRedirectUrl && (
-        <div className="text-center mt-10 space-y-4">
-          <Link to="/schedule">
-            <Button 
-              className="quiz-button inline-flex items-center shadow-soft w-full"
-            >
-              Book a free class <Calendar className="ml-2 h-4 w-4" />
+        <div className="text-center mt-10">
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link to="/schedule">
+              <Button 
+                className="quiz-button inline-flex items-center shadow-soft"
+              >
+                Book a free class <Calendar className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+            
+            <Button asChild variant="outline" className="quiz-button-secondary">
+              <a href="/">Return to Homepage</a>
             </Button>
-          </Link>
-          
-          <Button asChild variant="outline" className="quiz-button-secondary">
-            <a href="/">Return to Homepage</a>
-          </Button>
+          </div>
         </div>
       )}
     </div>

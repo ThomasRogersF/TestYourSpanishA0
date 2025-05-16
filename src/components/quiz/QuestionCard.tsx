@@ -5,6 +5,7 @@ import MultipleChoice from "./QuestionTypes/MultipleChoice";
 import ImageSelection from "./QuestionTypes/ImageSelection";
 import AudioQuestion from "./QuestionTypes/AudioQuestion";
 import TextInput from "./QuestionTypes/TextInput";
+import FillInBlanks from "./QuestionTypes/FillInBlanks";
 
 interface QuestionCardProps {
   question: QuizQuestion;
@@ -32,6 +33,8 @@ const QuestionCard = ({
         return '🔊';
       case 'text':
         return '📝';
+      case 'fill-in-blanks':
+        return '✏️';
       default:
         return '❓';
     }
@@ -69,6 +72,15 @@ const QuestionCard = ({
       case 'text':
         return (
           <TextInput
+            question={question}
+            currentAnswer={currentAnswer}
+            onAnswer={onAnswer}
+            onNext={onNext}
+          />
+        );
+      case 'fill-in-blanks':
+        return (
+          <FillInBlanks
             question={question}
             currentAnswer={currentAnswer}
             onAnswer={onAnswer}
