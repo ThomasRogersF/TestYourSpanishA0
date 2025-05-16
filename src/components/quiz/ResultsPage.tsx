@@ -60,6 +60,13 @@ const ResultsPage = ({
       >
         Continue <ArrowRight className="ml-2 h-4 w-4" />
       </Button>
+
+      <div className="mt-6 p-4 bg-brand-background rounded-[1rem] border border-gray-200">
+        <p className="text-sm text-gray-600 italic">
+          This isn't a formal test to evaluate your Spanish skills — it's just a fun way to get to know you better so we can send you personalized recommendations, resources, and exclusive deals from SpanishVIP. 🎁✨<br/>
+          So no pressure — just enjoy it!
+        </p>
+      </div>
     </div>
   );
 };

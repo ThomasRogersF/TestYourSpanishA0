@@ -6,7 +6,7 @@ export const sampleQuiz: QuizConfig = {
   title: "Test Your Spanish Knowledge",
   description: "A casual and fun quiz to assess your Spanish language skills",
   logoUrl: "https://lwfiles.mycourse.app/6409eb5798e53550d7acd5f1-public/1bfa7bb23c37499f0d5908f0a004c50e.png",
-  introImageUrl: "https://images.unsplash.com/photo-1551279880-20b2e73abf7d?auto=format&fit=crop&w=800&q=80",
+  introImageUrl: "https://spanishvip.com/wp-content/uploads/2025/04/private-tutoring.jpg",
   introText: "Test your Spanish knowledge with this casual and fun quiz! We'll cover basic greetings, vocabulary, grammar, and everyday phrases. Answer the 10 questions below and check your scoring at the end to see if you're an Absolute Beginner, Beginner, or Elementary (A2). ¡Buena suerte!",
   estimatedTime: "5-7 minutes",
   primaryColor: "#FF5913",
@@ -80,7 +80,7 @@ export const sampleQuiz: QuizConfig = {
         },
         { 
           id: "a4", 
-          src: "https://images.unsplash.com/photo-1509983165097-0c31a863e3f6", 
+          src: "https://spanishvip.com/wp-content/uploads/2025/05/eric-rothermel-FoKO4DpXamQ-unsplash.jpg", 
           alt: "Un calendario - Lunes (Monday)", 
           value: "lunes" 
         }
@@ -100,6 +100,14 @@ export const sampleQuiz: QuizConfig = {
     },
     {
       id: "q6",
+      type: "fill-in-blanks",
+      title: "Basic Grammar: Choose the correct form of the verb \"tener\" (to have):",
+      subtitle: "Ella ___ dos hermanos. (She has two brothers.)",
+      helpText: "Enter the correct form of the verb \"tener\" in the blank space.",
+      required: true
+    },
+    {
+      id: "q7",
       type: "mcq",
       title: "Common Verb: Let's go to the park! Complete the sentence: Nosotros ___ al parque todos los días. (We go to the park every day.)",
       required: true,
@@ -111,7 +119,7 @@ export const sampleQuiz: QuizConfig = {
       ]
     },
     {
-      id: "q7",
+      id: "q8",
       type: "audio",
       title: "Listening (Audio): Listen to the audio and choose the correct meaning.",
       subtitle: "What does this Spanish phrase mean in English?",
@@ -126,7 +134,7 @@ export const sampleQuiz: QuizConfig = {
       ]
     },
     {
-      id: "q8",
+      id: "q9",
       type: "mcq",
       title: "Everyday Phrase: You hear someone say, \"Tengo hambre.\" What does this mean?",
       required: true,
@@ -138,7 +146,7 @@ export const sampleQuiz: QuizConfig = {
       ]
     },
     {
-      id: "q9",
+      id: "q10",
       type: "mcq",
       title: "Reading Comprehension: Read the short dialogue and answer the question.",
       subtitle: "Carlos: Buenos días. ¿Tiene café?\nMesero: Sí, tenemos café. ¿Desea una taza?\nCarlos: Sí, por favor.\nQuestion: What is Carlos asking for?",
@@ -151,7 +159,7 @@ export const sampleQuiz: QuizConfig = {
       ]
     },
     {
-      id: "q10",
+      id: "q11",
       type: "mcq",
       title: "Sentence Structure: Which of the following sentences is grammatically correct in Spanish?",
       required: true,
@@ -174,11 +182,12 @@ export const sampleQuiz: QuizConfig = {
         { questionId: "q3", answerId: "a1" },
         { questionId: "q4", answerId: "a2" },
         { questionId: "q5", answerId: "a1" },
-        { questionId: "q6", answerId: "a2" },
+        { questionId: "q6", value: "tiene" },
         { questionId: "q7", answerId: "a2" },
         { questionId: "q8", answerId: "a2" },
         { questionId: "q9", answerId: "a2" },
-        { questionId: "q10", answerId: "a1" }
+        { questionId: "q10", answerId: "a2" },
+        { questionId: "q11", answerId: "a1" }
       ]
     },
     {
@@ -188,7 +197,8 @@ export const sampleQuiz: QuizConfig = {
       conditions: [
         { questionId: "q1", answerId: "a1" },
         { questionId: "q5", answerId: "a2" },
-        { questionId: "q10", answerId: "a2" }
+        { questionId: "q6", value: "tiene" },
+        { questionId: "q11", answerId: "a2" }
       ]
     },
     {
@@ -201,11 +211,12 @@ export const sampleQuiz: QuizConfig = {
         { questionId: "q3", answerId: "a2" },
         { questionId: "q4", answerId: "a1" },
         { questionId: "q5", answerId: "a2" },
-        { questionId: "q6", answerId: "a1" },
+        { questionId: "q6", value: "tiene" },
         { questionId: "q7", answerId: "a1" },
         { questionId: "q8", answerId: "a1" },
         { questionId: "q9", answerId: "a1" },
-        { questionId: "q10", answerId: "a2" }
+        { questionId: "q10", answerId: "a1" },
+        { questionId: "q11", answerId: "a2" }
       ]
     }
   ]
