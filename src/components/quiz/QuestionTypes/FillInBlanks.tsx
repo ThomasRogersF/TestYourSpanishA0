@@ -53,6 +53,10 @@ const FillInBlanks: React.FC<FillInBlanksProps> = ({
 
   return (
     <div className="space-y-4">
+      {question.subtitle && (
+        <div className="text-lg mb-4">{question.subtitle}</div>
+      )}
+      
       {question.helpText && (
         <div className="text-gray-600 italic mb-4">{question.helpText}</div>
       )}
