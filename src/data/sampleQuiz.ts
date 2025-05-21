@@ -53,7 +53,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q4",
       type: "image-selection",
-      title: "\"Juan come una fruta verde\". ¿Qué imagen corresponde?",
+      title: ""Juan come una fruta verde". ¿Qué imagen corresponde?",
       required: true,
       imageOptions: [
         { id: "a1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_389807556_S.jpg", alt: "Manzanas", value: "manzanas" },
@@ -174,7 +174,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q14",
       type: "mcq",
-      title: "Completa: \"Mañana habré terminado mi trabajo y...\"",
+      title: "Completa: "Mañana habré terminado mi trabajo y..."",
       required: true,
       options: [
         { id: "a1", text: "Bebí una lata de gaseosa.", value: "bebi" },
@@ -193,7 +193,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q16",
       type: "image-selection",
-      title: "¿Qué imagen representa \"cambio climático\"?",
+      title: "¿Qué imagen representa "cambio climático"?",
       required: true,
       imageOptions: [
         { id: "a1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_250472176_S.jpg", alt: "Ecología", value: "ecologia" },
@@ -244,7 +244,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q20",
       type: "mcq",
-      title: "Completa: \"Si hubiera tenido tu número…\"",
+      title: "Completa: "Si hubiera tenido tu número…"",
       required: true,
       options: [
         { id: "a1", text: "Te había llamado", value: "te_habia_llamado" },
@@ -262,7 +262,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q22",
       type: "image-selection",
-      title: "\"Estoy echando chispas\". ¿Qué imagen corresponde?",
+      title: ""Estoy echando chispas". ¿Qué imagen corresponde?",
       required: true,
       imageOptions: [
         { id: "a1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_186791150_S.jpg", alt: "Persona enojada", value: "angry" },
@@ -299,7 +299,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q25",
       type: "mcq",
-      title: "Reemplaza los pronombres: \"Ella dijo una mentira a su cuñada.\"",
+      title: "Reemplaza los pronombres: "Ella dijo una mentira a su cuñada."",
       required: true,
       options: [
         { id: "a1", text: "Ella le la dijo", value: "le_la_dijo" },
