@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { QuizQuestion, QuizAnswer } from "@/types/quiz";
+import { useToast } from "@/components/ui/use-toast";
 
 interface FillInBlanksProps {
   question: QuizQuestion;
@@ -21,6 +22,7 @@ const FillInBlanks: React.FC<FillInBlanksProps> = ({
     currentAnswer?.value as string || ""
   );
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const { toast } = useToast();
 
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +39,12 @@ const FillInBlanks: React.FC<FillInBlanksProps> = ({
     
     onAnswer(answer);
     setHasSubmitted(true);
+
+    // Show feedback toast
+    toast({
+      title: "Answer submitted",
+      description: "Your answer has been recorded",
+    });
   };
 
   // Skip question
