@@ -1,3 +1,4 @@
+
 import { QuizAnswer, QuizQuestion, ResultTemplate, QuizConfig } from "@/types/quiz";
 
 export const getNextQuestionId = (
@@ -172,4 +173,313 @@ export const sendDataToWebhook = async (
     console.error("Error sending data to webhook:", error);
     return false;
   }
+};
+
+// New utility functions for question templates
+
+// Create a multiple choice question template
+export const createMCQTemplate = (
+  id: string,
+  title: string,
+  options: {text: string, value: string}[],
+  required: boolean = true,
+  subtitle?: string,
+  helpText?: string
+): QuizQuestion => {
+  return {
+    id,
+    type: 'mcq',
+    title,
+    subtitle,
+    helpText,
+    required,
+    options: options.map((opt, index) => ({
+      id: `a${index + 1}`,
+      text: opt.text,
+      value: opt.value
+    }))
+  };
+};
+
+// Create an image selection question template
+export const createImageSelectionTemplate = (
+  id: string,
+  title: string,
+  imageOptions: {src: string, alt: string, value: string}[],
+  required: boolean = true,
+  subtitle?: string,
+  helpText?: string
+): QuizQuestion => {
+  return {
+    id,
+    type: 'image-selection',
+    title,
+    subtitle,
+    helpText,
+    required,
+    imageOptions: imageOptions.map((opt, index) => ({
+      id: `a${index + 1}`,
+      src: opt.src,
+      alt: opt.alt,
+      value: opt.value
+    }))
+  };
+};
+
+// Create an audio question template
+export const createAudioQuestionTemplate = (
+  id: string,
+  title: string,
+  audioUrl: string,
+  options: {text: string, value: string}[],
+  required: boolean = true,
+  subtitle?: string,
+  helpText?: string
+): QuizQuestion => {
+  return {
+    id,
+    type: 'audio',
+    title,
+    subtitle,
+    helpText,
+    required,
+    audioUrl,
+    options: options.map((opt, index) => ({
+      id: `a${index + 1}`,
+      text: opt.text,
+      value: opt.value
+    }))
+  };
+};
+
+// Create a text input question template
+export const createTextQuestionTemplate = (
+  id: string,
+  title: string,
+  required: boolean = true,
+  subtitle?: string,
+  helpText?: string
+): QuizQuestion => {
+  return {
+    id,
+    type: 'text',
+    title,
+    subtitle,
+    helpText,
+    required
+  };
+};
+
+// Create a fill in the blanks question template
+export const createFillInBlanksTemplate = (
+  id: string,
+  title: string,
+  required: boolean = true,
+  subtitle?: string,
+  helpText?: string
+): QuizQuestion => {
+  return {
+    id,
+    type: 'fill-in-blanks',
+    title,
+    subtitle,
+    helpText,
+    required
+  };
+};
+
+// Create a result template
+export const createResultTemplate = (
+  id: string,
+  title: string,
+  description: string,
+  conditions: {questionId: string, answerId?: string, value?: string}[]
+): ResultTemplate => {
+  return {
+    id,
+    title,
+    description,
+    conditions
+  };
+};
+
+// Create a complete quiz config template
+export const createQuizConfigTemplate = (
+  id: string,
+  title: string,
+  questions: QuizQuestion[],
+  resultTemplates: ResultTemplate[],
+  webhookUrl: string,
+  options?: {
+    description?: string,
+    logoUrl?: string,
+    introImageUrl?: string,
+    introText?: string,
+    estimatedTime?: string,
+    primaryColor?: string,
+    secondaryColor?: string,
+    incentiveEnabled?: boolean,
+    incentiveTitle?: string,
+    incentiveUrl?: string,
+    externalRedirectUrl?: string
+  }
+): QuizConfig => {
+  return {
+    id,
+    title,
+    description: options?.description,
+    logoUrl: options?.logoUrl,
+    introImageUrl: options?.introImageUrl,
+    introText: options?.introText,
+    estimatedTime: options?.estimatedTime,
+    primaryColor: options?.primaryColor || "#FF5913",
+    secondaryColor: options?.secondaryColor || "#1DD3B0",
+    webhookUrl,
+    questions,
+    resultTemplates,
+    incentiveEnabled: options?.incentiveEnabled || false,
+    incentiveTitle: options?.incentiveTitle,
+    incentiveUrl: options?.incentiveUrl,
+    externalRedirectUrl: options?.externalRedirectUrl
+  };
+};
+
+// Parse a JSON quiz config and validate its structure
+export const parseQuizConfigFromJSON = (jsonString: string): QuizConfig | null => {
+  try {
+    const parsedConfig = JSON.parse(jsonString);
+    
+    // Validate the basic structure
+    if (!parsedConfig.id || !parsedConfig.title || !Array.isArray(parsedConfig.questions)) {
+      console.error("Invalid quiz config: missing required fields");
+      return null;
+    }
+    
+    // Validate questions
+    for (const question of parsedConfig.questions) {
+      if (!question.id || !question.type || !question.title) {
+        console.error("Invalid question format:", question);
+        return null;
+      }
+    }
+    
+    return parsedConfig as QuizConfig;
+  } catch (error) {
+    console.error("Error parsing quiz config JSON:", error);
+    return null;
+  }
+};
+
+// Example of quiz template for easy copy-paste
+export const quizTemplateExample = {
+  "id": "quiz-template",
+  "title": "Quiz Template",
+  "description": "A template for creating quizzes",
+  "logoUrl": "https://example.com/logo.png",
+  "introImageUrl": "https://example.com/intro.jpg",
+  "introText": "Welcome to the quiz template!",
+  "estimatedTime": "5-10 minutes",
+  "primaryColor": "#FF5913",
+  "secondaryColor": "#1DD3B0",
+  "webhookUrl": "https://your-webhook-url.com",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "Multiple Choice Question Example",
+      "subtitle": "Select the correct option",
+      "required": true,
+      "options": [
+        { "id": "a1", "text": "Option A", "value": "option_a" },
+        { "id": "a2", "text": "Option B", "value": "option_b" },
+        { "id": "a3", "text": "Option C", "value": "option_c" },
+        { "id": "a4", "text": "Option D", "value": "option_d" }
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "image-selection",
+      "title": "Image Selection Question Example",
+      "subtitle": "Select the correct image",
+      "required": true,
+      "imageOptions": [
+        { 
+          "id": "a1", 
+          "src": "https://example.com/image1.jpg", 
+          "alt": "Image 1", 
+          "value": "image_1" 
+        },
+        { 
+          "id": "a2", 
+          "src": "https://example.com/image2.jpg", 
+          "alt": "Image 2", 
+          "value": "image_2" 
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "audio",
+      "title": "Audio Question Example",
+      "subtitle": "Listen to the audio and select the correct answer",
+      "helpText": "You may replay the audio as many times as needed",
+      "required": true,
+      "audioUrl": "https://example.com/audio.mp3",
+      "options": [
+        { "id": "a1", "text": "Option A", "value": "option_a" },
+        { "id": "a2", "text": "Option B", "value": "option_b" },
+        { "id": "a3", "text": "Option C", "value": "option_c" },
+        { "id": "a4", "text": "Option D", "value": "option_d" }
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "title": "Text Input Question Example",
+      "subtitle": "Type your answer in the field below",
+      "helpText": "Be concise in your response",
+      "required": true
+    },
+    {
+      "id": "q5",
+      "type": "fill-in-blanks",
+      "title": "Fill in the Blanks Question Example",
+      "subtitle": "Complete the sentence: The sky is ___.",
+      "helpText": "Type a single word to complete the sentence",
+      "required": true
+    }
+  ],
+  "resultTemplates": [
+    {
+      "id": "beginner",
+      "title": "Beginner Level",
+      "description": "You are at the beginner level. Keep practicing!",
+      "conditions": [
+        { "questionId": "q1", "answerId": "a1" },
+        { "questionId": "q2", "answerId": "a1" }
+      ]
+    },
+    {
+      "id": "intermediate",
+      "title": "Intermediate Level",
+      "description": "You are at the intermediate level. Good job!",
+      "conditions": [
+        { "questionId": "q1", "answerId": "a2" },
+        { "questionId": "q3", "answerId": "a2" }
+      ]
+    },
+    {
+      "id": "advanced",
+      "title": "Advanced Level",
+      "description": "You are at the advanced level. Excellent!",
+      "conditions": [
+        { "questionId": "q1", "answerId": "a3" },
+        { "questionId": "q4", "value": "specific_text" }
+      ]
+    }
+  ],
+  "incentiveEnabled": true,
+  "incentiveTitle": "Free Resource Guide",
+  "incentiveUrl": "https://example.com/resource.pdf",
+  "externalRedirectUrl": "https://example.com/thankyou"
 };
