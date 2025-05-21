@@ -21,7 +21,6 @@ const FillInBlanks: React.FC<FillInBlanksProps> = ({
   const [userInput, setUserInput] = useState<string>(
     currentAnswer?.value as string || ""
   );
-  const [hasSubmitted, setHasSubmitted] = useState(false);
   const { toast } = useToast();
 
   // Handle input change
@@ -29,7 +28,7 @@ const FillInBlanks: React.FC<FillInBlanksProps> = ({
     setUserInput(e.target.value);
   };
 
-  // Submit answer
+  // Submit answer and proceed to next question
   const handleSubmit = () => {
     const answer: QuizAnswer = {
       questionId: question.id,
@@ -38,13 +37,15 @@ const FillInBlanks: React.FC<FillInBlanksProps> = ({
     };
     
     onAnswer(answer);
-    setHasSubmitted(true);
-
+    
     // Show feedback toast
     toast({
       title: "Answer submitted",
-      description: "Your answer has been recorded",
+      description: "Moving to next question",
     });
+    
+    // Automatically proceed to next question
+    onNext();
   };
 
   // Skip question
@@ -76,7 +77,6 @@ const FillInBlanks: React.FC<FillInBlanksProps> = ({
           className="quiz-input"
           value={userInput}
           onChange={handleInputChange}
-          disabled={hasSubmitted}
         />
       </div>
       
@@ -85,24 +85,17 @@ const FillInBlanks: React.FC<FillInBlanksProps> = ({
           variant="outline"
           className="quiz-button-secondary"
           onClick={handleSkip}
-          disabled={hasSubmitted}
         >
           Skip question
         </Button>
 
-        {!hasSubmitted ? (
-          <Button 
-            className="quiz-button" 
-            onClick={handleSubmit} 
-            disabled={userInput.trim() === ""}
-          >
-            Submit Answer
-          </Button>
-        ) : (
-          <Button className="quiz-button" onClick={onNext}>
-            Next Question
-          </Button>
-        )}
+        <Button 
+          className="quiz-button" 
+          onClick={handleSubmit} 
+          disabled={userInput.trim() === ""}
+        >
+          Submit & Continue
+        </Button>
       </div>
     </div>
   );

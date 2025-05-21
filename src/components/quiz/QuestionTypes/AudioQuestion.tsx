@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { QuizQuestion, QuizAnswer } from "@/types/quiz";
@@ -178,7 +179,7 @@ const AudioQuestion = ({
             >
               <div className={cn(
                 "w-6 h-6 rounded-full flex items-center justify-center mr-3",
-                selectedOption === option.value ? "bg-quiz-purple text-white" : "border border-gray-300"
+                selectedOption === option.value ? "bg-brand-primary text-white" : "border border-gray-300"
               )}>
                 {selectedOption === option.value && <Check className="w-4 h-4" />}
               </div>
