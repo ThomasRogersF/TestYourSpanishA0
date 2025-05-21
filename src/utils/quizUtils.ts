@@ -1,4 +1,5 @@
 import { QuizAnswer, QuizQuestion, ResultTemplate, QuizConfig } from "@/types/quiz";
+import { QuestionTemplate, QuizTemplateCollection } from "@/types/quizTemplates";
 
 export const getNextQuestionId = (
   currentQuestionId: string,
@@ -164,14 +165,14 @@ export const sendDataToWebhook = async (
       return true;
     }
     
-    // Calculate score
-    const score = calculateScore(participant.answers);
+    // Calculate score by counting the number of correct answers
+    const correctAnswers = countCorrectAnswers(participant.answers);
     
     // Build simplified data structure
     const simplifiedData = {
       name: participant.name,
       email: participant.email,
-      score: score
+      score: correctAnswers
     };
     
     console.log("Simplified data being sent:", simplifiedData);
@@ -196,6 +197,49 @@ export const sendDataToWebhook = async (
     console.error("Error sending data to webhook:", error);
     return false;
   }
+};
+
+// Function to count the number of correct answers (to replace calculateScore)
+const countCorrectAnswers = (answers: QuizAnswer[]): number => {
+  // Map of all question IDs to their correct answers
+  const correctAnswerMap: Record<string, string | string[]> = {
+    "q1": "me_llamo_juan",
+    "q2": "estoy_bien_tambien",
+    "q3": "tiene",
+    "q4": "manzanas",
+    "q5": "oracion_d",
+    "q6": "me_bano",
+    "q7": "corrio",
+    "q8": "para",
+    "q9": "iba",
+    "q10": "licuadora",
+    "q11": "oracion_c",
+    "q12": "he_trabajado",
+    "q13": "llevamos",
+    "q14": "podre_descansar",
+    "q15": "tenga",
+    "q16": "cambio_climatico",
+    "q17": "oracion_d",
+    "q18": "tengas_un_buen_dia",
+    "q19": "se_me_cayo_el_plato",
+    "q20": "te_hubiera_llamado",
+    "q21": "haya_venido",
+    "q22": "angry",
+    "q23": "pude_de_acabar_tarea",
+    "q24": "lo_esperara",
+    "q25": "se_la_dijo"
+  };
+  
+  let correctCount = 0;
+  
+  answers.forEach(answer => {
+    const questionId = answer.questionId;
+    if (correctAnswerMap[questionId] && answer.value === correctAnswerMap[questionId]) {
+      correctCount++;
+    }
+  });
+  
+  return correctCount;
 };
 
 // New utility functions for question templates
@@ -408,9 +452,6 @@ export const parseQuizConfigFromJSON = (jsonString: string): QuizConfig | null =
     return null;
   }
 };
-
-// Import QuestionTemplate type
-import { QuestionTemplate } from "@/types/quizTemplates";
 
 // Example of quiz template for easy copy-paste
 export const quizTemplateExample = {
