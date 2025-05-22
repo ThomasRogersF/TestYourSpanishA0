@@ -38,13 +38,7 @@ const FillInBlanks: React.FC<FillInBlanksProps> = ({
     
     onAnswer(answer);
     
-    // Show feedback toast
-    toast({
-      title: "Answer submitted",
-      description: "Moving to next question",
-    });
-    
-    // Automatically proceed to next question
+    // Automatically proceed to next question without toast notification
     onNext();
   };
 

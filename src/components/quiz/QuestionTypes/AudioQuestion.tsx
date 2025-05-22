@@ -166,24 +166,28 @@ const AudioQuestion = ({
       
       {question.options && question.options.length > 0 && (
         <div className="space-y-4 mt-6">
-          <p className="font-medium">Select the correct answer:</p>
+          <p className="font-medium">Select the correct answer: <span className="text-sm text-gray-500 italic">(You need to listen first to continue)</span></p>
           
           {question.options.map((option) => (
             <div 
               key={option.id}
               className={cn(
-                "quiz-option p-4 border rounded-lg cursor-pointer transition-colors flex items-center",
-                selectedOption === option.value ? "border-quiz-purple bg-quiz-purple bg-opacity-10" : "border-gray-200 hover:border-quiz-purple-light"
+                "p-4 border rounded-[1rem] cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md",
+                selectedOption === option.value
+                  ? "border-brand-primary bg-brand-background"
+                  : "border-gray-200 hover:border-brand-secondary"
               )}
               onClick={() => handleSelect(option.value)}
             >
-              <div className={cn(
-                "w-6 h-6 rounded-full flex items-center justify-center mr-3",
-                selectedOption === option.value ? "bg-brand-primary text-white" : "border border-gray-300"
-              )}>
-                {selectedOption === option.value && <Check className="w-4 h-4" />}
+              <div className="flex items-center space-x-3">
+                <div className={cn(
+                  "w-6 h-6 rounded-full flex items-center justify-center mr-3",
+                  selectedOption === option.value ? "bg-brand-primary text-white" : "border border-gray-300"
+                )}>
+                  {selectedOption === option.value && <Check className="w-4 h-4" />}
+                </div>
+                <span className="font-medium">{option.text}</span>
               </div>
-              <span>{option.text}</span>
             </div>
           ))}
         </div>
