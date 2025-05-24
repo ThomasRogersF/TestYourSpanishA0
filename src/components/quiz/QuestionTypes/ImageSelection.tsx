@@ -48,6 +48,11 @@ const ImageSelection = ({
 
   return (
     <div className="space-y-6">
+      {/* Add subtext for image selection questions */}
+      <div className="text-lg font-medium text-gray-700 mb-4">
+        🖼️ Look at the images below and select the correct one.
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {question.imageOptions && question.imageOptions.map((image) => (
           <div 

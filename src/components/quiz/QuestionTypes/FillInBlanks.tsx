@@ -56,13 +56,10 @@ const FillInBlanks: React.FC<FillInBlanksProps> = ({
 
   return (
     <div className="space-y-4">
-      {question.subtitle && (
-        <div className="text-lg mb-4">{question.subtitle}</div>
-      )}
-      
-      {question.helpText && (
-        <div className="text-gray-600 italic mb-4">{question.helpText}</div>
-      )}
+      {/* Add single subtext for fill-in-blanks */}
+      <div className="text-lg font-medium text-gray-700 mb-4">
+        ✍️ Write your answer in the blank.
+      </div>
 
       <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
         <Input

@@ -30,7 +30,7 @@ const IntroductionPage = ({ config, onStart }: IntroductionPageProps) => {
       )}
 
       {config.introImageUrl && (
-        <div className="mb-8 rounded-[1rem] overflow-hidden shadow-md">
+        <div className="mb-6 rounded-[1rem] overflow-hidden shadow-md">
           <img 
             src={config.introImageUrl}
             alt="Quiz introduction"
@@ -39,19 +39,20 @@ const IntroductionPage = ({ config, onStart }: IntroductionPageProps) => {
         </div>
       )}
 
-      {config.introText && (
-        <div className="mb-8 text-gray-700 bg-brand-background p-5 rounded-[1rem]">
-          <p>{config.introText}</p>
-        </div>
-      )}
-      
+      {/* Move Start Now button right below the image */}
       <Button 
-        className="quiz-button w-full mt-6 group shadow-soft"
+        className="quiz-button w-full mb-6 group shadow-soft"
         onClick={onStart}
       >
         Start Now
         <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
       </Button>
+
+      {config.introText && (
+        <div className="mb-8 text-gray-700 bg-brand-background p-5 rounded-[1rem]">
+          <p>{config.introText}</p>
+        </div>
+      )}
 
       {config.estimatedTime && (
         <p className="text-sm text-gray-500 text-center mt-4">
