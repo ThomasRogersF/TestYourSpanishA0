@@ -21,11 +21,11 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q1",
       type: "mcq",
-      title: "¿Cómo te llamas?",
+      title: "Choose the correct response to: ¿Cómo te llamas?",
       required: true,
       options: [
         { id: "a1", text: "Tengo 20 años", value: "tengo_20" },
-        { id: "a2", text: "Me llamo Juan", value: "me_llamo_juan" },
+        { id: "a2", text: "Me llamo Sebastian", value: "me_llamo_sebastian" },
         { id: "a3", text: "Estoy cansado", value: "estoy_cansado" },
         { id: "a4", text: "Soy de Colombia", value: "soy_de_colombia" }
       ]
@@ -33,7 +33,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q2",
       type: "mcq",
-      title: "Completa la conversación: ¿Cómo estás? — Muy bien, ¿Y tú? —",
+      title: "Complete the following conversation: ¿Cómo estás? — Muy bien. ¿Y tú? — _____",
       required: true,
       options: [
         { id: "a1", text: "Soy estudiante", value: "soy_estudiante" },
@@ -45,46 +45,45 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q3",
       type: "fill-in-blanks",
-      title: "Ella ___ dos hermanos. (She has two brothers.)",
-      subtitle: "Usa la forma correcta de 'tener'",
-      helpText: "Enter the correct form of the verb 'tener' (to have)",
+      title: "Complete the sentence with the correct form of the verb tener (to have): Ella ______ dos hermanos.",
+      subtitle: "✍️ Write your answer in the blank.",
       required: true
     },
     {
       id: "q4",
       type: "image-selection",
-      title: "\"Juan come una fruta verde\". ¿Qué imagen corresponde?",
+      title: ""Juan come una fruta verde". Which picture matches the description?",
       required: true,
       imageOptions: [
-        { id: "a1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_389807556_S.jpg", alt: "Manzanas", value: "manzanas" },
-        { id: "a2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_58314223_S.jpg", alt: "Bananos", value: "bananos" },
-        { id: "a3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_9122791_S.jpg", alt: "Uvas", value: "uvas" },
-        { id: "a4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_6092650_S.jpg", alt: "Naranjas", value: "naranjas" }
+        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_389807556_S.jpg", alt: "Manzanas", value: "manzanas" },
+        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_58314223_S.jpg", alt: "Bananos", value: "bananos" },
+        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_9122791_S.jpg", alt: "Uvas", value: "uvas" },
+        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_6092650_S.jpg", alt: "Naranjas", value: "naranjas" }
       ]
     },
     {
       id: "q5",
       type: "mcq",
-      title: "¿Cuál de las siguientes oraciones es incorrecta?",
+      title: "Which one of the following sentences is incorrect?",
       required: true,
       options: [
         { id: "a1", text: "Pablo comprará leche en el supermercado", value: "oracion_a" },
         { id: "a2", text: "¿Tú vas a ir a la casa de María mañana?", value: "oracion_b" },
         { id: "a3", text: "Ella va a ir al supermercado", value: "oracion_c" },
-        { id: "a4", text: "Pedro va a leerla un libro mañana", value: "oracion_d" }
+        { id: "a4", text: "Pedro va a leerá un libro mañana", value: "oracion_d" }
       ]
     },
     {
       id: "q6",
       type: "audio",
-      title: "Escucha y selecciona parte de la rutina matutina.",
+      title: "Listen carefully to the following audio: "En las mañanas: me despierto, me baño, hago ejercicio, y desayuno". Which one of the following options is part of Juan's morning routine?",
       audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/1-En-las-mananas-me-despierto.mp3",
       required: true,
       options: [
-        { id: "a1", text: "Almuerzo", value: "almuerzo" },
-        { id: "a2", text: "Me duermo", value: "me_duermo" },
-        { id: "a3", text: "Me baño", value: "me_bano" },
-        { id: "a4", text: "Corro", value: "corro" }
+        { id: "a1", text: "Almorzar", value: "almorzar" },
+        { id: "a2", text: "Cocinar", value: "cocinar" },
+        { id: "a3", text: "Bañarse", value: "banarse" },
+        { id: "a4", text: "Correr", value: "correr" }
       ]
     },
 
@@ -92,7 +91,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q7",
       type: "mcq",
-      title: "Ayer en la mañana Juan ______ por todo el parque.",
+      title: "Complete the following sentence: Ayer en la mañana Luisa _________ por todo el parque.",
       required: true,
       options: [
         { id: "a1", text: "Corrió", value: "corrio" },
@@ -104,7 +103,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q8",
       type: "mcq",
-      title: "Completa la oración: Este regalo es ___ ti.",
+      title: "Complete the sentence by choosing the correct preposition: Este regalo es ___ ti.",
       required: true,
       options: [
         { id: "a1", text: "para", value: "para" },
@@ -116,45 +115,44 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q9",
       type: "fill-in-blanks",
-      title: "Yo ___ a la playa todos los veranos. (pretérito imperfecto de 'ir')",
-      helpText: "Enter the correct form of 'ir' in the imperfect tense",
+      title: "Yo ______ a la playa todos los veranos. (pretérito imperfecto de «ir»)",
       required: true
     },
     {
       id: "q10",
       type: "image-selection",
-      title: "¿Cuál imagen corresponde a la palabra \"licuadora\"?",
+      title: "Look at the image below. Which of the following is the picture that matches the word "licuadora"?",
       required: true,
       imageOptions: [
-        { id: "a1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_204337134_S.jpg", alt: "Licuadora", value: "licuadora" },
-        { id: "a2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_767288152_S.jpg", alt: "Nevera", value: "nevera" },
-        { id: "a3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_19669021_S.jpg", alt: "Lavamano", value: "lavamano" },
-        { id: "a4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_139874794_S.jpg", alt: "Aspiradora", value: "aspiradora" }
+        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_204337134_S.jpg", alt: "Licuadora", value: "licuadora" },
+        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_767288152_S.jpg", alt: "Nevera", value: "nevera" },
+        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_19669021_S.jpg", alt: "Lavamano", value: "lavamano" },
+        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_139874794_S.jpg", alt: "Aspiradora", value: "aspiradora" }
       ]
     },
     {
       id: "q11",
       type: "mcq",
-      title: "¿Cuál oración es incorrecta?",
+      title: "Which of the following sentences is incorrect?",
       required: true,
       options: [
         { id: "a1", text: "¿Podría darme un vaso de agua, por favor?", value: "oracion_a" },
-        { id: "a2", text: "Me gustaría ser millonario.", value: "oracion_b" },
-        { id: "a3", text: "Cuando era niño viviría con mi madre.", value: "oracion_c" },
+        { id: "a2", text: "Me gustaría ser millonario", value: "oracion_b" },
+        { id: "a3", text: "Cuando era niño viviría con mi madre", value: "oracion_c" },
         { id: "a4", text: "¿Te gustaría salir conmigo?", value: "oracion_d" }
       ]
     },
     {
       id: "q12",
       type: "audio",
-      title: "Escucha y selecciona algo que la persona ha hecho hoy.",
+      title: "Listen carefully to the following audio: "He comido, he trabajado, he respondido correos... y no he terminado nada." ¿Qué ha hecho Andrea hoy?",
       audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/2-He-comido-he-trabajado-he-respondido-correos.mp3",
       required: true,
       options: [
-        { id: "a1", text: "He hablado", value: "he_hablado" },
-        { id: "a2", text: "He desayunado", value: "he_desayunado" },
-        { id: "a3", text: "He dormido", value: "he_dormido" },
-        { id: "a4", text: "He trabajado", value: "he_trabajado" }
+        { id: "a1", text: "Ha hablado", value: "ha_hablado" },
+        { id: "a2", text: "Ha desayunado", value: "ha_desayunado" },
+        { id: "a3", text: "Ha dormido", value: "ha_dormido" },
+        { id: "a4", text: "Ha trabajado", value: "ha_trabajado" }
       ]
     },
 
@@ -162,7 +160,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q13",
       type: "mcq",
-      title: "Nosotros ______ soportando su mal humor mucho tiempo.",
+      title: "Nosotros _____ soportando su mal humor mucho tiempo.",
       required: true,
       options: [
         { id: "a1", text: "vamos", value: "vamos" },
@@ -174,57 +172,56 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q14",
       type: "mcq",
-      title: "Completa: \"Mañana habré terminado mi trabajo y...\"",
+      title: ""Mañana habré terminado mi trabajo y…"",
       required: true,
       options: [
-        { id: "a1", text: "Bebí una lata de gaseosa.", value: "bebi" },
-        { id: "a2", text: "Iría de vacaciones a Perú.", value: "iria" },
+        { id: "a1", text: "Bebí una lata de gaseosa.", value: "bebi_gaseosa" },
+        { id: "a2", text: "Iré de vacaciones a Perú.", value: "ire_peru" },
         { id: "a3", text: "Podré descansar.", value: "podre_descansar" },
-        { id: "a4", text: "Habría comido papas fritas.", value: "habria_comido" }
+        { id: "a4", text: "Habría comido papas fritas.", value: "habria_papas" }
       ]
     },
     {
       id: "q15",
       type: "fill-in-blanks",
-      title: "No creo que ______ más tareas hoy, estoy cansado. (presente de subjuntivo de 'tener')",
-      helpText: "Enter the present subjunctive form of 'tener'",
+      title: "No creo que ______ lo que le pasó a mi mamá ayer en el supermercado. (presente de subjuntivo de «saber», tú)",
       required: true
     },
     {
       id: "q16",
       type: "image-selection",
-      title: "¿Qué imagen representa \"cambio climático\"?",
+      title: "¿Cuál imagen corresponde a la palabra "cambio climático"?",
       required: true,
       imageOptions: [
-        { id: "a1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_250472176_S.jpg", alt: "Ecología", value: "ecologia" },
-        { id: "a2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_723127684_S.jpg", alt: "Reciclaje", value: "reciclaje" },
-        { id: "a3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_30828375_S.jpg", alt: "Cambio climático", value: "cambio_climatico" },
-        { id: "a4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_218052334_S.jpg", alt: "Plantar árboles", value: "plantar_arboles" }
+        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_250472176_S.jpg", alt: "Ecología", value: "ecologia" },
+        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_723127684_S.jpg", alt: "Reciclaje", value: "reciclaje" },
+        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_30828375_S.jpg", alt: "Cambio climático", value: "cambio_climatico" },
+        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_218052334_S.jpg", alt: "Plantar árboles", value: "plantar_arboles" }
       ]
     },
     {
       id: "q17",
       type: "mcq",
-      title: "¿Cuál oración es incorrecta?",
+      title: "Which of the following sentences is correct?",
       required: true,
       options: [
-        { id: "a1", text: "Quisiera un poco de helado, por favor.", value: "oracion_a" },
-        { id: "a2", text: "Ojalá que te vaya bien en el examen.", value: "oracion_b" },
-        { id: "a3", text: "No creo que tuvieran miedo.", value: "oracion_c" },
-        { id: "a4", text: "Espero que llueve mañana.", value: "oracion_d" }
+        { id: "a1", text: "Quisiera un poca de helado, por favor", value: "poca_helado" },
+        { id: "a2", text: "Ojalá que te vaya bien en el examen", value: "ojala_bien" },
+        { id: "a3", text: "No creo que tienen miedo", value: "tienen_miedo" },
+        { id: "a4", text: "Espero que llueve mañana", value: "llueve_manana" }
       ]
     },
     {
       id: "q18",
       type: "audio",
-      title: "Escucha y selecciona uno de los deseos de la persona.",
+      title: "Escucha y selecciona uno de los deseos de Roberto.",
       audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/3-Espero-que-tengas-un-buen-dia.mp3",
       required: true,
       options: [
-        { id: "a1", text: "Espero que haya mucho tráfico.", value: "mucho_trafico" },
-        { id: "a2", text: "Espero que llegues a tu trabajo.", value: "llegues_trabajo" },
-        { id: "a3", text: "Espero que tengas un buen día.", value: "tengas_un_buen_dia" },
-        { id: "a4", text: "Espero que almuerces algo rico.", value: "almuerces_rico" }
+        { id: "a1", text: "Espero que haya mucho tráfico", value: "mucho_trafico" },
+        { id: "a2", text: "Espero que llegues a tu trabajo", value: "llegues_trabajo" },
+        { id: "a3", text: "Espero que tengas un buen día", value: "tengas_buen_dia" },
+        { id: "a4", text: "Espero que almuerces algo rico", value: "almuerces_rico" }
       ]
     },
 
@@ -232,79 +229,79 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q19",
       type: "mcq",
-      title: "¿Cuál oración expresa una acción involuntaria?",
+      title: "Which one of the following sentences would express an involuntary or unintentional action?",
       required: true,
       options: [
         { id: "a1", text: "¿Perdiste el control remoto?", value: "perdiste_control" },
-        { id: "a2", text: "Se me cayó el plato", value: "se_me_cayo_el_plato" },
-        { id: "a3", text: "Me hablé con el profesor ayer", value: "me_hable" },
-        { id: "a4", text: "Mira, él tropezó con la alfombra", value: "tropezo_alfombra" }
+        { id: "a2", text: "Se me cayó el plato", value: "se_me_cayo" },
+        { id: "a3", text: "No quería hablar con el profesor", value: "no_queria_hablar" },
+        { id: "a4", text: "Mira, él no quiso limpiar la alfombra", value: "no_quiso_limpiar" }
       ]
     },
     {
       id: "q20",
       type: "mcq",
-      title: "Completa: \"Si hubiera tenido tu número…\"",
+      title: ""Si hubiera tenido tu número…"",
       required: true,
       options: [
-        { id: "a1", text: "Te había llamado", value: "te_habia_llamado" },
-        { id: "a2", text: "Te hubiera llamado", value: "te_hubiera_llamado" },
-        { id: "a3", text: "Te llamaba", value: "te_llamaba" }
+        { id: "a1", text: "Te habré llamado", value: "habre_llamado" },
+        { id: "a2", text: "Te he llamado", value: "he_llamado" },
+        { id: "a3", text: "Te llamaría", value: "te_llamaria" },
+        { id: "a4", text: "Te habría llamado", value: "habria_llamado" }
       ]
     },
     {
       id: "q21",
       type: "fill-in-blanks",
-      title: "Me alegra que ______ (venir). (presente perfecto de subjuntivo)",
-      helpText: "Enter the present perfect subjunctive form of 'venir'",
+      title: "Me alegra que _________ (venir, tú). (presente perfecto de subjuntivo)",
       required: true
     },
     {
       id: "q22",
       type: "image-selection",
-      title: "\"Estoy echando chispas\". ¿Qué imagen corresponde?",
+      title: "Look at the pictures below. Which image matches the expression "Estoy echando chispas"?",
       required: true,
       imageOptions: [
-        { id: "a1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_186791150_S.jpg", alt: "Persona enojada", value: "angry" },
-        { id: "a2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_12800902_S.jpg", alt: "Mujer feliz", value: "happy" },
-        { id: "a3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_451035886_S.jpg", alt: "Mujer triste", value: "sad" },
-        { id: "a4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_495920154_S.jpg", alt: "Hombre asustado", value: "scared" }
+        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_186791150_S.jpg", alt: "angry", value: "angry" },
+        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_12800902_S.jpg", alt: "happy woman", value: "happy" },
+        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_451035886_S.jpg", alt: "sad woman", value: "sad" },
+        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_495920154_S.jpg", alt: "scared man", value: "scared" }
       ]
     },
     {
       id: "q23",
       type: "mcq",
-      title: "¿Cuál oración es incorrecta?",
+      title: "Which one of the following sentences is correct?",
       required: true,
       options: [
-        { id: "a1", text: "Acabo de terminar la película", value: "acabo_pelicula" },
-        { id: "a2", text: "Pude de acabar la tarea", value: "pude_de_acabar_tarea" },
+        { id: "a1", text: "Acabo de terminó la película", value: "acabo_termino" },
+        { id: "a2", text: "Fui de acabar la tarea", value: "fui_acabar" },
         { id: "a3", text: "Dejé de ver la serie", value: "deje_ver" },
-        { id: "a4", text: "Terminé de estudiar", value: "termine_estudiar" }
+        { id: "a4", text: "Acabé de terminé de estudiar", value: "acabe_termine" }
       ]
     },
     {
       id: "q24",
       type: "audio",
-      title: "Escucha y selecciona parte de lo que dijo Juan.",
+      title: "Escucha y selecciona parte de lo que Juan dijo.",
       audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/4-Juan-me-dijo-que-iba-a-llegar-tarde.mp3",
       required: true,
       options: [
-        { id: "a1", text: "Me dijo que lo esperara", value: "lo_esperara" },
-        { id: "a2", text: "Me dijo que ya llegaría temprano", value: "llegaria_temprano" },
-        { id: "a3", text: "Me dijo que Andrea me llamaría", value: "andrea_llamaria" },
-        { id: "a4", text: "Me dijo que estuviera lista", value: "estuviera_lista" }
+        { id: "a1", text: "Que lo esperara", value: "lo_esperara" },
+        { id: "a2", text: "Que llegara tarde", value: "llegara_tarde" },
+        { id: "a3", text: "Que lo llamará", value: "lo_llamara" },
+        { id: "a4", text: "Que estuviera preocupado", value: "estuviera_preocupado" }
       ]
     },
     {
       id: "q25",
       type: "mcq",
-      title: "Reemplaza los pronombres: \"Ella dijo una mentira a su cuñada.\"",
+      title: "Replace the indirect and direct object in the sentence: "Ella dijo una mentira a su cuñada".",
       required: true,
       options: [
         { id: "a1", text: "Ella le la dijo", value: "le_la_dijo" },
         { id: "a2", text: "Ella se la dijo", value: "se_la_dijo" },
-        { id: "a3", text: "Ella ha dicho a ella", value: "ha_dicho_a_ella" },
+        { id: "a3", text: "Ella la dijo a ella", value: "la_dijo_a_ella" },
         { id: "a4", text: "Ella se le dijo", value: "se_le_dijo" }
       ]
     }
@@ -315,7 +312,7 @@ export const sampleQuiz: QuizConfig = {
       title: "A1 • Beginner",
       description: "Tu nivel aproximado es A1: puedes comunicarte en situaciones muy básicas. ¡Sigue practicando!",
       conditions: [
-        { questionId: "q1", value: "me_llamo_juan" },
+        { questionId: "q1", value: "me_llamo_sebastian" },
         { questionId: "q2", value: "estoy_bien_tambien" },
         { questionId: "q3", value: "tiene" }
       ]
@@ -337,7 +334,7 @@ export const sampleQuiz: QuizConfig = {
       conditions: [
         { questionId: "q13", value: "llevamos" },
         { questionId: "q14", value: "podre_descansar" },
-        { questionId: "q15", value: "tenga" }
+        { questionId: "q15", value: "sepas" }
       ]
     },
     {
@@ -345,9 +342,9 @@ export const sampleQuiz: QuizConfig = {
       title: "B2 • Upper-Intermediate",
       description: "Tu nivel aproximado es B2: puedes interactuar con fluidez y espontaneidad con hablantes nativos.",
       conditions: [
-        { questionId: "q19", value: "se_me_cayo_el_plato" },
-        { questionId: "q20", value: "te_hubiera_llamado" },
-        { questionId: "q21", value: "haya_venido" }
+        { questionId: "q19", value: "se_me_cayo" },
+        { questionId: "q20", value: "habria_llamado" },
+        { questionId: "q21", value: "hayas_venido" }
       ]
     }
   ]

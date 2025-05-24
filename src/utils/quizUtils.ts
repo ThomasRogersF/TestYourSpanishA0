@@ -71,12 +71,12 @@ const calculateLevelScore = (answers: QuizAnswer[], level: string): number => {
   // Map of question IDs to their correct answers for each level
   const correctAnswerMap: Record<string, Record<string, string | string[]>> = {
     a1: {
-      "q1": "me_llamo_juan",
+      "q1": "me_llamo_sebastian",
       "q2": "estoy_bien_tambien",
       "q3": "tiene",
       "q4": "manzanas",
       "q5": "oracion_d",
-      "q6": "me_bano"
+      "q6": "banarse"
     },
     a2: {
       "q7": "corrio",
@@ -84,22 +84,22 @@ const calculateLevelScore = (answers: QuizAnswer[], level: string): number => {
       "q9": "iba",
       "q10": "licuadora",
       "q11": "oracion_c",
-      "q12": "he_trabajado"
+      "q12": "ha_trabajado"
     },
     b1: {
       "q13": "llevamos",
       "q14": "podre_descansar",
-      "q15": "tenga",
+      "q15": "sepas",
       "q16": "cambio_climatico",
-      "q17": "oracion_d",
-      "q18": "tengas_un_buen_dia"
+      "q17": "ojala_bien",
+      "q18": "tengas_buen_dia"
     },
     b2: {
-      "q19": "se_me_cayo_el_plato",
-      "q20": "te_hubiera_llamado",
-      "q21": "haya_venido",
+      "q19": "se_me_cayo",
+      "q20": "habria_llamado",
+      "q21": "hayas_venido",
       "q22": "angry",
-      "q23": "pude_de_acabar_tarea",
+      "q23": "deje_ver",
       "q24": "lo_esperara",
       "q25": "se_la_dijo"
     }
@@ -203,29 +203,29 @@ export const sendDataToWebhook = async (
 const countCorrectAnswers = (answers: QuizAnswer[]): number => {
   // Map of all question IDs to their correct answers
   const correctAnswerMap: Record<string, string | string[]> = {
-    "q1": "me_llamo_juan",
+    "q1": "me_llamo_sebastian",
     "q2": "estoy_bien_tambien",
     "q3": "tiene",
     "q4": "manzanas",
     "q5": "oracion_d",
-    "q6": "me_bano",
+    "q6": "banarse",
     "q7": "corrio",
     "q8": "para",
     "q9": "iba",
     "q10": "licuadora",
     "q11": "oracion_c",
-    "q12": "he_trabajado",
+    "q12": "ha_trabajado",
     "q13": "llevamos",
     "q14": "podre_descansar",
-    "q15": "tenga",
+    "q15": "sepas",
     "q16": "cambio_climatico",
-    "q17": "oracion_d",
-    "q18": "tengas_un_buen_dia",
-    "q19": "se_me_cayo_el_plato",
-    "q20": "te_hubiera_llamado",
-    "q21": "haya_venido",
+    "q17": "ojala_bien",
+    "q18": "tengas_buen_dia",
+    "q19": "se_me_cayo",
+    "q20": "habria_llamado",
+    "q21": "hayas_venido",
     "q22": "angry",
-    "q23": "pude_de_acabar_tarea",
+    "q23": "deje_ver",
     "q24": "lo_esperara",
     "q25": "se_la_dijo"
   };
