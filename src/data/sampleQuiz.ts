@@ -52,7 +52,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q4",
       type: "image-selection",
-      title: ""Juan come una fruta verde". Which picture matches the description?",
+      title: "'Juan come una fruta verde'. Which picture matches the description?",
       required: true,
       imageOptions: [
         { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_389807556_S.jpg", alt: "Manzanas", value: "manzanas" },
@@ -76,7 +76,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q6",
       type: "audio",
-      title: "Listen carefully to the following audio: "En las mañanas: me despierto, me baño, hago ejercicio, y desayuno". Which one of the following options is part of Juan's morning routine?",
+      title: "Listen carefully to the following audio: 'En las mañanas: me despierto, me baño, hago ejercicio, y desayuno'. Which one of the following options is part of Juan's morning routine?",
       audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/1-En-las-mananas-me-despierto.mp3",
       required: true,
       options: [
@@ -115,13 +115,13 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q9",
       type: "fill-in-blanks",
-      title: "Yo ______ a la playa todos los veranos. (pretérito imperfecto de «ir»)",
+      title: "Yo ______ a la playa todos los veranos. (pretérito imperfecto de 'ir')",
       required: true
     },
     {
       id: "q10",
       type: "image-selection",
-      title: "Look at the image below. Which of the following is the picture that matches the word "licuadora"?",
+      title: "Look at the image below. Which of the following is the picture that matches the word 'licuadora'?",
       required: true,
       imageOptions: [
         { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_204337134_S.jpg", alt: "Licuadora", value: "licuadora" },
@@ -145,7 +145,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q12",
       type: "audio",
-      title: "Listen carefully to the following audio: "He comido, he trabajado, he respondido correos... y no he terminado nada." ¿Qué ha hecho Andrea hoy?",
+      title: "Listen carefully to the following audio: 'He comido, he trabajado, he respondido correos... y no he terminado nada.' ¿Qué ha hecho Andrea hoy?",
       audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/2-He-comido-he-trabajado-he-respondido-correos.mp3",
       required: true,
       options: [
@@ -172,7 +172,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q14",
       type: "mcq",
-      title: ""Mañana habré terminado mi trabajo y…"",
+      title: "'Mañana habré terminado mi trabajo y…'",
       required: true,
       options: [
         { id: "a1", text: "Bebí una lata de gaseosa.", value: "bebi_gaseosa" },
@@ -184,13 +184,13 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q15",
       type: "fill-in-blanks",
-      title: "No creo que ______ lo que le pasó a mi mamá ayer en el supermercado. (presente de subjuntivo de «saber», tú)",
+      title: "No creo que ______ lo que le pasó a mi mamá ayer en el supermercado. (presente de subjuntivo de 'saber', tú)",
       required: true
     },
     {
       id: "q16",
       type: "image-selection",
-      title: "¿Cuál imagen corresponde a la palabra "cambio climático"?",
+      title: "¿Cuál imagen corresponde a la palabra 'cambio climático'?",
       required: true,
       imageOptions: [
         { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_250472176_S.jpg", alt: "Ecología", value: "ecologia" },
@@ -241,7 +241,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q20",
       type: "mcq",
-      title: ""Si hubiera tenido tu número…"",
+      title: "'Si hubiera tenido tu número…'",
       required: true,
       options: [
         { id: "a1", text: "Te habré llamado", value: "habre_llamado" },
@@ -259,7 +259,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q22",
       type: "image-selection",
-      title: "Look at the pictures below. Which image matches the expression "Estoy echando chispas"?",
+      title: "Look at the pictures below. Which image matches the expression 'Estoy echando chispas'?",
       required: true,
       imageOptions: [
         { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_186791150_S.jpg", alt: "angry", value: "angry" },
@@ -296,7 +296,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q25",
       type: "mcq",
-      title: "Replace the indirect and direct object in the sentence: "Ella dijo una mentira a su cuñada".",
+      title: "Replace the indirect and direct object in the sentence: 'Ella dijo una mentira a su cuñada'.",
       required: true,
       options: [
         { id: "a1", text: "Ella le la dijo", value: "le_la_dijo" },
