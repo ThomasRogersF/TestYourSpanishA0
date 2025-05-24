@@ -22,22 +22,11 @@ const QuestionCard = ({
   onAnswer, 
   onNext 
 }: QuestionCardProps) => {
-  // Emoji mapping for different question types
-  const getQuestionEmoji = () => {
-    switch (question.type) {
-      case 'mcq':
-        return '✅';
-      case 'image-selection':
-        return '🖼️';
-      case 'audio':
-        return '🔊';
-      case 'text':
-        return '📝';
-      case 'fill-in-blanks':
-        return '✏️';
-      default:
-        return '❓';
-    }
+  // Calculate question number based on question ID
+  const getQuestionNumber = () => {
+    // Extract number from question ID (e.g., "q1" -> "1")
+    const match = question.id.match(/\d+/);
+    return match ? match[0] : "1";
   };
 
   const renderQuestionType = () => {
@@ -97,7 +86,7 @@ const QuestionCard = ({
       <ProgressBar progress={progress} />
       
       <h2 className="text-2xl font-bold mb-4 text-brand-primary">
-        {getQuestionEmoji()} {question.title}
+        {getQuestionNumber()}. {question.title}
       </h2>
       
       {question.subtitle && (
