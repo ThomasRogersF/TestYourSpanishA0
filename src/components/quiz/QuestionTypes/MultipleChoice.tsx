@@ -62,6 +62,11 @@ const MultipleChoice = ({
 
   return (
     <div className="space-y-6">
+      {/* Heading for multiple choice questions */}
+      <div className="text-lg font-medium text-gray-700 mb-4">
+        Select the correct answer to the question 🤔
+      </div>
+
       {question.options && question.options.map((option) => (
         <div
           key={option.id}

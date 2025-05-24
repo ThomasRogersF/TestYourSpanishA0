@@ -46,19 +46,18 @@ export const sampleQuiz: QuizConfig = {
       id: "q3",
       type: "fill-in-blanks",
       title: "Complete the sentence with the correct form of the verb tener (to have): Ella ______ dos hermanos.",
-      subtitle: "✍️ Write your answer in the blank.",
       required: true
     },
     {
       id: "q4",
       type: "image-selection",
-      title: "'Juan come una fruta verde'. Which picture matches the description?",
+      title: "Which picture matches the description: 'Juan come una fruta verde'?",
       required: true,
       imageOptions: [
-        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_389807556_S.jpg", alt: "Manzanas", value: "manzanas" },
-        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_58314223_S.jpg", alt: "Bananos", value: "bananos" },
-        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_9122791_S.jpg", alt: "Uvas", value: "uvas" },
-        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_6092650_S.jpg", alt: "Naranjas", value: "naranjas" }
+        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_389807556_S.jpg", alt: "Option A", value: "manzanas" },
+        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_58314223_S.jpg", alt: "Option B", value: "bananos" },
+        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_9122791_S.jpg", alt: "Option C", value: "uvas" },
+        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_6092650_S.jpg", alt: "Option D", value: "naranjas" }
       ]
     },
     {
@@ -76,7 +75,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q6",
       type: "audio",
-      title: "Listen carefully to the following audio: 'En las mañanas: me despierto, me baño, hago ejercicio, y desayuno'. Which one of the following options is part of Juan's morning routine?",
+      title: "Which one of the following options is part of Juan's morning routine?",
       audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/1-En-las-mananas-me-despierto.mp3",
       required: true,
       options: [
@@ -121,13 +120,13 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q10",
       type: "image-selection",
-      title: "Look at the image below. Which of the following is the picture that matches the word 'licuadora'?",
+      title: "Which of the following pictures matches the word 'licuadora'?",
       required: true,
       imageOptions: [
-        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_204337134_S.jpg", alt: "Licuadora", value: "licuadora" },
-        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_767288152_S.jpg", alt: "Nevera", value: "nevera" },
-        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_19669021_S.jpg", alt: "Lavamano", value: "lavamano" },
-        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_139874794_S.jpg", alt: "Aspiradora", value: "aspiradora" }
+        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_204337134_S.jpg", alt: "Option A", value: "licuadora" },
+        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_767288152_S.jpg", alt: "Option B", value: "nevera" },
+        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_19669021_S.jpg", alt: "Option C", value: "lavamano" },
+        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_139874794_S.jpg", alt: "Option D", value: "aspiradora" }
       ]
     },
     {
@@ -145,7 +144,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q12",
       type: "audio",
-      title: "Listen carefully to the following audio: 'He comido, he trabajado, he respondido correos... y no he terminado nada.' ¿Qué ha hecho Andrea hoy?",
+      title: "What has Andrea done today?",
       audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/2-He-comido-he-trabajado-he-respondido-correos.mp3",
       required: true,
       options: [
@@ -172,7 +171,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q14",
       type: "mcq",
-      title: "'Mañana habré terminado mi trabajo y…'",
+      title: "Complete the sentence: 'Mañana habré terminado mi trabajo y…'",
       required: true,
       options: [
         { id: "a1", text: "Bebí una lata de gaseosa.", value: "bebi_gaseosa" },
@@ -190,13 +189,13 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q16",
       type: "image-selection",
-      title: "¿Cuál imagen corresponde a la palabra 'cambio climático'?",
+      title: "Which image corresponds to the word 'cambio climático'?",
       required: true,
       imageOptions: [
-        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_250472176_S.jpg", alt: "Ecología", value: "ecologia" },
-        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_723127684_S.jpg", alt: "Reciclaje", value: "reciclaje" },
-        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_30828375_S.jpg", alt: "Cambio climático", value: "cambio_climatico" },
-        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_218052334_S.jpg", alt: "Plantar árboles", value: "plantar_arboles" }
+        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_250472176_S.jpg", alt: "Option A", value: "ecologia" },
+        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_723127684_S.jpg", alt: "Option B", value: "reciclaje" },
+        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_30828375_S.jpg", alt: "Option C", value: "cambio_climatico" },
+        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_218052334_S.jpg", alt: "Option D", value: "plantar_arboles" }
       ]
     },
     {
@@ -214,7 +213,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q18",
       type: "audio",
-      title: "Escucha y selecciona uno de los deseos de Roberto.",
+      title: "Listen and select one of Roberto's wishes.",
       audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/3-Espero-que-tengas-un-buen-dia.mp3",
       required: true,
       options: [
@@ -241,7 +240,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q20",
       type: "mcq",
-      title: "'Si hubiera tenido tu número…'",
+      title: "Complete the conditional sentence: 'Si hubiera tenido tu número…'",
       required: true,
       options: [
         { id: "a1", text: "Te habré llamado", value: "habre_llamado" },
@@ -259,13 +258,13 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q22",
       type: "image-selection",
-      title: "Look at the pictures below. Which image matches the expression 'Estoy echando chispas'?",
+      title: "Which image matches the expression 'Estoy echando chispas'?",
       required: true,
       imageOptions: [
-        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_186791150_S.jpg", alt: "angry", value: "angry" },
-        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_12800902_S.jpg", alt: "happy woman", value: "happy" },
-        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_451035886_S.jpg", alt: "sad woman", value: "sad" },
-        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_495920154_S.jpg", alt: "scared man", value: "scared" }
+        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_186791150_S.jpg", alt: "Option A", value: "angry" },
+        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_12800902_S.jpg", alt: "Option B", value: "happy" },
+        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_451035886_S.jpg", alt: "Option C", value: "sad" },
+        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_495920154_S.jpg", alt: "Option D", value: "scared" }
       ]
     },
     {
@@ -283,7 +282,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q24",
       type: "audio",
-      title: "Escucha y selecciona parte de lo que Juan dijo.",
+      title: "Listen and select part of what Juan said.",
       audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/4-Juan-me-dijo-que-iba-a-llegar-tarde.mp3",
       required: true,
       options: [
