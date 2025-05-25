@@ -142,6 +142,11 @@ const AudioQuestion = ({
 
   return (
     <div className="space-y-6">
+      {/* Add listening instruction title */}
+      <div className="text-lg font-medium text-gray-700 mb-4">
+        🎧 Listen carefully to the following audio:
+      </div>
+
       <div className="border border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center">
         {question.helpText && (
           <p className="text-sm text-gray-500 mb-4">{question.helpText}</p>
@@ -199,7 +204,7 @@ const AudioQuestion = ({
           variant="outline"
           onClick={handleSkip}
         >
-          Skip
+          Skip question
         </Button>
         <Button 
           type="button"
@@ -207,7 +212,7 @@ const AudioQuestion = ({
           onClick={handleNext}
           disabled={question.required && ((question.options?.length > 0 && !selectedOption) || !audioCompleted)}
         >
-          Continue
+          Next question
         </Button>
       </div>
     </div>

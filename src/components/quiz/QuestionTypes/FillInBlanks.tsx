@@ -85,7 +85,7 @@ const FillInBlanks: React.FC<FillInBlanksProps> = ({
           onClick={handleSubmit} 
           disabled={userInput.trim() === ""}
         >
-          Submit & Continue
+          Next question
         </Button>
       </div>
     </div>
