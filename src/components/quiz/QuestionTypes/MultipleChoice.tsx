@@ -100,14 +100,14 @@ const MultipleChoice = ({
           onClick={handleSkip}
           className="text-gray-500"
         >
-          Skip
+          Skip question
         </Button>
         <Button 
           onClick={handleNext}
           className="quiz-button ml-auto shadow-soft"
           disabled={question.required && !selectedOption}
         >
-          Continue
+          Next question
         </Button>
       </div>
     </div>

@@ -80,7 +80,7 @@ const ImageSelection = ({
           className="quiz-button-secondary"
           onClick={handleSkip}
         >
-          Skip
+          Skip question
         </Button>
         <Button 
           type="button" 
@@ -88,7 +88,7 @@ const ImageSelection = ({
           onClick={handleNext}
           disabled={question.required && !selectedImage}
         >
-          Continue
+          Next question
         </Button>
       </div>
     </div>

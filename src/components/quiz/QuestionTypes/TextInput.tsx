@@ -67,7 +67,7 @@ const TextInput = ({
           className="quiz-button-secondary"
           onClick={handleSkip}
         >
-          Skip
+          Skip question
         </Button>
         <Button 
           type="button" 
@@ -75,7 +75,7 @@ const TextInput = ({
           onClick={handleNext}
           disabled={question.required && (!text || !text.trim())}
         >
-          Continue
+          Next question
         </Button>
       </div>
     </div>
