@@ -1,5 +1,7 @@
 
 import { QuizQuestion, QuizAnswer } from "@/types/quiz";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import ProgressBar from "./ProgressBar";
 import MultipleChoice from "./QuestionTypes/MultipleChoice";
 import ImageSelection from "./QuestionTypes/ImageSelection";
@@ -11,16 +13,20 @@ interface QuestionCardProps {
   question: QuizQuestion;
   progress: number;
   currentAnswer?: QuizAnswer;
+  canGoBack: boolean;
   onAnswer: (answer: QuizAnswer) => void;
   onNext: () => void;
+  onPrevious: () => void;
 }
 
 const QuestionCard = ({ 
   question, 
   progress,
   currentAnswer,
+  canGoBack,
   onAnswer, 
-  onNext 
+  onNext,
+  onPrevious
 }: QuestionCardProps) => {
   // Calculate question number based on question ID
   const getQuestionNumber = () => {
@@ -83,6 +89,21 @@ const QuestionCard = ({
 
   return (
     <div className="quiz-container w-full max-w-2xl animate-scale-in shadow-soft">
+      {/* Previous question button in top corner */}
+      <div className="flex justify-end mb-4">
+        {canGoBack && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onPrevious}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
+          >
+            <ArrowLeft size={16} />
+            Previous question
+          </Button>
+        )}
+      </div>
+
       <ProgressBar progress={progress} />
       
       <h2 className="text-2xl font-bold mb-4 text-brand-primary">

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { QuizConfig, QuizParticipant, QuizAnswer, ResultTemplate } from "@/types/quiz";
@@ -19,6 +20,7 @@ const QuizController = ({ config }: QuizControllerProps) => {
   const [currentQuestionId, setCurrentQuestionId] = useState<string | null>(
     config.questions.length > 0 ? config.questions[0].id : null
   );
+  const [questionHistory, setQuestionHistory] = useState<string[]>([]);
   const [participant, setParticipant] = useState<QuizParticipant>({
     name: "",
     email: "",
@@ -43,6 +45,10 @@ const QuizController = ({ config }: QuizControllerProps) => {
   const handleStartQuiz = () => {
     console.log("Starting quiz");
     setStage("questions");
+    // Add first question to history when starting
+    if (config.questions.length > 0) {
+      setQuestionHistory([config.questions[0].id]);
+    }
   };
 
   const handleAnswer = (answer: QuizAnswer) => {
@@ -84,9 +90,10 @@ const QuizController = ({ config }: QuizControllerProps) => {
     console.log("Next question ID determined:", nextQuestionId);
     
     if (nextQuestionId) {
-      // Move to next question
+      // Move to next question and add to history
       setTimeout(() => {
         setCurrentQuestionId(nextQuestionId);
+        setQuestionHistory(prev => [...prev, nextQuestionId]);
         setIsLoading(false);
       }, 100); // Small delay for better UX
     } else {
@@ -95,6 +102,27 @@ const QuizController = ({ config }: QuizControllerProps) => {
       setCurrentQuestionId(null);
       setIsLoading(false);
     }
+  };
+
+  const handlePrevious = () => {
+    if (questionHistory.length <= 1) {
+      console.log("Already at first question, cannot go back");
+      return;
+    }
+    
+    setIsLoading(true);
+    console.log("Going back from question:", currentQuestionId);
+    
+    // Remove current question from history and go to previous
+    const newHistory = [...questionHistory];
+    newHistory.pop(); // Remove current question
+    const previousQuestionId = newHistory[newHistory.length - 1];
+    
+    setTimeout(() => {
+      setCurrentQuestionId(previousQuestionId);
+      setQuestionHistory(newHistory);
+      setIsLoading(false);
+    }, 100);
   };
 
   const handleUserInfoSubmit = (name: string, email: string) => {
@@ -168,6 +196,9 @@ const QuizController = ({ config }: QuizControllerProps) => {
 
   console.log("Current stage:", stage, "Current question ID:", currentQuestionId, "Answers count:", participant.answers.length);
 
+  // Check if we can go back (not on first question)
+  const canGoBack = questionHistory.length > 1;
+
   // Render the appropriate stage
   const renderStage = () => {
     switch (stage) {
@@ -195,8 +226,10 @@ const QuizController = ({ config }: QuizControllerProps) => {
             question={currentQuestion}
             progress={calculateProgress()}
             currentAnswer={currentAnswer}
+            canGoBack={canGoBack}
             onAnswer={handleAnswer}
             onNext={handleNext}
+            onPrevious={handlePrevious}
           />
         ) : (
           <div className="quiz-container">
