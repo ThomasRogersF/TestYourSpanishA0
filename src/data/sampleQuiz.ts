@@ -1,4 +1,3 @@
-
 import { QuizConfig } from "@/types/quiz";
 
 export const sampleQuiz: QuizConfig = {
@@ -24,16 +23,16 @@ export const sampleQuiz: QuizConfig = {
       title: "Choose the correct response to: ¿Cómo te llamas?",
       required: true,
       options: [
-        { id: "a1", text: "Tengo 20 años", value: "tengo_20" },
-        { id: "a2", text: "Me llamo Sebastian", value: "me_llamo_sebastian" },
-        { id: "a3", text: "Estoy cansado", value: "estoy_cansado" },
+        { id: "a1", text: "Me llama Juan", value: "me_llama_juan" },
+        { id: "a2", text: "Se llamo Juan", value: "se_llamo_juan" },
+        { id: "a3", text: "Me llamo Sebastian", value: "me_llamo_sebastian" },
         { id: "a4", text: "Soy de Colombia", value: "soy_de_colombia" }
       ]
     },
     {
       id: "q2",
       type: "mcq",
-      title: "Complete the following conversation: ¿Cómo estás? — Muy bien. ¿Y tú? — _____",
+      title: "Complete the following conversation:\n\nA: ¿Cómo estás?\nB: Muy bien. ¿Y tú?\nA: _____",
       required: true,
       options: [
         { id: "a1", text: "Soy estudiante", value: "soy_estudiante" },
