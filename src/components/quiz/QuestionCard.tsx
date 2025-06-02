@@ -40,7 +40,7 @@ const QuestionCard = ({
     if (question.id === "q2" && question.title.includes("conversation:")) {
       const parts = question.title.split("conversation:");
       return {
-        mainQuestion: parts[0].trim(),
+        mainQuestion: "Complete the following conversation",
         conversation: parts[1].trim()
       };
     }
@@ -118,15 +118,6 @@ const QuestionCard = ({
         )}
       </div>
 
-      {/* Special conversation box for question 2 */}
-      {question.id === "q2" && conversation && (
-        <div className="mb-6 p-6 bg-gray-50 border-2 border-gray-200 rounded-[1rem] shadow-sm">
-          <div className="text-gray-700 whitespace-pre-line font-mono text-lg leading-relaxed">
-            {conversation}
-          </div>
-        </div>
-      )}
-
       {/* Main question container */}
       <div className="quiz-container animate-scale-in shadow-soft">
         <ProgressBar progress={progress} />
@@ -134,6 +125,15 @@ const QuestionCard = ({
         <h2 className="text-2xl font-bold mb-4 text-brand-primary">
           {getQuestionNumber()}. {mainQuestion}
         </h2>
+        
+        {/* Special conversation box for question 2 - inside quiz container */}
+        {question.id === "q2" && conversation && (
+          <div className="mb-6 p-6 bg-gray-50 border-2 border-gray-200 rounded-[1rem] shadow-sm">
+            <div className="text-gray-700 whitespace-pre-line font-mono text-lg leading-relaxed">
+              {conversation}
+            </div>
+          </div>
+        )}
         
         {question.subtitle && (
           <p className="text-gray-600 mb-6">{question.subtitle}</p>
