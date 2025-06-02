@@ -35,6 +35,20 @@ const QuestionCard = ({
     return match ? match[0] : "1";
   };
 
+  // Special handling for question 2 to extract conversation
+  const getQuestionContent = () => {
+    if (question.id === "q2" && question.title.includes("conversation:")) {
+      const parts = question.title.split("conversation:");
+      return {
+        mainQuestion: parts[0].trim(),
+        conversation: parts[1].trim()
+      };
+    }
+    return { mainQuestion: question.title, conversation: null };
+  };
+
+  const { mainQuestion, conversation } = getQuestionContent();
+
   const renderQuestionType = () => {
     switch (question.type) {
       case 'mcq':
@@ -88,7 +102,7 @@ const QuestionCard = ({
   };
 
   return (
-    <div className="quiz-container w-full max-w-2xl animate-scale-in shadow-soft">
+    <div className="w-full max-w-2xl">
       {/* Previous question button in top corner */}
       <div className="flex justify-end mb-4">
         {canGoBack && (
@@ -104,17 +118,29 @@ const QuestionCard = ({
         )}
       </div>
 
-      <ProgressBar progress={progress} />
-      
-      <h2 className="text-2xl font-bold mb-4 text-brand-primary">
-        {getQuestionNumber()}. {question.title}
-      </h2>
-      
-      {question.subtitle && (
-        <p className="text-gray-600 mb-6">{question.subtitle}</p>
+      {/* Special conversation box for question 2 */}
+      {question.id === "q2" && conversation && (
+        <div className="mb-6 p-6 bg-gray-50 border-2 border-gray-200 rounded-[1rem] shadow-sm">
+          <div className="text-gray-700 whitespace-pre-line font-mono text-lg leading-relaxed">
+            {conversation}
+          </div>
+        </div>
       )}
-      
-      {renderQuestionType()}
+
+      {/* Main question container */}
+      <div className="quiz-container animate-scale-in shadow-soft">
+        <ProgressBar progress={progress} />
+        
+        <h2 className="text-2xl font-bold mb-4 text-brand-primary">
+          {getQuestionNumber()}. {mainQuestion}
+        </h2>
+        
+        {question.subtitle && (
+          <p className="text-gray-600 mb-6">{question.subtitle}</p>
+        )}
+        
+        {renderQuestionType()}
+      </div>
     </div>
   );
 };
