@@ -53,10 +53,10 @@ export const sampleQuiz: QuizConfig = {
       title: "Which picture matches the description: 'Juan come una fruta verde'?",
       required: true,
       imageOptions: [
-        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_389807556_S.jpg", alt: "Option A", value: "manzanas" },
-        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_58314223_S.jpg", alt: "Option B", value: "bananos" },
-        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_9122791_S.jpg", alt: "Option C", value: "uvas" },
-        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_6092650_S.jpg", alt: "Option D", value: "naranjas" }
+        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_389807556_S.jpg", alt: "Option A", value: "manzanas" },
+        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_58314223_S.jpg", alt: "Option B", value: "bananos" },
+        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_9122791_S.jpg", alt: "Option C", value: "uvas" },
+        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_6092650_S.jpg", alt: "Option D", value: "naranjas" }
       ]
     },
     {
@@ -75,7 +75,7 @@ export const sampleQuiz: QuizConfig = {
       id: "q6",
       type: "audio",
       title: "Which one of the following options is part of Juan's morning routine?",
-      audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/1-En-las-mananas-me-despierto.mp3",
+      audioUrl: "https://spanishvip.com/wp-content/uploads/2025/07/1-En-las-mananas-me-despierto.mp3",
       required: true,
       options: [
         { id: "a1", text: "Almorzar", value: "almorzar" },
@@ -122,10 +122,10 @@ export const sampleQuiz: QuizConfig = {
       title: "Which of the following pictures matches the word 'licuadora'?",
       required: true,
       imageOptions: [
-        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_204337134_S.jpg", alt: "Option A", value: "licuadora" },
-        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_767288152_S.jpg", alt: "Option B", value: "nevera" },
-        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_19669021_S.jpg", alt: "Option C", value: "lavamano" },
-        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_139874794_S.jpg", alt: "Option D", value: "aspiradora" }
+        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_204337134_S.jpg", alt: "Option A", value: "licuadora" },
+        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_767288152_S.jpg", alt: "Option B", value: "nevera" },
+        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_19669021_S.jpg", alt: "Option C", value: "lavamano" },
+        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_139874794_S.jpg", alt: "Option D", value: "aspiradora" }
       ]
     },
     {
@@ -144,7 +144,7 @@ export const sampleQuiz: QuizConfig = {
       id: "q12",
       type: "audio",
       title: "What has Andrea done today?",
-      audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/2-He-comido-he-trabajado-he-respondido-correos.mp3",
+      audioUrl: "https://spanishvip.com/wp-content/uploads/2025/07/2-He-comido-he-trabajado-he-respondido-correos.mp3",
       required: true,
       options: [
         { id: "a1", text: "Ha hablado", value: "ha_hablado" },
@@ -191,10 +191,10 @@ export const sampleQuiz: QuizConfig = {
       title: "Which image corresponds to the word 'cambio climático'?",
       required: true,
       imageOptions: [
-        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_250472176_S.jpg", alt: "Option A", value: "ecologia" },
-        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_723127684_S.jpg", alt: "Option B", value: "reciclaje" },
-        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_30828375_S.jpg", alt: "Option C", value: "cambio_climatico" },
-        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_218052334_S.jpg", alt: "Option D", value: "plantar_arboles" }
+        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_250472176_S.jpg", alt: "Option A", value: "ecologia" },
+        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_723127684_S.jpg", alt: "Option B", value: "reciclaje" },
+        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_30828375_S.jpg", alt: "Option C", value: "cambio_climatico" },
+        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_218052334_S.jpg", alt: "Option D", value: "plantar_arboles" }
       ]
     },
     {
@@ -213,7 +213,7 @@ export const sampleQuiz: QuizConfig = {
       id: "q18",
       type: "audio",
       title: "Listen and select one of Roberto's wishes.",
-      audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/3-Espero-que-tengas-un-buen-dia.mp3",
+      audioUrl: "https://spanishvip.com/wp-content/uploads/2025/07/3-Espero-que-tengas-un-buen-dia.mp3",
       required: true,
       options: [
         { id: "a1", text: "Espero que haya mucho tráfico", value: "mucho_trafico" },
@@ -260,10 +260,10 @@ export const sampleQuiz: QuizConfig = {
       title: "Which image matches the expression 'Estoy echando chispas'?",
       required: true,
       imageOptions: [
-        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_186791150_S.jpg", alt: "Option A", value: "angry" },
-        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_12800902_S.jpg", alt: "Option B", value: "happy" },
-        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_451035886_S.jpg", alt: "Option C", value: "sad" },
-        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/05/Depositphotos_495920154_S.jpg", alt: "Option D", value: "scared" }
+        { id: "img1", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_186791150_S.jpg", alt: "Option A", value: "angry" },
+        { id: "img2", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_12800902_S.jpg", alt: "Option B", value: "happy" },
+        { id: "img3", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_451035886_S.jpg", alt: "Option C", value: "sad" },
+        { id: "img4", src: "https://spanishvip.com/wp-content/uploads/2025/07/Depositphotos_495920154_S.jpg", alt: "Option D", value: "scared" }
       ]
     },
     {
@@ -282,7 +282,7 @@ export const sampleQuiz: QuizConfig = {
       id: "q24",
       type: "audio",
       title: "Listen and select part of what Juan said.",
-      audioUrl: "https://spanishvip.com/wp-content/uploads/2025/05/4-Juan-me-dijo-que-iba-a-llegar-tarde.mp3",
+      audioUrl: "https://spanishvip.com/wp-content/uploads/2025/07/4-Juan-me-dijo-que-iba-a-llegar-tarde.mp3",
       required: true,
       options: [
         { id: "a1", text: "Que lo esperara", value: "lo_esperara" },
