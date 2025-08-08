@@ -50,7 +50,7 @@ const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
               onClick={onExternalRedirect}
               className="quiz-button inline-flex items-center shadow-soft"
             >
-              Visit us <ExternalLink className="ml-2 h-4 w-4" />
+              Back to SpanishVIP <ExternalLink className="ml-2 h-4 w-4" />
             </Button>
             
             <Link to="/schedule">

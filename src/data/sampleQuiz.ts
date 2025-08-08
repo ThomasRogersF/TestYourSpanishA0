@@ -308,7 +308,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "a1",
       title: "A1 • Beginner",
-      description: "Tu nivel aproximado es A1: puedes comunicarte en situaciones muy básicas. ¡Sigue practicando!",
+      description: "Your approximate level is A1: you can communicate in very basic situations. Keep practicing!",
       conditions: [
         { questionId: "q1", value: "me_llamo_sebastian" },
         { questionId: "q2", value: "estoy_bien_tambien" },
@@ -318,7 +318,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "a2",
       title: "A2 • Elementary",
-      description: "Tu nivel aproximado es A2: entiendes frases y expresiones de uso frecuente.",
+      description: "Your approximate level is A2: you understand frequently used phrases and expressions.",
       conditions: [
         { questionId: "q7", value: "corrio" },
         { questionId: "q8", value: "para" },
@@ -328,7 +328,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "b1",
       title: "B1 • Intermediate",
-      description: "Tu nivel aproximado es B1: puedes desenvolverte en la mayoría de las situaciones de viaje.",
+      description: "Your approximate level is B1: you can handle most travel situations.",
       conditions: [
         { questionId: "q13", value: "llevamos" },
         { questionId: "q14", value: "podre_descansar" },
@@ -338,7 +338,7 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "b2",
       title: "B2 • Upper-Intermediate",
-      description: "Tu nivel aproximado es B2: puedes interactuar con fluidez y espontaneidad con hablantes nativos.",
+      description: "Your approximate level is B2: you can interact with fluency and spontaneity with native speakers.",
       conditions: [
         { questionId: "q19", value: "se_me_cayo" },
         { questionId: "q20", value: "habria_llamado" },
