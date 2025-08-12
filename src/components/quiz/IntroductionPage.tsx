@@ -49,7 +49,7 @@ const IntroductionPage = ({ config, onStart }: IntroductionPageProps) => {
 
       {/* Move Start Now button right below the image */}
       <Button 
-        className="quiz-button w-full mb-6 group shadow-soft"
+        className="quiz-button w-full mb-3 group shadow-soft"
         onClick={onStart}
       >
         Start Now
