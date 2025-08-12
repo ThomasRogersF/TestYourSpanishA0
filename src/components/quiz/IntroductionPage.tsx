@@ -12,7 +12,7 @@ const IntroductionPage = ({ config, onStart }: IntroductionPageProps) => {
   return (
     <div className="quiz-container w-full max-w-md animate-fade-in shadow-soft">
       {config.logoUrl && (
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-4">
           <button
             type="button"
             onClick={() => window.parent.postMessage({ action: 'redirect', url: 'https://spanishvip.com/' }, '*')}
@@ -23,7 +23,7 @@ const IntroductionPage = ({ config, onStart }: IntroductionPageProps) => {
             <img 
               src={config.logoUrl} 
               alt={`${config.title} logo`}
-              className="h-16 w-auto"
+              className="h-12 w-auto"
             />
           </button>
         </div>
