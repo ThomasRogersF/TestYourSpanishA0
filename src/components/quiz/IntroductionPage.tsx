@@ -13,11 +13,19 @@ const IntroductionPage = ({ config, onStart }: IntroductionPageProps) => {
     <div className="quiz-container w-full max-w-md animate-fade-in shadow-soft">
       {config.logoUrl && (
         <div className="flex justify-center mb-8">
-          <img 
-            src={config.logoUrl} 
-            alt={`${config.title} logo`}
-            className="h-16 w-auto"
-          />
+          <a
+            href="https://spanishvip.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Go to SpanishVIP website"
+            title="SpanishVIP"
+          >
+            <img 
+              src={config.logoUrl} 
+              alt={`${config.title} logo`}
+              className="h-16 w-auto"
+            />
+          </a>
         </div>
       )}
       
@@ -46,6 +54,18 @@ const IntroductionPage = ({ config, onStart }: IntroductionPageProps) => {
       >
         Start Now
         <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
+      </Button>
+
+      <Button asChild variant="outline" className="w-full mb-6">
+        <a
+          href="https://spanishvip.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Go back to SpanishVIP"
+          title="Go back to SpanishVIP"
+        >
+          Go back to SpanishVIP
+        </a>
       </Button>
 
       {config.introText && (

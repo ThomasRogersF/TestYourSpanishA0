@@ -103,8 +103,20 @@ const QuestionCard = ({
 
   return (
     <div className="w-full max-w-2xl">
-      {/* Previous question button in top corner */}
-      <div className="flex justify-end mb-4">
+      {/* Top actions: SpanishVIP link and Previous question */}
+      <div className="flex items-center justify-between mb-4">
+        <Button asChild variant="outline" size="sm">
+          <a
+            href="https://spanishvip.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Go to SpanishVIP website"
+            title="SpanishVIP"
+          >
+            SpanishVIP
+          </a>
+        </Button>
+
         {canGoBack && (
           <Button
             variant="outline"
