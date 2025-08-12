@@ -168,9 +168,9 @@ const QuizController = ({ config }: QuizControllerProps) => {
   };
 
   const handleExternalRedirect = () => {
-    // Redirect to external URL if provided
+    // Post a message to parent to handle redirection
     if (config.externalRedirectUrl) {
-      window.location.href = config.externalRedirectUrl;
+      window.parent.postMessage({ action: 'redirect', url: config.externalRedirectUrl }, '*');
     }
   };
   

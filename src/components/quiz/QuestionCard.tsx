@@ -105,16 +105,14 @@ const QuestionCard = ({
     <div className="w-full max-w-2xl">
       {/* Top actions: SpanishVIP link and Previous question */}
       <div className="flex items-center justify-between mb-4">
-        <Button asChild variant="outline" size="sm">
-          <a
-            href="https://spanishvip.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Go to SpanishVIP website"
-            title="SpanishVIP"
-          >
-            SpanishVIP
-          </a>
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={() => window.parent.postMessage({ action: 'redirect', url: 'https://spanishvip.com/' }, '*')}
+          aria-label="Go to SpanishVIP website"
+          title="SpanishVIP"
+        >
+          SpanishVIP
         </Button>
 
         {canGoBack && (

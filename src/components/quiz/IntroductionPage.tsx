@@ -13,19 +13,19 @@ const IntroductionPage = ({ config, onStart }: IntroductionPageProps) => {
     <div className="quiz-container w-full max-w-md animate-fade-in shadow-soft">
       {config.logoUrl && (
         <div className="flex justify-center mb-8">
-          <a
-            href="https://spanishvip.com/"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={() => window.parent.postMessage({ action: 'redirect', url: 'https://spanishvip.com/' }, '*')}
             aria-label="Go to SpanishVIP website"
             title="SpanishVIP"
+            className="focus:outline-none"
           >
             <img 
               src={config.logoUrl} 
               alt={`${config.title} logo`}
               className="h-16 w-auto"
             />
-          </a>
+          </button>
         </div>
       )}
       
@@ -56,16 +56,14 @@ const IntroductionPage = ({ config, onStart }: IntroductionPageProps) => {
         <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
       </Button>
 
-      <Button asChild variant="outline" className="w-full mb-6">
-        <a
-          href="https://spanishvip.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Go back to SpanishVIP"
-          title="Go back to SpanishVIP"
-        >
-          Go back to SpanishVIP
-        </a>
+      <Button 
+        variant="outline" 
+        className="w-full mb-6"
+        onClick={() => window.parent.postMessage({ action: 'redirect', url: 'https://spanishvip.com/' }, '*')}
+        aria-label="Go back to SpanishVIP"
+        title="Go back to SpanishVIP"
+      >
+        Go back to SpanishVIP
       </Button>
 
       {config.introText && (
