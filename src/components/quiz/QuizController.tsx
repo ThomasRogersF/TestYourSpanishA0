@@ -5,15 +5,14 @@ import { QuizConfig, QuizParticipant, QuizAnswer, ResultTemplate } from "@/types
 import { getNextQuestionId, getPersonalizedResult, sendDataToWebhook } from "@/utils/quizUtils";
 import IntroductionPage from "./IntroductionPage";
 import QuestionCard from "./QuestionCard";
-import ResultsPage from "./ResultsPage";
-import ThankYouPage from "./ThankYouPage";
+import ConversionLandingPage from "./ConversionLandingPage";
 import UserInfoForm from "./UserInfoForm";
 
 interface QuizControllerProps {
   config: QuizConfig;
 }
 
-type QuizStage = "intro" | "questions" | "user-info" | "results" | "thank-you";
+type QuizStage = "intro" | "questions" | "user-info" | "conversion-landing";
 
 const QuizController = ({ config }: QuizControllerProps) => {
   const [stage, setStage] = useState<QuizStage>("intro");
@@ -159,14 +158,10 @@ const QuizController = ({ config }: QuizControllerProps) => {
         });
     }
     
-    // Proceed to results page
-    setStage("results");
+    // Proceed to conversion landing page
+    setStage("conversion-landing");
   };
   
-  const handleContinueToThankYou = () => {
-    setStage("thank-you");
-  };
-
   const handleExternalRedirect = () => {
     // Post a message to parent to handle redirection
     if (config.externalRedirectUrl) {
@@ -246,20 +241,12 @@ const QuizController = ({ config }: QuizControllerProps) => {
             config={config}
           />
         );
-      case "results":
+      case "conversion-landing":
         return (
-          <ResultsPage
+          <ConversionLandingPage
             config={config}
             participant={participant}
             personalizedResult={personalizedResult}
-            onContinue={handleContinueToThankYou}
-          />
-        );
-      case "thank-you":
-        return (
-          <ThankYouPage 
-            config={config} 
-            onExternalRedirect={handleExternalRedirect}
           />
         );
       default:
