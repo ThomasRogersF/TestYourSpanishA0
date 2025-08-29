@@ -1,14 +1,18 @@
 
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { QuizConfig } from "@/types/quiz";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Settings } from "lucide-react";
+import { useState } from "react";
 
 interface IntroductionPageProps {
   config: QuizConfig;
   onStart: () => void;
+  onDebugLanding?: () => void; // Debug function to jump to landing page
 }
 
-const IntroductionPage = ({ config, onStart }: IntroductionPageProps) => {
+const IntroductionPage = ({ config, onStart, onDebugLanding }: IntroductionPageProps) => {
+  const [isDebugOpen, setIsDebugOpen] = useState(false);
   return (
     <div className="quiz-container w-full max-w-md animate-fade-in shadow-soft">
       {config.logoUrl && (
@@ -76,6 +80,41 @@ const IntroductionPage = ({ config, onStart }: IntroductionPageProps) => {
         <p className="text-sm text-gray-500 text-center mt-4">
           ⏱️ Estimated time: {config.estimatedTime}
         </p>
+      )}
+
+      {/* DEBUG: Remove this section for production */}
+      {onDebugLanding && (
+        <Dialog open={isDebugOpen} onOpenChange={setIsDebugOpen}>
+          <DialogTrigger asChild>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="fixed top-4 right-4 z-50 bg-red-50 border-red-200 text-red-600 hover:bg-red-100"
+            >
+              <Settings className="w-4 h-4 mr-1" />
+              Debug
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Debug Mode</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Jump directly to different parts of the quiz for testing:
+              </p>
+              <Button 
+                onClick={() => {
+                  onDebugLanding();
+                  setIsDebugOpen(false);
+                }}
+                className="w-full"
+              >
+                Go to Conversion Landing Page
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );

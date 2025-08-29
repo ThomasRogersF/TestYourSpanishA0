@@ -168,6 +168,21 @@ const QuizController = ({ config }: QuizControllerProps) => {
       window.parent.postMessage({ action: 'redirect', url: config.externalRedirectUrl }, '*');
     }
   };
+
+  // DEBUG: Function to jump directly to conversion landing page
+  const handleDebugLanding = () => {
+    // Set up mock data for testing
+    const mockParticipant = {
+      name: "Test User",
+      email: "test@example.com",
+      answers: []
+    };
+    const mockResult = config.resultTemplates.length > 0 ? config.resultTemplates[0] : null;
+    
+    setParticipant(mockParticipant);
+    setPersonalizedResult(mockResult);
+    setStage("conversion-landing");
+  };
   
   // Calculate progress
   const calculateProgress = () => {
@@ -202,6 +217,7 @@ const QuizController = ({ config }: QuizControllerProps) => {
           <IntroductionPage 
             config={config}
             onStart={handleStartQuiz}
+            onDebugLanding={handleDebugLanding}
           />
         );
       case "questions":
