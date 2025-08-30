@@ -217,7 +217,7 @@ const QuizController = ({ config }: QuizControllerProps) => {
           <IntroductionPage 
             config={config}
             onStart={handleStartQuiz}
-            onDebugLanding={handleDebugLanding}
+            // onDebugLanding={handleDebugLanding} // DEBUG: Disabled for production
           />
         );
       case "questions":
