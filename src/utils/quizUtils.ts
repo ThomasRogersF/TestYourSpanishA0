@@ -199,47 +199,51 @@ export const sendDataToWebhook = async (
   }
 };
 
-// Function to count the number of correct answers (to replace calculateScore)
+// Exported map of all question IDs to their correct answers (q1..q25)
+export const ALL_CORRECT_ANSWERS: Record<string, string | string[]> = {
+  "q1": "me_llamo_sebastian",
+  "q2": "estoy_bien_tambien",
+  "q3": "tiene",
+  "q4": "manzanas",
+  "q5": "oracion_d",
+  "q6": "banarse",
+  "q7": "corrio",
+  "q8": "para",
+  "q9": "iba",
+  "q10": "licuadora",
+  "q11": "oracion_c",
+  "q12": "ha_trabajado",
+  "q13": "llevamos",
+  "q14": "podre_descansar",
+  "q15": "sepas",
+  "q16": "cambio_climatico",
+  "q17": "ojala_bien",
+  "q18": "tengas_buen_dia",
+  "q19": "se_me_cayo",
+  "q20": "habria_llamado",
+  "q21": "hayas_venido",
+  "q22": "angry",
+  "q23": "deje_ver",
+  "q24": "lo_esperara",
+  "q25": "se_la_dijo"
+};
+
+// Function to count the number of correct answers using ALL_CORRECT_ANSWERS
 const countCorrectAnswers = (answers: QuizAnswer[]): number => {
-  // Map of all question IDs to their correct answers
-  const correctAnswerMap: Record<string, string | string[]> = {
-    "q1": "me_llamo_sebastian",
-    "q2": "estoy_bien_tambien",
-    "q3": "tiene",
-    "q4": "manzanas",
-    "q5": "oracion_d",
-    "q6": "banarse",
-    "q7": "corrio",
-    "q8": "para",
-    "q9": "iba",
-    "q10": "licuadora",
-    "q11": "oracion_c",
-    "q12": "ha_trabajado",
-    "q13": "llevamos",
-    "q14": "podre_descansar",
-    "q15": "sepas",
-    "q16": "cambio_climatico",
-    "q17": "ojala_bien",
-    "q18": "tengas_buen_dia",
-    "q19": "se_me_cayo",
-    "q20": "habria_llamado",
-    "q21": "hayas_venido",
-    "q22": "angry",
-    "q23": "deje_ver",
-    "q24": "lo_esperara",
-    "q25": "se_la_dijo"
-  };
-  
   let correctCount = 0;
-  
   answers.forEach(answer => {
-    const questionId = answer.questionId;
-    if (correctAnswerMap[questionId] && answer.value === correctAnswerMap[questionId]) {
+    const expected = ALL_CORRECT_ANSWERS[answer.questionId];
+    if (expected !== undefined && answer.value === expected) {
       correctCount++;
     }
   });
-  
   return correctCount;
+};
+
+// Helper to evaluate a single answer's correctness
+export const isAnswerCorrect = (answer: QuizAnswer): boolean => {
+  const expected = ALL_CORRECT_ANSWERS[answer.questionId];
+  return expected !== undefined && answer.value === expected;
 };
 
 // New utility functions for question templates

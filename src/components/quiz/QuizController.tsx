@@ -2,11 +2,12 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { QuizConfig, QuizParticipant, QuizAnswer, ResultTemplate } from "@/types/quiz";
-import { getNextQuestionId, getPersonalizedResult, sendDataToWebhook } from "@/utils/quizUtils";
+import { getNextQuestionId, getPersonalizedResult, sendDataToWebhook, isAnswerCorrect } from "@/utils/quizUtils";
 import IntroductionPage from "./IntroductionPage";
 import QuestionCard from "./QuestionCard";
 import ConversionLandingPage from "./ConversionLandingPage";
 import UserInfoForm from "./UserInfoForm";
+import { JourneyAnswer, JourneyUserContext } from "@/lib/buildJourney";
 
 interface QuizControllerProps {
   config: QuizConfig;
@@ -28,6 +29,8 @@ const QuizController = ({ config }: QuizControllerProps) => {
   const [personalizedResult, setPersonalizedResult] = useState<ResultTemplate | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const [gradedAnswers, setGradedAnswers] = useState<JourneyAnswer[]>([]);
+  const [userContext, setUserContext] = useState<JourneyUserContext | undefined>(undefined);
 
   // Effect to handle completion of questions and transition to user info stage
   useEffect(() => {
@@ -135,6 +138,23 @@ const QuizController = ({ config }: QuizControllerProps) => {
       name,
       email
     };
+
+    // Compute graded answers for journey cards (q: numeric id, isCorrect flag)
+    try {
+      const graded: JourneyAnswer[] = (participant.answers || []).map((a) => {
+        const qNum = parseInt(String(a.questionId).replace("q", ""), 10);
+        const correct = isAnswerCorrect(a);
+        return {
+          q: Number.isNaN(qNum) ? 0 : qNum,
+          isCorrect: !!correct,
+          value: typeof a.value === "string" ? a.value : undefined
+        };
+      });
+      setGradedAnswers(graded);
+    } catch (e) {
+      console.error("Error grading answers for journey cards:", e);
+      setGradedAnswers([]);
+    }
     
     setParticipant(updatedParticipant);
     
@@ -265,6 +285,8 @@ const QuizController = ({ config }: QuizControllerProps) => {
             config={config}
             participant={participant}
             personalizedResult={personalizedResult}
+            gradedAnswers={gradedAnswers}
+            userContext={userContext}
           />
         );
       default:

@@ -27,22 +27,44 @@ import {
 } from "@/components/ui/carousel";
 
 import { ConfettiBurst } from "./ConfettiBurst";
+import { buildJourney, JourneyAnswer, JourneyUserContext } from "@/lib/buildJourney";
 
 interface ConversionLandingPageProps {
   config: QuizConfig;
   participant: QuizParticipant;
   personalizedResult: ResultTemplate | null;
+  gradedAnswers?: JourneyAnswer[];
+  userContext?: JourneyUserContext;
 }
 
-const ConversionLandingPage = ({ 
-  config, 
-  participant, 
-  personalizedResult 
+const ConversionLandingPage = ({
+  config,
+  participant,
+  personalizedResult,
+  gradedAnswers,
+  userContext
 }: ConversionLandingPageProps) => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const [showConfetti, setShowConfetti] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Build dynamic journey payload for the "Based on your answers..." section
+  const journey = buildJourney({
+    personalizedResult: personalizedResult ?? { id: "a1", title: "A1 • Beginner", description: "" },
+    answers: (gradedAnswers ?? []).filter(a => a.q > 0),
+    user: userContext,
+    proof: {
+      classesTaughtText: "Live classes taught every day",
+      ratingText: "Top-rated by learners"
+    }
+  });
+
+  // Derived stat ring values for readiness (Card 4)
+  const readinessStr = journey.cards.proofTutor.stat?.value ?? "0%";
+  const readinessNum = parseInt(readinessStr.replace("%", ""), 10) || 0;
+  const ringCircumference = 251.2;
+  const ringDashOffset = ringCircumference * (1 - Math.max(0, Math.min(100, readinessNum)) / 100);
 
   // Play celebration SFX alongside confetti. Handles autoplay restrictions by
   // retrying playback on the next user gesture if necessary.
@@ -232,7 +254,7 @@ const ConversionLandingPage = ({
                 <div className="flex justify-center lg:justify-start px-2 sm:px-0">
                   <Button
                     className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 text-sm sm:text-base md:text-lg font-semibold rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 w-full sm:w-auto max-w-sm sm:max-w-none"
-                    onClick={() => document.getElementById('calendar-section')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => document.getElementById('book-class-section')?.scrollIntoView({ behavior: 'smooth' })}
                   >
                     Start Your Free Class Today
                     <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5" />
@@ -251,7 +273,7 @@ const ConversionLandingPage = ({
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
                   <button
-                    onClick={() => openVideoModal("https://www.youtube.com/embed/dQw4w9WgXcQ")}
+                    onClick={() => openVideoModal("https://www.youtube.com/embed/aIaWXzztvc0")}
                     className="bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-2 sm:p-3 md:p-4 transition-all duration-300 transform hover:scale-110"
                   >
                     <Play className="h-4 w-4 sm:h-6 sm:w-6 md:h-8 md:w-8 text-orange-600 ml-0.5 sm:ml-1" />
@@ -264,7 +286,7 @@ const ConversionLandingPage = ({
       </section>
 
       {/* HUBSPOT CALENDAR SECTION */}
-      <section className="py-6 sm:py-8 md:py-12 lg:py-16 xl:py-24 bg-white">
+      <section id="book-class-section" className="py-6 sm:py-8 md:py-12 lg:py-16 xl:py-24 bg-white">
         <div className="text-center mb-6 sm:mb-8 md:mb-12">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 px-2 sm:px-0">
             Book Your Free Spanish Class
@@ -281,132 +303,153 @@ const ConversionLandingPage = ({
         ></div>
       </section>
 
-      {/* SECTION 2: RESULTS VISUALIZATION */}
+      {/* SECTION 2: RESULTS VISUALIZATION (Dynamic) */}
       <section className="py-6 sm:py-8 md:py-12 lg:py-16 w-full min-w-full p-0">
         <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 w-full">
           <div className="text-center mb-6 sm:mb-8 md:mb-12">
             <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-800 mb-3 sm:mb-4 px-2 sm:px-0">
               Based on your answers, your Spanish learning journey is...
             </h2>
+            <p className="text-gray-600 text-xs sm:text-sm">{journey.levelTitle}</p>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
-            {/* CARD 1 - Progress Visualization */}
+            {/* CARD 1 - Starting Level */}
             <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 animate-fade-in mx-2 sm:mx-0">
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-3 sm:mb-4 md:mb-6">
-                Your Spanish can flourish
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-2 sm:mb-3 md:mb-4">
+                {journey.cards.startingLevel.title}
               </h3>
-              <div className="space-y-3 sm:space-y-4 md:space-y-6">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-xs sm:text-sm md:text-base">Now</span>
-                  <span className="text-gray-600 text-xs sm:text-sm md:text-base">3 months</span>
-                </div>
-                <div className="relative">
-                  <div className="h-20 sm:h-24 md:h-32 bg-gray-100 rounded-lg relative overflow-hidden">
-                    <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-orange-200 to-orange-100 rounded-lg"></div>
-                    <div className="absolute bottom-0 left-0 w-full">
-                      <svg viewBox="0 0 300 100" className="w-full h-20 sm:h-24 md:h-32">
-                        <path
-                          d="M 0 80 Q 75 60 150 40 T 300 20"
-                          stroke="#ea580c"
-                          strokeWidth="2"
-                          fill="none"
-                          className="drop-shadow-sm"
-                        />
-                        <circle cx="50" cy="70" r="3" fill="#ea580c" />
-                        <circle cx="150" cy="40" r="3" fill="#ea580c" />
-                        <circle cx="250" cy="25" r="3" fill="#ea580c" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-between text-xs sm:text-sm text-gray-600">
-                  <span className="text-center">Basic phrases</span>
-                  <span className="text-center">Simple conversations</span>
-                  <span className="text-center">Confident fluency</span>
-                </div>
-              </div>
-            </div>
+              {journey.cards.startingLevel.subtitle && (
+                <p className="text-gray-700 text-xs sm:text-sm md:text-base mb-3 sm:mb-4">{journey.cards.startingLevel.subtitle}</p>
+              )}
 
-            {/* CARD 2 - Confidence & Benefits */}
-            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 animate-fade-in mx-2 sm:mx-0" style={{ animationDelay: '0.1s' }}>
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-3 sm:mb-4 md:mb-6">
-                Confidence / 3 months
-              </h3>
-              <div className="space-y-2 sm:space-y-3 md:space-y-4">
-                <div className="flex items-start">
-                  <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-green-500 mr-2 sm:mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700 text-xs sm:text-sm md:text-base">Increased quality of travel experiences</span>
+              {journey.cards.startingLevel.chips && journey.cards.startingLevel.chips.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-3 sm:mb-4">
+                  {journey.cards.startingLevel.chips.map((c) => (
+                    <span key={c} className="px-2 py-1 bg-orange-50 text-orange-700 rounded-full text-xs sm:text-sm border border-orange-200">
+                      {c}
+                    </span>
+                  ))}
                 </div>
-                <div className="flex items-start">
-                  <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-green-500 mr-2 sm:mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700 text-xs sm:text-sm md:text-base">Deeper family connections</span>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-green-500 mr-2 sm:mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700 text-xs sm:text-sm md:text-base">Enhanced cultural understanding</span>
-                </div>
-                <div className="bg-orange-500 text-white px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg inline-block font-semibold text-xs sm:text-sm md:text-base">
-                  +73.4%
-                </div>
-                <div className="mt-3 sm:mt-4 md:mt-6">
-                  <div className="bg-gray-200 rounded-full h-2 sm:h-3 md:h-4">
-                    <div className="bg-orange-500 h-2 sm:h-3 md:h-4 rounded-full transition-all duration-1000" style={{ width: '73%' }}></div>
-                  </div>
-                </div>
-              </div>
-          </div>
+              )}
 
-            {/* CARD 3 - Skill Improvement Comparison */}
-            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 animate-fade-in mx-2 sm:mx-0" style={{ animationDelay: '0.2s' }}>
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-3 sm:mb-4 md:mb-6">
-                Spanish Skill Improvement
-              </h3>
-              <div className="space-y-2 sm:space-y-3 md:space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-xs sm:text-sm md:text-base">Current Level</span>
-                  <span className="text-gray-600 text-xs sm:text-sm md:text-base">TODAY</span>
-                </div>
-                <div className="space-y-2 sm:space-y-3">
-                  <div className="flex justify-between items-center py-1 sm:py-2">
-                    <span className="text-gray-700 text-xs sm:text-sm">PROBLEMATIC</span>
-                    <span className="text-xs sm:text-sm text-gray-500 text-right">IMPROVED SPEAKING & COMPREHENSION</span>
-                  </div>
-                  <div className="bg-gray-200 rounded-full h-1.5 sm:h-2">
-                    <div className="bg-orange-500 h-1.5 sm:h-2 rounded-full transition-all duration-1000" style={{ width: '25%' }}></div>
-                  </div>
-                  <div className="text-right text-xs sm:text-sm text-gray-600 mt-1 sm:mt-2">IN 3 MONTHS</div>
-                  <div className="flex justify-between items-center py-1 sm:py-2">
-                    <span className="text-gray-700 text-xs sm:text-sm">PROBLEMATIC</span>
-                    <span className="text-xs sm:text-sm text-gray-500 text-right">IMPROVED SPEAKING & COMPREHENSION</span>
-                  </div>
-                  <div className="bg-gray-200 rounded-full h-1.5 sm:h-2">
-                    <div className="bg-green-500 h-1.5 sm:h-2 rounded-full transition-all duration-1000" style={{ width: '85%' }}></div>
-                  </div>
-                  <div className="text-center">
-                    <span className="bg-green-500 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
-                      With SpanishVIP
+              {journey.cards.startingLevel.progress && (
+                <div className="mt-2">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-600 text-xs sm:text-sm">
+                      {journey.cards.startingLevel.progress.label ?? "Progress"}
+                    </span>
+                    <span className="text-gray-900 text-xs sm:text-sm font-semibold">
+                      {Math.max(0, Math.min(100, journey.cards.startingLevel.progress.current))}%
                     </span>
                   </div>
+                  <div className="bg-gray-200 rounded-full h-2 sm:h-3">
+                    <div
+                      className="bg-orange-500 h-2 sm:h-3 rounded-full transition-all duration-700"
+                      style={{ width: `${Math.max(0, Math.min(100, journey.cards.startingLevel.progress.current))}%` }}
+                    />
+                  </div>
                 </div>
+              )}
+
+              <div className="mt-4">
+                <Button
+                  className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  onClick={() => document.getElementById('book-class-section')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  {journey.cards.startingLevel.cta?.label ?? "Book your free 1:1 class"}
+                </Button>
+                {journey.cards.startingLevel.footnote && (
+                  <p className="text-xs text-gray-500 mt-2">{journey.cards.startingLevel.footnote}</p>
+                )}
               </div>
             </div>
 
-            {/* CARD 4 - Success Rate/Statistics */}
+            {/* CARD 2 - Focus Plan */}
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 animate-fade-in mx-2 sm:mx-0" style={{ animationDelay: '0.1s' }}>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-3 sm:mb-4 md:mb-6">
+                {journey.cards.focusPlan.title}
+              </h3>
+              {journey.cards.focusPlan.bullets && (
+                <ul className="list-disc pl-5 space-y-2">
+                  {journey.cards.focusPlan.bullets.map((b, i) => (
+                    <li key={i} className="text-gray-700 text-xs sm:text-sm md:text-base">{b}</li>
+                  ))}
+                </ul>
+              )}
+              {journey.cards.focusPlan.chips && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {journey.cards.focusPlan.chips.map((c) => (
+                    <span key={c} className="px-2 py-1 bg-amber-50 text-amber-700 rounded-full text-xs sm:text-sm border border-amber-200">
+                      {c}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <div className="mt-4">
+                <Button
+                  variant="outline"
+                  className="px-4 sm:px-6 py-2 text-sm sm:text-base font-semibold rounded-lg shadow-sm border-orange-300 text-orange-700 hover:bg-orange-50"
+                  onClick={() => document.getElementById('book-class-section')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  {journey.cards.focusPlan.cta?.label ?? "See this plan in your free class"}
+                </Button>
+              </div>
+            </div>
+
+            {/* CARD 3 - Timeline */}
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 animate-fade-in mx-2 sm:mx-0" style={{ animationDelay: '0.2s' }}>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-3 sm:mb-4 md:mb-6">
+                {journey.cards.timeline.title}
+              </h3>
+              {journey.cards.timeline.bullets && (
+                <ul className="list-disc pl-5 space-y-2">
+                  {journey.cards.timeline.bullets.map((b, i) => (
+                    <li key={i} className="text-gray-700 text-xs sm:text-sm md:text-base">{b}</li>
+                  ))}
+                </ul>
+              )}
+              {journey.cards.timeline.progress && (
+                <div className="mt-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-600 text-xs sm:text-sm">
+                      {journey.cards.timeline.progress.label}
+                    </span>
+                    <span className="text-gray-900 text-xs sm:text-sm font-semibold">
+                      {Math.min(100, Math.round((journey.cards.timeline.progress.current / journey.cards.timeline.progress.target) * 100))}%
+                    </span>
+                  </div>
+                  <div className="bg-gray-200 rounded-full h-2 sm:h-3">
+                    <div
+                      className="bg-green-500 h-2 sm:h-3 rounded-full transition-all duration-700"
+                      style={{ width: `${Math.min(100, Math.round((journey.cards.timeline.progress.current / journey.cards.timeline.progress.target) * 100))}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+              <div className="mt-4">
+                <Button
+                  variant="outline"
+                  className="px-4 sm:px-6 py-2 text-sm sm:text-base font-semibold rounded-lg shadow-sm border-green-300 text-green-700 hover:bg-green-50"
+                  onClick={() => { window.location.href = 'https://spanishvip.com/group-classes/'; }}
+                >
+                  {journey.cards.timeline.cta?.label ?? "Start a free group session"}
+                </Button>
+              </div>
+            </div>
+
+            {/* CARD 4 - Proof & Tutor */}
             <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 animate-fade-in mx-2 sm:mx-0" style={{ animationDelay: '0.3s' }}>
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-3 sm:mb-4 md:mb-6">
-                Boost of Learning Success
-                </h3>
+                {journey.cards.proofTutor.title}
+              </h3>
+              {journey.cards.proofTutor.subtitle && (
+                <p className="text-gray-700 text-xs sm:text-sm md:text-base mb-4">{journey.cards.proofTutor.subtitle}</p>
+              )}
               <div className="flex items-center justify-center">
                 <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48">
                   <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="40"
-                      stroke="#e5e7eb"
-                      strokeWidth="6"
-                      fill="none"
-                    />
+                    <circle cx="50" cy="50" r="40" stroke="#e5e7eb" strokeWidth="6" fill="none" />
                     <circle
                       cx="50"
                       cy="50"
@@ -414,18 +457,31 @@ const ConversionLandingPage = ({
                       stroke="#ea580c"
                       strokeWidth="6"
                       fill="none"
-                      strokeDasharray="251.2"
-                      strokeDashoffset="50.24"
-                      className="transition-all duration-1000"
+                      strokeDasharray={ringCircumference}
+                      strokeDashoffset={ringDashOffset}
+                      className="transition-all duration-700"
                     />
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800">80%</div>
+                    <div className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800">{readinessNum}%</div>
                   </div>
                 </div>
               </div>
-              <div className="text-xs sm:text-sm text-gray-600 text-center mt-2">
-                success rate in our study comparing 20 participants
+              {journey.cards.proofTutor.stat?.label && (
+                <div className="text-xs sm:text-sm text-gray-600 text-center mt-2">
+                  {journey.cards.proofTutor.stat.label}
+                </div>
+              )}
+              <div className="mt-4 text-center">
+                <Button
+                  className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  onClick={() => document.getElementById('book-class-section')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  {journey.cards.proofTutor.cta?.label ?? "Book your free 1:1 class"}
+                </Button>
+                {journey.cards.proofTutor.footnote && (
+                  <p className="text-xs text-gray-500 mt-2">{journey.cards.proofTutor.footnote}</p>
+                )}
               </div>
             </div>
           </div>
