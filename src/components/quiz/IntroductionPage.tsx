@@ -82,40 +82,6 @@ const IntroductionPage = ({ config, onStart, onDebugLanding }: IntroductionPageP
         </p>
       )}
 
-      {/* DEBUG: Remove this section for production */}
-      {onDebugLanding && (
-        <Dialog open={isDebugOpen} onOpenChange={setIsDebugOpen}>
-          <DialogTrigger asChild>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="fixed top-4 right-4 z-50 bg-red-50 border-red-200 text-red-600 hover:bg-red-100"
-            >
-              <Settings className="w-4 h-4 mr-1" />
-              Debug
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Debug Mode</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <p className="text-sm text-muted-foreground">
-                Jump directly to different parts of the quiz for testing:
-              </p>
-              <Button 
-                onClick={() => {
-                  onDebugLanding();
-                  setIsDebugOpen(false);
-                }}
-                className="w-full"
-              >
-                Go to Conversion Landing Page
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
     </div>
   );
 };
