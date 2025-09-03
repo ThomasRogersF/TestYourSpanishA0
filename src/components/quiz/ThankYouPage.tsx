@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { ConfettiBurst } from "./ConfettiBurst";
 
 import { Button } from "@/components/ui/button";
 import { QuizConfig } from "@/types/quiz";
@@ -10,8 +12,15 @@ interface ThankYouPageProps {
 }
 
 const ThankYouPage = ({ config, onExternalRedirect }: ThankYouPageProps) => {
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  useEffect(() => {
+    setShowConfetti(true);
+  }, []);
+
   return (
     <div className="quiz-container w-full max-w-2xl shadow-soft">
+      <ConfettiBurst active={showConfetti} duration={4000} onDone={() => setShowConfetti(false)} />
       <div className="flex justify-center mb-10">
         <div className="w-20 h-20 bg-brand-primary rounded-full flex items-center justify-center shadow-md">
           <Check className="w-10 h-10 text-white" />

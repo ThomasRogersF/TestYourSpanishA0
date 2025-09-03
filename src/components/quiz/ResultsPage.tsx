@@ -19,8 +19,8 @@ const ResultsPage = ({
   return (
     <div className="quiz-container w-full max-w-2xl shadow-soft">
       <div className="flex justify-center mb-6">
-        <img 
-          src={config.logoUrl || "/placeholder.svg"} 
+        <img
+          src={config.logoUrl || "/placeholder.svg"}
           alt={`${config.title} logo`}
           className="h-14 w-auto"
         />
@@ -49,12 +49,12 @@ const ResultsPage = ({
       
       <div className="mb-8">
         <p className="text-sm text-gray-500">
-          Your results have been saved and will be sent to your email. 
+          Your results have been saved and will be sent to your email.
           Feel free to reach out if you have any questions!
         </p>
       </div>
       
-      <Button 
+      <Button
         className="quiz-button w-full shadow-soft"
         onClick={onContinue}
       >

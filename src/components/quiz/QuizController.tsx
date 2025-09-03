@@ -50,6 +50,8 @@ const QuizController = ({ config }: QuizControllerProps) => {
     }
   };
 
+
+
   const handleAnswer = (answer: QuizAnswer) => {
     console.log("Answer received:", answer);
     
@@ -217,7 +219,7 @@ const QuizController = ({ config }: QuizControllerProps) => {
           <IntroductionPage 
             config={config}
             onStart={handleStartQuiz}
-            // onDebugLanding={handleDebugLanding} // DEBUG: Disabled for production
+            onDebugLanding={handleDebugLanding} // DEBUG: Enable for debugging
           />
         );
       case "questions":
