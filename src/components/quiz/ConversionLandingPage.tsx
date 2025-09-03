@@ -271,12 +271,13 @@ const ConversionLandingPage = ({
                   alt="Spanish learning success"
                   className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center">
                   <button
                     onClick={() => openVideoModal("https://www.youtube.com/embed/aIaWXzztvc0")}
-                    className="bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-2 sm:p-3 md:p-4 transition-all duration-300 transform hover:scale-110"
+                    aria-label="Play video"
+                    className="p-2 sm:p-3 md:p-4 rounded-full bg-transparent hover:bg-transparent"
                   >
-                    <Play className="h-4 w-4 sm:h-6 sm:w-6 md:h-8 md:w-8 text-orange-600 ml-0.5 sm:ml-1" />
+                    <Play className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-orange-600" />
                   </button>
                 </div>
               </div>
@@ -680,28 +681,24 @@ const ConversionLandingPage = ({
 
             {/* Video Modal */}
       <Dialog open={isVideoModalOpen} onOpenChange={setIsVideoModalOpen}>
-        <DialogContent className="max-w-4xl w-full p-0 mx-4">
-          <DialogHeader className="p-4 sm:p-6 pb-0">
-            <DialogTitle className="flex items-center justify-between">
-              <span className="text-sm sm:text-base">Student Testimonial</span>
-              <button
-                onClick={closeVideoModal}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <X className="h-5 w-5 sm:h-6 sm:w-6" />
-              </button>
-            </DialogTitle>
-          </DialogHeader>
-          <div className="p-4 sm:p-6 pt-0">
+        <DialogContent className="max-w-6xl w-full p-0 mx-0 bg-transparent">
+          <div className="relative aspect-video w-full">
             {selectedVideo && (
-              <div className="aspect-video w-full">
+              <>
+                <button
+                  onClick={closeVideoModal}
+                  aria-label="Close video"
+                  className="absolute top-2 right-2 z-20 bg-white/80 hover:bg-white text-gray-800 rounded-full p-1.5 sm:p-2 shadow"
+                >
+                  <X className="h-4 w-4 sm:h-5 sm:w-5" />
+                </button>
                 <iframe
                   src={selectedVideo}
                   title="Student Testimonial"
-                  className="w-full h-full rounded-lg"
+                  className="w-full h-full"
                   allowFullScreen
                 />
-              </div>
+              </>
             )}
           </div>
         </DialogContent>
