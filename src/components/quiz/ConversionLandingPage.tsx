@@ -432,7 +432,7 @@ const ConversionLandingPage = ({
                 <Button
                   variant="outline"
                   className="px-4 sm:px-6 py-2 text-sm sm:text-base font-semibold rounded-lg shadow-sm border-green-300 text-green-700 hover:bg-green-50"
-                  onClick={() => { window.location.href = 'https://spanishvip.com/group-classes/'; }}
+                  onClick={() => window.parent.postMessage({ action: 'redirect', url: 'https://spanishvip.com/group-classes/' }, '*')}
                 >
                   {journey.cards.timeline.cta?.label ?? "Start a free group session"}
                 </Button>
