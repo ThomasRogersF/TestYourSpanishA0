@@ -271,13 +271,13 @@ const ConversionLandingPage = ({
                   alt="Spanish learning success"
                   className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover"
                 />
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
                   <button
                     onClick={() => openVideoModal("https://www.youtube.com/embed/aIaWXzztvc0")}
                     aria-label="Play video"
-                    className="p-2 sm:p-3 md:p-4 rounded-full bg-transparent hover:bg-transparent"
+                    className="bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-2 sm:p-3 md:p-4 transition-all duration-300 transform hover:scale-110"
                   >
-                    <Play className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-orange-600" />
+                    <Play className="h-4 w-4 sm:h-6 sm:w-6 md:h-8 md:w-8 text-orange-600 ml-0.5 sm:ml-1" />
                   </button>
                 </div>
               </div>
