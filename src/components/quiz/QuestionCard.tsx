@@ -8,6 +8,9 @@ import ImageSelection from "./QuestionTypes/ImageSelection";
 import AudioQuestion from "./QuestionTypes/AudioQuestion";
 import TextInput from "./QuestionTypes/TextInput";
 import FillInBlanks from "./QuestionTypes/FillInBlanks";
+import OrderQuestion from "./QuestionTypes/OrderQuestion";
+import { useNotification } from "@/hooks/useNotification";
+import { Notification } from "@/components/ui/Notification";
 
 interface QuestionCardProps {
   question: QuizQuestion;
@@ -19,15 +22,17 @@ interface QuestionCardProps {
   onPrevious: () => void;
 }
 
-const QuestionCard = ({ 
-  question, 
+const QuestionCard = ({
+  question,
   progress,
   currentAnswer,
   canGoBack,
-  onAnswer, 
+  onAnswer,
   onNext,
   onPrevious
 }: QuestionCardProps) => {
+  const { notification, showAnswerNotification } = useNotification();
+
   // Calculate question number based on question ID
   const getQuestionNumber = () => {
     // Extract number from question ID (e.g., "q1" -> "1")
@@ -58,6 +63,7 @@ const QuestionCard = ({
             currentAnswer={currentAnswer}
             onAnswer={onAnswer}
             onNext={onNext}
+            onNotification={showAnswerNotification}
           />
         );
       case 'image-selection':
@@ -67,6 +73,7 @@ const QuestionCard = ({
             currentAnswer={currentAnswer}
             onAnswer={onAnswer}
             onNext={onNext}
+            onNotification={showAnswerNotification}
           />
         );
       case 'audio':
@@ -76,6 +83,7 @@ const QuestionCard = ({
             currentAnswer={currentAnswer}
             onAnswer={onAnswer}
             onNext={onNext}
+            onNotification={showAnswerNotification}
           />
         );
       case 'text':
@@ -85,6 +93,7 @@ const QuestionCard = ({
             currentAnswer={currentAnswer}
             onAnswer={onAnswer}
             onNext={onNext}
+            onNotification={showAnswerNotification}
           />
         );
       case 'fill-in-blanks':
@@ -94,6 +103,17 @@ const QuestionCard = ({
             currentAnswer={currentAnswer}
             onAnswer={onAnswer}
             onNext={onNext}
+            onNotification={showAnswerNotification}
+          />
+        );
+      case 'order':
+        return (
+          <OrderQuestion
+            question={question}
+            currentAnswer={currentAnswer}
+            onAnswer={onAnswer}
+            onNext={onNext}
+            onNotification={showAnswerNotification}
           />
         );
       default:
@@ -103,10 +123,13 @@ const QuestionCard = ({
 
   return (
     <div className="w-full max-w-2xl">
+      {/* Notification Component */}
+      <Notification notification={notification} />
+
       {/* Top actions: SpanishVIP link and Previous question */}
       <div className="flex items-center justify-between mb-4">
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           size="sm"
           onClick={() => window.parent.postMessage({ action: 'redirect', url: 'https://spanishvip.com/' }, '*')}
           aria-label="Go to SpanishVIP website"
@@ -131,11 +154,11 @@ const QuestionCard = ({
       {/* Main question container */}
       <div className="quiz-container animate-scale-in shadow-soft">
         <ProgressBar progress={progress} />
-        
+
         <h2 className="text-2xl font-bold mb-4 text-brand-primary">
           {getQuestionNumber()}. {mainQuestion}
         </h2>
-        
+
         {/* Special conversation box for question 2 - inside quiz container */}
         {question.id === "q2" && conversation && (
           <div className="mb-6 p-6 bg-gray-50 border-2 border-gray-200 rounded-[1rem] shadow-sm">
@@ -144,11 +167,11 @@ const QuestionCard = ({
             </div>
           </div>
         )}
-        
+
         {question.subtitle && (
           <p className="text-gray-600 mb-6">{question.subtitle}</p>
         )}
-        
+
         {renderQuestionType()}
       </div>
     </div>

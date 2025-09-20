@@ -4,19 +4,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { QuizQuestion, QuizAnswer } from "@/types/quiz";
 import { useToast } from "@/components/ui/use-toast";
+import { isAnswerCorrect } from "@/utils/quizUtils";
 
 interface FillInBlanksProps {
   question: QuizQuestion;
   currentAnswer?: QuizAnswer;
   onAnswer: (answer: QuizAnswer) => void;
   onNext: () => void;
+  onNotification?: (isCorrect: boolean) => void;
 }
 
 const FillInBlanks: React.FC<FillInBlanksProps> = ({
   question,
   currentAnswer,
   onAnswer,
-  onNext
+  onNext,
+  onNotification
 }) => {
   const [userInput, setUserInput] = useState<string>(
     currentAnswer?.value as string || ""
@@ -35,10 +38,19 @@ const FillInBlanks: React.FC<FillInBlanksProps> = ({
       type: question.type,
       value: userInput.trim()
     };
-    
+
     onAnswer(answer);
-    
-    // Automatically proceed to next question without toast notification
+
+    // Show debug notification if callback is provided
+    if (onNotification && userInput && userInput.trim()) {
+      const isCorrect = isAnswerCorrect(answer);
+      console.log("FillInBlanks: Answer correctness:", isCorrect);
+
+      console.log('FillInBlanks: Setting notification:', isCorrect);
+      onNotification(isCorrect);
+    }
+
+    // Automatically proceed to next question
     onNext();
   };
 

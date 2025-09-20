@@ -4,19 +4,22 @@ import { Button } from "@/components/ui/button";
 import { QuizQuestion, QuizAnswer } from "@/types/quiz";
 import { Volume2, Play, Pause, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { isAnswerCorrect } from "@/utils/quizUtils";
 
 interface AudioQuestionProps {
   question: QuizQuestion;
   currentAnswer?: QuizAnswer;
   onAnswer: (answer: QuizAnswer) => void;
   onNext: () => void;
+  onNotification?: (isCorrect: boolean) => void;
 }
 
 const AudioQuestion = ({
   question,
   currentAnswer,
   onAnswer,
-  onNext
+  onNext,
+  onNotification
 }: AudioQuestionProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioCompleted, setAudioCompleted] = useState(false);
@@ -96,22 +99,37 @@ const AudioQuestion = ({
   
   const handleNext = () => {
     console.log("Next button clicked in AudioQuestion");
-    
+
     // Stop audio if playing
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
     }
-    
+
     // Proceed if:
     // 1. Audio was completed AND a selection was made (if options exist)
     // 2. OR question is not required
-    const canProceed = !question.required || 
-                       (audioCompleted && 
+    const canProceed = !question.required ||
+                       (audioCompleted &&
                         (!question.options?.length || selectedOption));
-    
+
     if (canProceed) {
       console.log("Proceeding to next question");
+
+      // Show debug notification if callback is provided and we have an answer
+      if (onNotification && selectedOption) {
+        const answer: QuizAnswer = {
+          questionId: question.id,
+          type: question.type,
+          value: selectedOption
+        };
+        const isCorrect = isAnswerCorrect(answer);
+        console.log("AudioQuestion: Answer correctness:", isCorrect);
+
+        console.log('AudioQuestion: Setting notification:', isCorrect);
+        onNotification(isCorrect);
+      }
+
       onNext();
     } else {
       console.log("Cannot proceed: conditions not met");

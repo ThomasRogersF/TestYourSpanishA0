@@ -1,5 +1,5 @@
 
-export type QuestionType = 'mcq' | 'image-selection' | 'audio' | 'text' | 'fill-in-blanks';
+export type QuestionType = 'mcq' | 'image-selection' | 'audio' | 'text' | 'fill-in-blanks' | 'order';
 
 export interface ConditionRule {
   questionId: string;
@@ -17,7 +17,9 @@ export interface QuizQuestion {
   required: boolean;
   options?: QuizOption[];
   imageOptions?: QuizImageOption[];
+  imageUrl?: string;
   audioUrl?: string;
+  orderQuestion?: QuizOrderQuestion;
   conditionalLogic?: ConditionRule[];
 }
 
@@ -32,6 +34,11 @@ export interface QuizImageOption {
   src: string;
   alt: string;
   value: string;
+}
+
+export interface QuizOrderQuestion {
+  words: string[];
+  correctAnswer: string;
 }
 
 export interface QuizConfig {

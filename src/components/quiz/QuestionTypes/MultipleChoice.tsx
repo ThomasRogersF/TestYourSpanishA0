@@ -4,19 +4,22 @@ import { QuizQuestion, QuizAnswer } from "@/types/quiz";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { isAnswerCorrect } from "@/utils/quizUtils";
 
 interface MultipleChoiceProps {
   question: QuizQuestion;
   currentAnswer?: QuizAnswer;
   onAnswer: (answer: QuizAnswer) => void;
   onNext: () => void;
+  onNotification?: (isCorrect: boolean) => void;
 }
 
-const MultipleChoice = ({ 
-  question, 
+const MultipleChoice = ({
+  question,
   currentAnswer,
-  onAnswer, 
-  onNext 
+  onAnswer,
+  onNext,
+  onNotification
 }: MultipleChoiceProps) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(
     currentAnswer?.value as string || null
@@ -44,6 +47,21 @@ const MultipleChoice = ({
     // Ensure an option is selected before proceeding or allow skipping if not required
     if (selectedOption || !question.required) {
       console.log("MultipleChoice: Proceeding to next question");
+
+      // Show debug notification if callback is provided
+      if (onNotification && selectedOption) {
+        const answer: QuizAnswer = {
+          questionId: question.id,
+          type: 'mcq',
+          value: selectedOption
+        };
+        const isCorrect = isAnswerCorrect(answer);
+        console.log("MultipleChoice: Answer correctness:", isCorrect);
+
+        console.log('MultipleChoice: Setting notification:', isCorrect);
+        onNotification(isCorrect);
+      }
+
       onNext();
     } else {
       console.log("MultipleChoice: Cannot proceed - No option selected and question is required");
@@ -66,6 +84,21 @@ const MultipleChoice = ({
       <div className="text-lg font-medium text-gray-700 mb-4">
         Select the correct answer to the question 🤔
       </div>
+
+      {/* Display image if imageUrl exists */}
+      {question.imageUrl && (
+        <div className="flex justify-center mb-6">
+          <img
+            src={question.imageUrl}
+            alt="Question visual"
+            className="max-w-full max-h-64 rounded-lg shadow-md object-contain"
+            onError={(e) => {
+              console.error("Failed to load image:", question.imageUrl);
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        </div>
+      )}
 
       {question.options && question.options.map((option) => (
         <div

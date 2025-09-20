@@ -3,19 +3,22 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { QuizQuestion, QuizAnswer } from "@/types/quiz";
+import { isAnswerCorrect } from "@/utils/quizUtils";
 
 interface TextInputProps {
   question: QuizQuestion;
   currentAnswer?: QuizAnswer;
   onAnswer: (answer: QuizAnswer) => void;
   onNext: () => void;
+  onNotification?: (isCorrect: boolean) => void;
 }
 
 const TextInput = ({
   question,
   currentAnswer,
   onAnswer,
-  onNext
+  onNext,
+  onNotification
 }: TextInputProps) => {
   const [text, setText] = useState<string>(
     currentAnswer ? currentAnswer.value as string : ""
@@ -34,6 +37,20 @@ const TextInput = ({
   
   const handleNext = () => {
     if ((text && text.trim()) || !question.required) {
+      // Show debug notification if callback is provided
+      if (onNotification && text && text.trim()) {
+        const answer: QuizAnswer = {
+          questionId: question.id,
+          type: question.type,
+          value: text.trim()
+        };
+        const isCorrect = isAnswerCorrect(answer);
+        console.log("TextInput: Answer correctness:", isCorrect);
+
+        console.log('TextInput: Setting notification:', isCorrect);
+        onNotification(isCorrect);
+      }
+
       onNext();
     }
   };

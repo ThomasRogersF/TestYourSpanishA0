@@ -3,19 +3,22 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { QuizQuestion, QuizAnswer } from "@/types/quiz";
 import { cn } from "@/lib/utils";
+import { isAnswerCorrect } from "@/utils/quizUtils";
 
 interface ImageSelectionProps {
   question: QuizQuestion;
   currentAnswer?: QuizAnswer;
   onAnswer: (answer: QuizAnswer) => void;
   onNext: () => void;
+  onNotification?: (isCorrect: boolean) => void;
 }
 
 const ImageSelection = ({
   question,
   currentAnswer,
   onAnswer,
-  onNext
+  onNext,
+  onNotification
 }: ImageSelectionProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(
     currentAnswer ? currentAnswer.value as string : null
@@ -33,6 +36,20 @@ const ImageSelection = ({
   
   const handleNext = () => {
     if (selectedImage || !question.required) {
+      // Show debug notification if callback is provided
+      if (onNotification && selectedImage) {
+        const answer: QuizAnswer = {
+          questionId: question.id,
+          type: question.type,
+          value: selectedImage
+        };
+        const isCorrect = isAnswerCorrect(answer);
+        console.log("ImageSelection: Answer correctness:", isCorrect);
+
+        console.log('ImageSelection: Setting notification:', isCorrect);
+        onNotification(isCorrect);
+      }
+
       onNext();
     }
   };
