@@ -236,8 +236,8 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q19",
       type: "audio",
-      title: "Listen to the audio! What does it mean? (Buenos días)",
-      audioUrl: "https://via.placeholder.com/audio/buenos-dias.mp3", // TODO: Replace with actual audio URL
+      title: "Listen to the audio! What does it mean?",
+      audioUrl: "/music/audioquizz/buenos dias.mp3",
       required: true,
       options: [
         { id: "a1", text: "Good afternoon", value: "good_afternoon" },
@@ -249,8 +249,8 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q20",
       type: "audio",
-      title: "Listen to the audio! What does it mean? (Buenas noches)",
-      audioUrl: "https://via.placeholder.com/audio/buenas-noches.mp3", // TODO: Replace with actual audio URL
+      title: "Listen to the audio! What does it mean?",
+      audioUrl: "/music/audioquizz/buenas noches.mp3",
       required: true,
       options: [
         { id: "a1", text: "Good morning", value: "good_morning" },
@@ -262,8 +262,8 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q21",
       type: "audio",
-      title: "Listen to the audio! Where is Ana from? (Me llamo Ana. Soy de México.)",
-      audioUrl: "https://via.placeholder.com/audio/ana-mexico.mp3", // TODO: Replace with actual audio URL
+      title: "Listen to the audio! Where is Ana from?",
+      audioUrl: "/music/audioquizz/me llamo Ana soy de mexico.mp3",
       required: true,
       options: [
         { id: "a1", text: "España", value: "espana" },
@@ -275,8 +275,8 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q22",
       type: "audio",
-      title: "Listen to the audio! How old is Pedro? (Soy Pedro. Tengo 25 años.)",
-      audioUrl: "https://via.placeholder.com/audio/pedro-25.mp3", // TODO: Replace with actual audio URL
+      title: "Listen to the audio! How old is Pedro?",
+      audioUrl: "/music/audioquizz/soy pedro tengo 25 anos.mp3",
       required: true,
       options: [
         { id: "a1", text: "15", value: "15" },
@@ -288,8 +288,8 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q23",
       type: "audio",
-      title: "Listen to the audio! What number is it? (diez)",
-      audioUrl: "https://via.placeholder.com/audio/diez.mp3", // TODO: Replace with actual audio URL
+      title: "Listen to the audio! What number is it?",
+      audioUrl: "/music/audioquizz/diez.mp3",
       required: true,
       options: [
         { id: "a1", text: "5", value: "5" },
@@ -301,8 +301,8 @@ export const sampleQuiz: QuizConfig = {
     {
       id: "q24",
       type: "audio",
-      title: "Listen to the audio! What number is it? Quince.",
-      audioUrl: "https://via.placeholder.com/audio/quince.mp3", // TODO: Replace with actual audio URL
+      title: "Listen to the audio! What number is it?",
+      audioUrl: "/music/audioquizz/quince.mp3",
       required: true,
       options: [
         { id: "a1", text: "5", value: "5" },
