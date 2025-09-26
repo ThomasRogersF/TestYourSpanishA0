@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A0 Quiz Results - Spanish Level Assessment</title>
+    <meta name="description" content="Your A0 Spanish quiz results with detailed analysis and recommendations.">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="print.css" media="print">
+</head>
+<body>
+    <div class="container" id="results-container">
+        <!-- Header Section -->
+        <div class="header" id="results-header">
+            <div class="header-left">
+                <div class="headline" id="headline">Quiz Results</div>
+                <div class="congratulations" id="congratulations">Congratulations, John Doe</div>
+            </div>
+            <div class="header-right">
+                <div class="stat-item">
+                    <div class="stat-value" id="score-display">24/40</div>
+                    <div class="stat-label">Score</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="total-time">12:34</div>
+                    <div class="stat-label">Total Time</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="avg-time">18s</div>
+                    <div class="stat-label">Avg per Question</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Insights Section -->
+        <div class="insights" id="insights-row">
+            <div class="insight-card">
+                <h3>Skill Radar</h3>
+                <canvas class="radar-chart" id="skill-radar"></canvas>
+            </div>
+            <div class="insight-card">
+                <h3>Item Types</h3>
+                <canvas class="type-chart" id="item-types"></canvas>
+            </div>
+        </div>
+
+        <!-- Question Review Section -->
+        <div class="question-review" id="question-review">
+            <h2>Question Review</h2>
+            <div class="filter-bar" id="filter-bar">
+                <div class="filter-group">
+                    <label for="status-filter">Status:</label>
+                    <select id="status-filter">
+                        <option value="all">All</option>
+                        <option value="correct">Correct</option>
+                        <option value="incorrect">Incorrect</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="skill-filter">Skill:</label>
+                    <select id="skill-filter">
+                        <option value="all">All</option>
+                        <option value="vocabulary">Vocabulary</option>
+                        <option value="grammar">Grammar</option>
+                        <option value="listening">Listening</option>
+                        <option value="reading">Reading</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="type-filter">Type:</label>
+                    <select id="type-filter">
+                        <option value="all">All</option>
+                        <option value="mcq">Multiple Choice</option>
+                        <option value="audio">Audio</option>
+                        <option value="fill-in-blanks">Fill in Blanks</option>
+                        <option value="order">Order</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="difficulty-filter">Difficulty:</label>
+                    <select id="difficulty-filter">
+                        <option value="all">All</option>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="audio-only-toggle">Audio Only:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="audio-only-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            <table class="question-table" id="question-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>Prompt</th>
+                        <th>Your Answer</th>
+                        <th>Correct</th>
+                        <th>Skill</th>
+                        <th>Time</th>
+                        <th>Why</th>
+                    </tr>
+                </thead>
+                <tbody id="question-table-body">
+                    <!-- Questions will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer" id="results-footer">
+            <button class="export-btn" id="export-pdf-btn" onclick="exportResultsToPDF()">Download Results as PDF</button>
+            <details>
+                <summary>Debug JSON</summary>
+                <div class="debug-json" id="debug-json">
+                    <!-- Debug JSON will be populated by JavaScript -->
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <script src="results.js"></script>
+
+    <script>
+        // Helper functions
+        function getDifficulty(question) {
+            const id = parseInt(question.id.slice(1));
+            if (id <= 10) return 'easy';
+            if (id <= 25) return 'medium';
+            return 'hard';
+        }
+
+        function getSkill(question) {
+            const id = parseInt(question.id.slice(1));
+            if (id <= 4) return 'vocabulary';
+            if (id <= 18) return 'grammar';
+            if (id <= 24) return 'listening';
+            if (id <= 30) return 'reading';
+            return 'conversation';
+        }
+
+        // Load data from localStorage
+        const config = JSON.parse(localStorage.getItem('quizConfig'));
+        const participant = JSON.parse(localStorage.getItem('quizParticipant'));
+        const personalizedResult = JSON.parse(localStorage.getItem('personalizedResult'));
+        const gradedAnswers = JSON.parse(localStorage.getItem('gradedAnswers'));
+        const userContext = JSON.parse(localStorage.getItem('userContext'));
+
+        // Build quiz object
+        const quiz = {
+            id: config.id,
+            title: config.title,
+            description: config.description,
+            questions: config.questions.map(q => ({
+                id: q.id,
+                type: q.type,
+                title: q.title,
+                skill: getSkill(q),
+                difficulty: getDifficulty(q)
+            }))
+        };
+
+        // Build results object
+        const answers = participant.answers.map(a => {
+            const question = config.questions.find(q => q.id === a.questionId);
+            const isCorrect = checkAnswer(question, a.value);
+            return {
+                questionId: a.questionId,
+                correct: isCorrect,
+                answer: a.value,
+                correctAnswer: getCorrectAnswer(question),
+                time: 0 // placeholder
+            };
+        });
+
+        const results = {
+            participant: participant,
+            score: answers.filter(a => a.correct).length,
+            totalQuestions: config.questions.length,
+            accuracy: (answers.filter(a => a.correct).length / config.questions.length) * 100,
+            totalTime: answers.reduce((sum, a) => sum + a.time, 0),
+            averageTime: answers.reduce((sum, a) => sum + a.time, 0) / answers.length,
+            completionRate: 100,
+            level: personalizedResult.title.split(' ')[0] || 'A0',
+            answers: answers
+        };
+
+        const data = { quiz, results };
+        window.data = data;
+
+        // Initialize charts and populate data
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSkillRadar();
+            initializeItemTypes();
+            populateQuestionTable();
+            populateDebugJSON();
+            updateStats();
+        });
+
+
+        function initializeSkillRadar() {
+            const skills = ['vocabulary', 'grammar', 'listening', 'reading'];
+            const skillScores = {};
+
+            skills.forEach(skill => {
+                const skillQuestions = quiz.questions.filter(q => q.skill === skill);
+                const skillAnswers = results.answers.filter(a => skillQuestions.find(q => q.id === a.questionId));
+                const correct = skillAnswers.filter(a => a.correct).length;
+                skillScores[skill] = skillQuestions.length > 0 ? (correct / skillQuestions.length) * 100 : 0;
+            });
+
+            const ctx = document.getElementById('skill-radar').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: skills.map(s => s.charAt(0).toUpperCase() + s.slice(1)),
+                    datasets: [{
+                        data: Object.values(skillScores),
+                        backgroundColor: 'rgba(255, 89, 19, 0.2)',
+                        borderColor: '#FF5913',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+
+        function initializeItemTypes() {
+            const types = ['mcq', 'audio', 'fill-in-blanks', 'order'];
+            const typeCounts = {};
+
+            types.forEach(type => {
+                const typeQuestions = quiz.questions.filter(q => q.type === type);
+                const typeAnswers = results.answers.filter(a => typeQuestions.find(q => q.id === a.questionId));
+                const correct = typeAnswers.filter(a => a.correct).length;
+                typeCounts[type] = correct;
+            });
+
+            const ctx = document.getElementById('item-types').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: types.map(t => t.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())),
+                    datasets: [{
+                        data: Object.values(typeCounts),
+                        backgroundColor: ['#FF5913', '#1DD3B0', '#FFEB3B', '#9C27B0']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+            });
+        }
+
+        function populateQuestionTable() {
+            const tbody = document.getElementById('question-table-body');
+
+            results.answers.forEach((answer, index) => {
+                const question = quiz.questions.find(q => q.id === answer.questionId);
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${question.type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</td>
+                    <td>${question.title}</td>
+                    <td>${answer.answer}</td>
+                    <td>${answer.correctAnswer}</td>
+                    <td><span class="skill-badge">${question.skill}</span></td>
+                    <td>${answer.time}s</td>
+                    <td>${answer.correct ? 'Correct' : 'Incorrect choice'}</td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        function populateDebugJSON() {
+            const debugDiv = document.getElementById('debug-json');
+            debugDiv.textContent = JSON.stringify(data, null, 2);
+        }
+
+        function updateStats() {
+            document.getElementById('headline').textContent = config.title || 'Quiz Results';
+            document.getElementById('congratulations').textContent = 'Congratulations, ' + (participant.name || 'User');
+            document.getElementById('score-display').textContent = results.score + '/' + results.totalQuestions;
+            document.getElementById('total-time').textContent = formatTime(results.totalTime);
+            document.getElementById('avg-time').textContent = Math.round(results.averageTime) + 's';
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // PDF export removed in favor of exportResultsToPDF() using jsPDF + autoTable
+
+        // Filter functionality
+        document.getElementById('status-filter').addEventListener('change', filterQuestions);
+        document.getElementById('skill-filter').addEventListener('change', filterQuestions);
+        document.getElementById('type-filter').addEventListener('change', filterQuestions);
+        document.getElementById('difficulty-filter').addEventListener('change', filterQuestions);
+        document.getElementById('audio-only-toggle').addEventListener('change', filterQuestions);
+
+        function filterQuestions() {
+            const statusFilter = document.getElementById('status-filter').value;
+            const skillFilter = document.getElementById('skill-filter').value;
+            const typeFilter = document.getElementById('type-filter').value;
+            const difficultyFilter = document.getElementById('difficulty-filter').value;
+            const audioOnly = document.getElementById('audio-only-toggle').checked;
+
+            const rows = document.querySelectorAll('#question-table-body tr');
+
+            rows.forEach((row, index) => {
+                const answer = results.answers[index];
+                const question = quiz.questions.find(q => q.id === answer.questionId);
+
+                let show = true;
+
+                if (statusFilter !== 'all') {
+                    show &= (statusFilter === 'correct') === answer.correct;
+                }
+
+                if (skillFilter !== 'all') {
+                    show &= question.skill === skillFilter;
+                }
+
+                if (typeFilter !== 'all') {
+                    show &= question.type === typeFilter;
+                }
+
+                if (difficultyFilter !== 'all') {
+                    show &= question.difficulty === difficultyFilter;
+                }
+
+                if (audioOnly) {
+                    show &= question.type === 'audio';
+                }
+
+                row.style.display = show ? '' : 'none';
+            });
+        }
+
+        // Sticky header shrink functionality
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('results-header');
+            if (window.scrollY > 100) {
+                header.classList.add('shrunk');
+            } else {
+                header.classList.remove('shrunk');
+            }
+        });
+    </script>
+</body>
+</html>

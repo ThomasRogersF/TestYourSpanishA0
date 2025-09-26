@@ -1,0 +1,170 @@
+/* Print styles for A0 Quiz Results Page - optimized for PDF export */
+
+@page {
+  margin: 0.75in 0.5in 0.75in 0.5in; /* Top, right, bottom, left margins */
+  size: A4;
+}
+
+@media print {
+  /* Base styles for printing */
+  body {
+    background: white !important;
+    color: black !important;
+    font-family: Arial, sans-serif;
+    line-height: 1.4;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Ensure all text is black */
+  h1, h2, h3, h4, h5, h6, p, span, div, td, th {
+    color: black !important;
+  }
+
+  /* Hide interactive elements */
+  button, input, select, .export-btn, .filter-bar {
+    display: none !important;
+  }
+
+  /* Header section - summary */
+  .header {
+    background: white !important;
+    color: black !important;
+    border: 1px solid black;
+    margin-bottom: 20px;
+    page-break-after: always;
+  }
+
+  .outcome-pill {
+    background: white !important;
+    border: 1px solid black;
+    color: black !important;
+  }
+
+  .header-stats {
+    color: black !important;
+  }
+
+  .accuracy-chart {
+    display: none !important; /* Hide chart, assume table fallback exists */
+  }
+
+  /* Insights section - skills radar and bands bar */
+  .insights {
+    page-break-after: always;
+  }
+
+  .insight-card {
+    background: white !important;
+    border: 1px solid black;
+    color: black !important;
+    margin-bottom: 20px;
+  }
+
+  /* Hide charts, show table fallbacks */
+  .radar-chart, .band-chart, .type-chart {
+    display: none !important;
+  }
+
+  /* Assume print-table classes exist for fallbacks */
+  .radar-print-table, .band-print-table {
+    display: table !important;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  .radar-print-table th, .radar-print-table td,
+  .band-print-table th, .band-print-table td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .radar-print-table th, .band-print-table th {
+    background: #f0f0f0 !important;
+    font-weight: bold;
+  }
+
+  /* Skills radar notes */
+  .radar-notes {
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  /* Question review section */
+  .question-review {
+    background: white !important;
+    border: 1px solid black;
+    color: black !important;
+  }
+
+  .question-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  .question-table th, .question-table td {
+    border: 1px solid black;
+    padding: 6px;
+    text-align: left;
+  }
+
+  .question-table th {
+    background: #f0f0f0 !important;
+    font-weight: bold;
+  }
+
+  .question-table tbody tr:nth-child(even) {
+    background: #f9f9f9 !important;
+  }
+
+  .status-correct {
+    color: black !important;
+    font-weight: bold;
+  }
+
+  .status-incorrect {
+    color: black !important;
+    font-weight: bold;
+  }
+
+  .skill-badge {
+    background: #e0e0e0 !important;
+    color: black !important;
+    border: 1px solid black;
+  }
+
+  /* Footer */
+  .footer {
+    background: white !important;
+    border: 1px solid black;
+    color: black !important;
+    page-break-before: always; /* Ensure footer starts new page if needed */
+  }
+
+  /* Hide debug elements */
+  .debug-json {
+    display: none !important;
+  }
+
+  /* Ensure images are visible but not too large */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Page breaks between major sections */
+  .personal-summary {
+    page-break-after: always;
+  }
+
+  /* Responsive adjustments for print */
+  @page {
+    size: A4 portrait;
+  }
+}
