@@ -72,7 +72,7 @@ function computeOutcome(config, participant) {
     correctAnswers,
     accuracy,
     level,
-    timeSpent: 0, // Would need total time
+    timeSpent: participant.totalTime || 0,
     questions: questionResults,
     skillsBreakdown,
     typesBreakdown,
@@ -98,6 +98,8 @@ function checkAnswer(question, userAnswer) {
     case 'text':
       // For text input, might need more complex checking
       return typeof userAnswer === 'string' && userAnswer.toLowerCase().trim() === correctAnswer.toLowerCase();
+    case 'pronunciation':
+      return typeof userAnswer === 'string' && userAnswer.toLowerCase().trim() === correctAnswer.toLowerCase();
     default:
       return false;
   }
@@ -116,6 +118,8 @@ function getCorrectAnswer(question) {
       return question.orderQuestion?.correctAnswer || '';
     case 'text':
       return getExpectedValue(question.id);
+    case 'pronunciation':
+      return question.pronunciationQuestion?.word || '';
     default:
       return '';
   }
@@ -125,6 +129,7 @@ function getCorrectAnswer(question) {
 function getExpectedValue(questionId) {
   // This is a simplified version - in reality, you'd have correct answers defined
   const correctAnswers = {
+    q0: 'hola',
     q1: 'perro', q2: 'gato', q3: 'mesa', q4: 'carro',
     q5: 'hola', q6: 'adios', q7: 'por_favor', q8: 'gracias',
     q9: '', q10: '', // Fill in blanks - would need user input validation
@@ -499,7 +504,7 @@ function downloadPdf(elementId, filename = 'quiz-results.pdf') {
         };
       });
 
-      var results = { answers: answers, totalQuestions: (quiz.questions || []).length };
+      var results = { answers: answers, totalQuestions: (quiz.questions || []).length, totalTime: participant.totalTime || 0 };
       return { quiz: quiz, results: results };
     } catch (e) {
       console.error('Failed to rebuild export data:', e);
@@ -541,9 +546,18 @@ function downloadPdf(elementId, filename = 'quiz-results.pdf') {
     var totalTimeSec = (typeof results.totalTime === 'number') ? results.totalTime : 0;
     var level = results.level || 'A0';
 
+    // Add logo at the top
+    const logoImg = document.getElementById('logo-img');
+    if (logoImg) {
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const logoWidth = 2.0;
+        const x = (pageWidth - logoWidth) / 2;
+        doc.addImage(logoImg, 'PNG', x, 0.25, logoWidth, 0.6);
+    }
+
     // Header: title + meta line + divider
     var left = 0.25;
-    var top = 0.35;
+    var top = 0.95;
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(14);
     doc.text('Results — ' + participantName, left, top);

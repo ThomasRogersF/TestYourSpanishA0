@@ -31,22 +31,33 @@ const QuizController = ({ config }: QuizControllerProps) => {
   const { toast } = useToast();
   const [gradedAnswers, setGradedAnswers] = useState<JourneyAnswer[]>([]);
   const [userContext, setUserContext] = useState<JourneyUserContext | undefined>(undefined);
+  const [quizStartTime, setQuizStartTime] = useState<number | null>(null);
+  const [totalTimeSpent, setTotalTimeSpent] = useState<number>(0);
 
   // Effect to handle completion of questions and transition to user info stage
   useEffect(() => {
     console.log("Effect triggered - Stage:", stage, "Current Question ID:", currentQuestionId);
-    
+
     if (stage === "questions" && currentQuestionId === null && participant.answers.length > 0) {
       console.log("Quiz questions completed. Transitioning to user info stage.");
+
+      // Calculate total time spent on quiz
+      if (quizStartTime) {
+        const elapsedTime = Math.floor((Date.now() - quizStartTime) / 1000); // in seconds
+        setTotalTimeSpent(elapsedTime);
+        console.log("Total time spent on quiz:", elapsedTime, "seconds");
+      }
+
       const result = getPersonalizedResult(participant.answers, config.resultTemplates);
       setPersonalizedResult(result);
       setStage("user-info");
     }
-  }, [stage, currentQuestionId, participant.answers, config.resultTemplates]);
+  }, [stage, currentQuestionId, participant.answers, config.resultTemplates, quizStartTime]);
 
   const handleStartQuiz = () => {
     console.log("Starting quiz");
     setStage("questions");
+    setQuizStartTime(Date.now()); // Start timing the quiz
     // Add first question to history when starting
     if (config.questions.length > 0) {
       setQuestionHistory([config.questions[0].id]);
@@ -131,17 +142,19 @@ const QuizController = ({ config }: QuizControllerProps) => {
 
   const handleUserInfoSubmit = (name: string, email: string) => {
     console.log("User info submitted:", name, email);
-    
+
     // Update participant info
     const updatedParticipant = {
       ...participant,
       name,
-      email
+      email,
+      totalTime: totalTimeSpent
     };
 
     // Compute graded answers for journey cards (q: numeric id, isCorrect flag)
+    let graded: JourneyAnswer[] = [];
     try {
-      const graded: JourneyAnswer[] = (participant.answers || []).map((a) => {
+      graded = (participant.answers || []).map((a) => {
         const qNum = parseInt(String(a.questionId).replace("q", ""), 10);
         const correct = isAnswerCorrect(a);
         return {
@@ -153,11 +166,29 @@ const QuizController = ({ config }: QuizControllerProps) => {
       setGradedAnswers(graded);
     } catch (e) {
       console.error("Error grading answers for journey cards:", e);
+      graded = [];
       setGradedAnswers([]);
     }
-    
+
+    // Ensure personalizedResult exists for this participant
+    const finalPersonalizedResult = personalizedResult || getPersonalizedResult(updatedParticipant.answers, config.resultTemplates);
+    setPersonalizedResult(finalPersonalizedResult);
+
+    // Update participant state
     setParticipant(updatedParticipant);
-    
+
+    // Persist data to localStorage so the static/debug results page can read the same payload
+    try {
+      localStorage.setItem('quizConfig', JSON.stringify(config));
+      localStorage.setItem('quizParticipant', JSON.stringify(updatedParticipant));
+      localStorage.setItem('personalizedResult', JSON.stringify(finalPersonalizedResult));
+      localStorage.setItem('gradedAnswers', JSON.stringify(graded));
+      localStorage.setItem('userContext', JSON.stringify(userContext || {}));
+      console.log('Saved quiz results payload to localStorage for results page consumption');
+    } catch (e) {
+      console.error('Failed to save results to localStorage', e);
+    }
+
     // Send data to webhook if configured
     if (config.webhookUrl) {
       sendDataToWebhook(config.webhookUrl, updatedParticipant, config)
@@ -179,7 +210,7 @@ const QuizController = ({ config }: QuizControllerProps) => {
           });
         });
     }
-    
+
     // Proceed to conversion landing page
     setStage("conversion-landing");
   };

@@ -16,6 +16,17 @@ export const sampleQuiz: QuizConfig = {
   incentiveUrl: "https://spanishvip.com/wp-content/uploads/2022/02/Easy-Spanish-Shortcuts-Updated.pdf",
   externalRedirectUrl: "https://spanishvip.com/",
   questions: [
+    // ---------- Pronunciation Practice ----------
+    {
+      id: "q0",
+      type: "pronunciation",
+      title: "Pronounce the following word",
+      required: true,
+      pronunciationQuestion: {
+        word: "Hola"
+      }
+    },
+
     // ---------- Basic Vocabulary ----------
     {
       id: "q1",

@@ -18,9 +18,21 @@ body {
     padding: 20px;
 }
 
+/* Logo Section */
+.logo-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo-image {
+    max-width: 200px;
+    height: auto;
+}
+
 /* Header Section */
 .header {
-    background: linear-gradient(135deg, #FF5913, #1DD3B0);
+    background: linear-gradient(135deg, #FF5913, #1DD3B0, #FF5913);
+    background-size: 200% 200%;
     color: white;
     padding: 20px;
     border-radius: 12px;
@@ -33,6 +45,19 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     gap: 20px;
+    animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .header-left {
@@ -234,6 +259,19 @@ input:checked + .toggle-slider:before {
 .question-table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 800px; /* Ensure minimum width for horizontal scroll */
+}
+
+.question-table th, .question-table td {
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.question-table th:nth-child(3), .question-table td:nth-child(3) { /* Prompt column */
+    min-width: 200px;
+}
+
+.table-container {
+    overflow-x: auto;
 }
 
 .question-table th, .question-table td {
@@ -307,17 +345,6 @@ input:checked + .toggle-slider:before {
     outline-offset: 2px;
 }
 
-.debug-json {
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    padding: 10px;
-    text-align: left;
-    font-family: monospace;
-    font-size: 12px;
-    max-height: 200px;
-    overflow-y: auto;
-}
 
 /* Responsive adjustments */
 @media (max-width: 767px) {

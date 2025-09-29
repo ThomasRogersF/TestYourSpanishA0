@@ -147,10 +147,6 @@
     page-break-before: always; /* Ensure footer starts new page if needed */
   }
 
-  /* Hide debug elements */
-  .debug-json {
-    display: none !important;
-  }
 
   /* Ensure images are visible but not too large */
   img {

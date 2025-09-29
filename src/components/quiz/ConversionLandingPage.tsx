@@ -130,13 +130,22 @@ const ConversionLandingPage = ({
   }, []);
   // Redirect to results page and store data
   useEffect(() => {
-    localStorage.setItem('quizConfig', JSON.stringify(config));
-    localStorage.setItem('quizParticipant', JSON.stringify(participant));
-    localStorage.setItem('personalizedResult', JSON.stringify(personalizedResult));
-    localStorage.setItem('gradedAnswers', JSON.stringify(gradedAnswers));
-    localStorage.setItem('userContext', JSON.stringify(userContext));
+    try {
+      // Always write valid JSON values (use sensible fallbacks) so the static results
+      // page can safely JSON.parse() them without throwing on "undefined".
+      localStorage.setItem('quizConfig', JSON.stringify(config ?? {}));
+      localStorage.setItem('quizParticipant', JSON.stringify(participant ?? {}));
+      localStorage.setItem('personalizedResult', JSON.stringify(personalizedResult ?? null));
+      localStorage.setItem('gradedAnswers', JSON.stringify(gradedAnswers ?? []));
+      localStorage.setItem('userContext', JSON.stringify(userContext ?? {}));
+      console.log('Saved quiz payload to localStorage for results page');
+    } catch (e) {
+      console.error('Failed to save results to localStorage', e);
+    }
+
+    // Redirect to the static results HTML (keeps existing flow)
     window.location.href = '/results/index.html';
-  }, []);
+  }, [config, participant, personalizedResult, gradedAnswers, userContext]);
 
   const openVideoModal = (videoUrl: string) => {
     setSelectedVideo(videoUrl);

@@ -14,7 +14,12 @@
     <link rel="stylesheet" href="print.css" media="print">
 </head>
 <body>
+    <img id="logo-img" src="../images/logo.png" style="display:none;" alt="Logo">
     <div class="container" id="results-container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <img src="../images/logo.png" alt="Logo" class="logo-image">
+        </div>
         <!-- Header Section -->
         <div class="header" id="results-header">
             <div class="header-left">
@@ -30,22 +35,6 @@
                     <div class="stat-value" id="total-time">12:34</div>
                     <div class="stat-label">Total Time</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="avg-time">18s</div>
-                    <div class="stat-label">Avg per Question</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Insights Section -->
-        <div class="insights" id="insights-row">
-            <div class="insight-card">
-                <h3>Skill Radar</h3>
-                <canvas class="radar-chart" id="skill-radar"></canvas>
-            </div>
-            <div class="insight-card">
-                <h3>Item Types</h3>
-                <canvas class="type-chart" id="item-types"></canvas>
             </div>
         </div>
 
@@ -98,7 +87,8 @@
                     </label>
                 </div>
             </div>
-            <table class="question-table" id="question-table">
+            <div class="table-container">
+                <table class="question-table" id="question-table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -114,18 +104,25 @@
                 <tbody id="question-table-body">
                     <!-- Questions will be populated by JavaScript -->
                 </tbody>
-            </table>
+                </table>
+            </div>
+        </div>
+
+        <!-- Insights Section -->
+        <div class="insights" id="insights-row">
+            <div class="insight-card">
+                <h3>Skill Radar</h3>
+                <canvas class="radar-chart" id="skill-radar"></canvas>
+            </div>
+            <div class="insight-card">
+                <h3>Item Types</h3>
+                <canvas class="type-chart" id="item-types"></canvas>
+            </div>
         </div>
 
         <!-- Footer -->
         <div class="footer" id="results-footer">
             <button class="export-btn" id="export-pdf-btn" onclick="exportResultsToPDF()">Download Results as PDF</button>
-            <details>
-                <summary>Debug JSON</summary>
-                <div class="debug-json" id="debug-json">
-                    <!-- Debug JSON will be populated by JavaScript -->
-                </div>
-            </details>
         </div>
     </div>
 
@@ -149,19 +146,32 @@
             return 'conversation';
         }
 
-        // Load data from localStorage
-        const config = JSON.parse(localStorage.getItem('quizConfig'));
-        const participant = JSON.parse(localStorage.getItem('quizParticipant'));
-        const personalizedResult = JSON.parse(localStorage.getItem('personalizedResult'));
-        const gradedAnswers = JSON.parse(localStorage.getItem('gradedAnswers'));
-        const userContext = JSON.parse(localStorage.getItem('userContext'));
-
-        // Build quiz object
+        // Load data from localStorage safely (tolerate "undefined", null, and bad JSON)
+        function safeParse(key, fallback) {
+            try {
+                const raw = localStorage.getItem(key);
+                if (raw == null) return fallback;
+                const trimmed = String(raw).trim();
+                if (trimmed === "" || trimmed === "undefined" || trimmed === "null") return fallback;
+                return JSON.parse(trimmed);
+            } catch (e) {
+                console.warn(`Failed to parse localStorage key "${key}", using fallback.`, e);
+                return fallback;
+            }
+        }
+        const config = safeParse('quizConfig', { id: "", title: "Quiz Results", description: "", questions: [] });
+        const participant = safeParse('quizParticipant', { name: "", email: "", answers: [] });
+        const personalizedResult = safeParse('personalizedResult', null);
+        const gradedAnswers = safeParse('gradedAnswers', []);
+        const userContext = safeParse('userContext', {});
+        
+        // Build quiz object with guards
+        const questionsArr = Array.isArray(config && config.questions) ? config.questions : [];
         const quiz = {
-            id: config.id,
-            title: config.title,
-            description: config.description,
-            questions: config.questions.map(q => ({
+            id: (config && config.id) || "",
+            title: (config && config.title) || "Quiz Results",
+            description: (config && config.description) || "",
+            questions: questionsArr.map(q => ({
                 id: q.id,
                 type: q.type,
                 title: q.title,
@@ -170,28 +180,31 @@
             }))
         };
 
-        // Build results object
-        const answers = participant.answers.map(a => {
-            const question = config.questions.find(q => q.id === a.questionId);
-            const isCorrect = checkAnswer(question, a.value);
+        // Build results answers with guards
+        const participantAnswers = Array.isArray(participant && participant.answers) ? participant.answers : [];
+        const answers = participantAnswers.map(a => {
+            const question = questionsArr.find(q => q.id === a.questionId);
+            const isCorrect = question ? checkAnswer(question, a.value) : false;
             return {
                 questionId: a.questionId,
-                correct: isCorrect,
-                answer: a.value,
-                correctAnswer: getCorrectAnswer(question),
+                correct: !!isCorrect,
+                answer: (a && a.value != null) ? a.value : "",
+                correctAnswer: question ? getCorrectAnswer(question) : "",
                 time: 0 // placeholder
             };
         });
 
         const results = {
-            participant: participant,
+            participant: participant || { name: "", email: "", answers: [] },
             score: answers.filter(a => a.correct).length,
-            totalQuestions: config.questions.length,
-            accuracy: (answers.filter(a => a.correct).length / config.questions.length) * 100,
-            totalTime: answers.reduce((sum, a) => sum + a.time, 0),
-            averageTime: answers.reduce((sum, a) => sum + a.time, 0) / answers.length,
+            totalQuestions: questionsArr.length,
+            accuracy: questionsArr.length > 0 ? (answers.filter(a => a.correct).length / questionsArr.length) * 100 : 0,
+            totalTime: (participant && participant.totalTime) || 0,
+            averageTime: answers.length > 0 ? answers.reduce((sum, a) => sum + (a.time || 0), 0) / answers.length : 0,
             completionRate: 100,
-            level: personalizedResult.title.split(' ')[0] || 'A0',
+            level: (personalizedResult && typeof personalizedResult.title === 'string' && personalizedResult.title)
+                ? personalizedResult.title.split(' ')[0]
+                : 'A0',
             answers: answers
         };
 
@@ -203,7 +216,6 @@
             initializeSkillRadar();
             initializeItemTypes();
             populateQuestionTable();
-            populateDebugJSON();
             updateStats();
         });
 
@@ -298,17 +310,12 @@
             });
         }
 
-        function populateDebugJSON() {
-            const debugDiv = document.getElementById('debug-json');
-            debugDiv.textContent = JSON.stringify(data, null, 2);
-        }
 
         function updateStats() {
-            document.getElementById('headline').textContent = config.title || 'Quiz Results';
-            document.getElementById('congratulations').textContent = 'Congratulations, ' + (participant.name || 'User');
+            document.getElementById('headline').textContent = 'Test Your Spanish Level (A0)';
+            document.getElementById('congratulations').textContent = 'Congratulations, ' + (participant.name || 'User') + '!';
             document.getElementById('score-display').textContent = results.score + '/' + results.totalQuestions;
             document.getElementById('total-time').textContent = formatTime(results.totalTime);
-            document.getElementById('avg-time').textContent = Math.round(results.averageTime) + 's';
         }
 
         function formatTime(seconds) {

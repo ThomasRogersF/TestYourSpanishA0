@@ -9,6 +9,7 @@ import AudioQuestion from "./QuestionTypes/AudioQuestion";
 import TextInput from "./QuestionTypes/TextInput";
 import FillInBlanks from "./QuestionTypes/FillInBlanks";
 import OrderQuestion from "./QuestionTypes/OrderQuestion";
+import PronunciationQuestion from "./QuestionTypes/PronunciationQuestion";
 import { useNotification } from "@/hooks/useNotification";
 import { Notification } from "@/components/ui/Notification";
 
@@ -109,6 +110,16 @@ const QuestionCard = ({
       case 'order':
         return (
           <OrderQuestion
+            question={question}
+            currentAnswer={currentAnswer}
+            onAnswer={onAnswer}
+            onNext={onNext}
+            onNotification={showAnswerNotification}
+          />
+        );
+      case 'pronunciation':
+        return (
+          <PronunciationQuestion
             question={question}
             currentAnswer={currentAnswer}
             onAnswer={onAnswer}

@@ -199,8 +199,9 @@ export const sendDataToWebhook = async (
   }
 };
 
-// Exported map of all question IDs to their correct answers (q1..q25)
+// Exported map of all question IDs to their correct answers (q0..q25)
 export const ALL_CORRECT_ANSWERS: Record<string, string | string[]> = {
+  "q0": "hola",
   "q1": "me_llamo_sebastian",
   "q2": "estoy_bien_tambien",
   "q3": "tiene",
@@ -534,4 +535,72 @@ export const compileQuizTemplate = (template: QuizTemplateCollection): QuizConfi
     webhookUrl: "", // This would need to be set
     incentiveEnabled: false
   };
+};
+
+/**
+ * Build a results summary object from the quiz config and participant answers.
+ * This mirrors the shape used by the static debug results page so both the SPA
+ * Results component and the static results page can consume the same payload.
+ */
+export const buildResultsSummary = (
+  config: QuizConfig,
+  participant: { name: string; email: string; answers: any[] },
+  personalizedResult?: ResultTemplate
+) => {
+  // Helper to coerce the ALL_CORRECT_ANSWERS entry (string | string[]) into a display string
+  const correctAnswerToString = (val: string | string[] | undefined): string => {
+    if (val === undefined) return "";
+    if (Array.isArray(val)) return val.join(", ");
+    return val;
+  };
+
+  const answers = (participant.answers || []).map((a) => {
+    const question = config.questions.find(q => q.id === a.questionId);
+    const correct = isAnswerCorrect(a);
+    const answerText = getOptionText(a.questionId, a.value, config);
+    // Determine a reasonable correctAnswer string
+    let correctAnswerText = "";
+    if (question) {
+      if (question.type === "order") {
+        correctAnswerText = question.orderQuestion?.correctAnswer || "";
+      } else if (question.type === "mcq" || question.type === "audio" || question.type === "image-selection") {
+        // Prefer an explicitly set correctAnswer on the question, otherwise fallback to ALL_CORRECT_ANSWERS map
+        const raw = (question as any).correctAnswer ?? ALL_CORRECT_ANSWERS[a.questionId];
+        correctAnswerText = correctAnswerToString(raw as string | string[] | undefined) || "";
+      } else {
+        const raw = (question as any).correctAnswer ?? ALL_CORRECT_ANSWERS[a.questionId];
+        correctAnswerText = correctAnswerToString(raw as string | string[] | undefined) || "";
+      }
+    } else {
+      correctAnswerText = correctAnswerToString(ALL_CORRECT_ANSWERS[a.questionId]) || "";
+    }
+
+    return {
+      questionId: a.questionId,
+      correct,
+      answer: answerText,
+      correctAnswer: correctAnswerText,
+      time: (a.timeSpent && typeof a.timeSpent === "number") ? a.timeSpent : 0
+    };
+  });
+
+  const score = answers.filter(r => r.correct).length;
+  const totalQuestions = config.questions.length || answers.length;
+  const accuracy = totalQuestions > 0 ? (score / totalQuestions) * 100 : 0;
+  const totalTime = answers.reduce((sum, a) => sum + (a.time || 0), 0);
+  const averageTime = answers.length > 0 ? totalTime / answers.length : 0;
+
+  const results = {
+    participant,
+    score,
+    totalQuestions,
+    accuracy,
+    totalTime,
+    averageTime,
+    completionRate: 100,
+    level: personalizedResult?.title?.split(" ")[0] || "A0",
+    answers
+  };
+
+  return results;
 };
