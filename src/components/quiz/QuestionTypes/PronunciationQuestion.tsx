@@ -92,6 +92,10 @@ const PronunciationQuestion = ({
         setIsCorrect(correct);
         setFeedback(correct ? "¡Perfecto! Pronunciation is correct." : `Try again. You said: "${result}". Expected: "${expectedWord}"`);
 
+        // Play audio feedback
+        const audio = new Audio(correct ? '/music/correct.mp3' : '/music/incorrect.mp3');
+        audio.play().catch(err => console.error('Audio play error:', err));
+
         // Submit answer
         const answer: QuizAnswer = {
           questionId: question.id,
