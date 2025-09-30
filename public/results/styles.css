@@ -324,20 +324,27 @@ input:checked + .toggle-slider:before {
     text-align: center;
 }
 
+.download-section {
+    margin-bottom: 20px;
+}
+
+.button-section {
+    margin-top: 20px;
+}
+
 .export-btn {
-    background: #1DD3B0;
+    background: #FF5913;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 14px;
-    margin-bottom: 15px;
     transition: background-color 0.3s ease;
 }
 
 .export-btn:hover {
-    background: #17b894;
+    background: #e54c0f;
 }
 
 .export-btn:focus {

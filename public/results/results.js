@@ -644,6 +644,12 @@ function downloadPdf(elementId, filename = 'quiz-results.pdf') {
       }
     });
 
+    // Add footer text at the bottom
+    var finalY = doc.lastAutoTable.finalY + 0.2;
+    doc.setFontSize(10);
+    var footerText = "You can present your results to the SpanishVIP Student Success Advisor to evaluate your current Spanish level";
+    doc.text(footerText, left, finalY, { maxWidth: pageWidth - 2 * left });
+
     doc.save(filename);
   }
 
