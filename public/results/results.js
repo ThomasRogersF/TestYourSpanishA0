@@ -581,7 +581,7 @@ function downloadPdf(elementId, filename = 'quiz-results.pdf') {
       var a = ansById[q.id] || {};
       var resp = a && a.answer != null ? String(a.answer) : '';
       var ok = !!(a && a.correct);
-      return [String(idx + 1), q.title || '', resp, ok ? 'Correct' : 'Incorrect'];
+      return [String(idx + 1), q.title || '', resp, a.correctAnswer || '', ok ? 'Correct' : 'Incorrect'];
     });
 
     // Table styling: monochrome, wrapping, fixed widths for # and Result columns
@@ -594,7 +594,7 @@ function downloadPdf(elementId, filename = 'quiz-results.pdf') {
     }
 
     doc.autoTable({
-      head: [['#', 'Question', 'Response', 'Result']],
+      head: [['#', 'Question', 'Response', 'Correct Answer', 'Result']],
       body: body,
       startY: startY,
       // Use narrow margins to maximize width (0.25 in all around)
@@ -630,15 +630,16 @@ function downloadPdf(elementId, filename = 'quiz-results.pdf') {
       },
       columnStyles: {
         // Content width (Letter landscape = 11in; content width ~ 10.5in after 0.25in margins)
-        // Widen Result and slightly reduce Question to keep total at ~10.5in
+        // Adjust for new Correct Answer column with slightly narrower Response and Correct Answer
         0: { cellWidth: 0.5, halign: 'left' },   // #
-        1: { cellWidth: 5.7, halign: 'left' },   // Question (reduced)
-        2: { cellWidth: 3.5, halign: 'left' },   // Response
-        3: { cellWidth: 0.8, halign: 'center' }  // Result (wider)
+        1: { cellWidth: 4.5, halign: 'left' },   // Question
+        2: { cellWidth: 2.3, halign: 'left' },   // Response
+        3: { cellWidth: 2.3, halign: 'left' },   // Correct Answer
+        4: { cellWidth: 0.8, halign: 'center' }  // Result
       },
       didParseCell: function (hookData) {
         // Ensure the Result column stays centered
-        if (hookData.section === 'body' && hookData.column.index === 3) {
+        if (hookData.section === 'body' && hookData.column.index === 4) {
           hookData.cell.styles.halign = 'center';
         }
       }

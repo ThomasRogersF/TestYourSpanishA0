@@ -97,7 +97,6 @@
                         <th>Your Answer</th>
                         <th>Correct</th>
                         <th>Skill</th>
-                        <th>Time</th>
                         <th>Why</th>
                     </tr>
                 </thead>
@@ -128,6 +127,16 @@
             </div>
             <div class="button-section">
                 <button class="export-btn" id="export-pdf-btn" onclick="exportResultsToPDF()">Download Results as PDF</button>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <div class="button-section-left">
+                <button class="action-btn" onclick="repeatQuiz()">&larr; Repeat Quiz</button>
+            </div>
+            <div class="button-section-right">
+                <button class="action-btn" onclick="goToSpanishVIP()">Return to SpanishVIP &rarr;</button>
             </div>
         </div>
     </div>
@@ -308,7 +317,6 @@
                     <td>${answer.answer}</td>
                     <td>${answer.correctAnswer}</td>
                     <td><span class="skill-badge">${question.skill}</span></td>
-                    <td>${answer.time}s</td>
                     <td>${answer.correct ? 'Correct' : 'Incorrect choice'}</td>
                 `;
 
@@ -387,6 +395,23 @@
                 header.classList.remove('shrunk');
             }
         });
+
+        // Action button functions
+        function repeatQuiz() {
+            // Clear quiz data from localStorage
+            localStorage.removeItem('quizConfig');
+            localStorage.removeItem('quizParticipant');
+            localStorage.removeItem('personalizedResult');
+            localStorage.removeItem('gradedAnswers');
+            localStorage.removeItem('userContext');
+            // Redirect to home to restart quiz
+            window.location.href = '/';
+        }
+
+        function goToSpanishVIP() {
+            // Redirect to SpanishVIP website
+            window.location.href = 'https://spanishvip.com';
+        }
     </script>
 </body>
 </html>

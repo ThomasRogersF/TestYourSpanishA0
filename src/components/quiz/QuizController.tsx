@@ -28,6 +28,7 @@ const QuizController = ({ config }: QuizControllerProps) => {
   });
   const [personalizedResult, setPersonalizedResult] = useState<ResultTemplate | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPreloading, setIsPreloading] = useState(false);
   const { toast } = useToast();
   const [gradedAnswers, setGradedAnswers] = useState<JourneyAnswer[]>([]);
   const [userContext, setUserContext] = useState<JourneyUserContext | undefined>(undefined);
@@ -54,8 +55,62 @@ const QuizController = ({ config }: QuizControllerProps) => {
     }
   }, [stage, currentQuestionId, participant.answers, config.resultTemplates, quizStartTime]);
 
-  const handleStartQuiz = () => {
-    console.log("Starting quiz");
+  const preloadAssets = (questions: typeof config.questions): Promise<void> => {
+    return new Promise((resolve) => {
+      const assets: string[] = [];
+
+      questions.forEach(question => {
+        if (question.imageUrl) assets.push(question.imageUrl);
+        if (question.audioUrl) assets.push(question.audioUrl);
+      });
+
+      if (assets.length === 0) {
+        resolve();
+        return;
+      }
+
+      let loadedCount = 0;
+      const totalAssets = assets.length;
+
+      const onAssetLoaded = () => {
+        loadedCount++;
+        if (loadedCount >= totalAssets) {
+          resolve();
+        }
+      };
+
+      assets.forEach(url => {
+        if (url.includes('.mp3') || url.includes('.wav') || url.includes('audio')) {
+          // Preload audio
+          const audio = new Audio();
+          audio.preload = 'auto';
+          audio.oncanplaythrough = onAssetLoaded;
+          audio.onerror = onAssetLoaded; // Continue even if error
+          audio.src = url;
+        } else {
+          // Preload image
+          const img = new Image();
+          img.onload = onAssetLoaded;
+          img.onerror = onAssetLoaded; // Continue even if error
+          img.src = url;
+        }
+      });
+    });
+  };
+
+  const handleStartQuiz = async () => {
+    console.log("Starting quiz preloading");
+    setIsPreloading(true);
+
+    try {
+      await preloadAssets(config.questions);
+      console.log("Assets preloaded successfully");
+    } catch (error) {
+      console.warn("Error preloading assets:", error);
+      // Continue anyway
+    }
+
+    setIsPreloading(false);
     setStage("questions");
     setQuizStartTime(Date.now()); // Start timing the quiz
     // Add first question to history when starting
@@ -266,8 +321,18 @@ const QuizController = ({ config }: QuizControllerProps) => {
   const renderStage = () => {
     switch (stage) {
       case "intro":
+        if (isPreloading) {
+          return (
+            <div className="quiz-container flex items-center justify-center">
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-t-primary border-r-transparent border-b-primary border-l-transparent"></div>
+                <p className="mt-2 text-gray-600">Loading quiz assets...</p>
+              </div>
+            </div>
+          );
+        }
         return (
-          <IntroductionPage 
+          <IntroductionPage
             config={config}
             onStart={handleStartQuiz}
             onDebugLanding={handleDebugLanding} // DEBUG: Enable for debugging
