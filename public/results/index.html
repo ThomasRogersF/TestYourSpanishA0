@@ -79,13 +79,6 @@
                         <option value="hard">Hard</option>
                     </select>
                 </div>
-                <div class="filter-group">
-                    <label for="audio-only-toggle">Audio Only:</label>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="audio-only-toggle">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
             </div>
             <div class="table-container">
                 <table class="question-table" id="question-table">
@@ -345,14 +338,12 @@
         document.getElementById('skill-filter').addEventListener('change', filterQuestions);
         document.getElementById('type-filter').addEventListener('change', filterQuestions);
         document.getElementById('difficulty-filter').addEventListener('change', filterQuestions);
-        document.getElementById('audio-only-toggle').addEventListener('change', filterQuestions);
 
         function filterQuestions() {
             const statusFilter = document.getElementById('status-filter').value;
             const skillFilter = document.getElementById('skill-filter').value;
             const typeFilter = document.getElementById('type-filter').value;
             const difficultyFilter = document.getElementById('difficulty-filter').value;
-            const audioOnly = document.getElementById('audio-only-toggle').checked;
 
             const rows = document.querySelectorAll('#question-table-body tr');
 
@@ -376,10 +367,6 @@
 
                 if (difficultyFilter !== 'all') {
                     show &= question.difficulty === difficultyFilter;
-                }
-
-                if (audioOnly) {
-                    show &= question.type === 'audio';
                 }
 
                 row.style.display = show ? '' : 'none';
