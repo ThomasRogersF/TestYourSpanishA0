@@ -23,7 +23,7 @@ export const sampleQuiz: QuizConfig = {
       title: "Pronounce the following word",
       required: true,
       pronunciationQuestion: {
-        word: "Hola"
+        word: "como estas hoy"
       }
     },
 

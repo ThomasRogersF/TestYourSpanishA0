@@ -315,6 +315,31 @@ input:checked + .toggle-slider:before {
     font-size: 12px;
 }
 
+.skill-vocabulary {
+    background-color: #007bff;
+    color: white;
+}
+
+.skill-grammar {
+    background-color: #28a745;
+    color: white;
+}
+
+.skill-listening {
+    background-color: #fd7e14;
+    color: white;
+}
+
+.skill-reading {
+    background-color: #6f42c1;
+    color: white;
+}
+
+.skill-conversation {
+    background-color: #dc3545;
+    color: white;
+}
+
 /* Footer */
 .footer {
     background: white;
