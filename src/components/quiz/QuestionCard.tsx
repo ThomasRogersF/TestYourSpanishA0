@@ -166,6 +166,10 @@ const QuestionCard = ({
       <div className="quiz-container animate-scale-in shadow-soft">
         <ProgressBar progress={progress} />
 
+        {question.subtitle && (
+          <p className="text-gray-600 mb-2">{question.subtitle}</p>
+        )}
+
         <h2 className="text-2xl font-bold mb-4 text-brand-primary">
           {getQuestionNumber()}. {mainQuestion}
         </h2>
@@ -179,9 +183,6 @@ const QuestionCard = ({
           </div>
         )}
 
-        {question.subtitle && (
-          <p className="text-gray-600 mb-6">{question.subtitle}</p>
-        )}
 
         {renderQuestionType()}
       </div>

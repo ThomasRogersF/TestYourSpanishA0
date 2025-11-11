@@ -1,9 +1,9 @@
 
 import QuizController from "@/components/quiz/QuizController";
-import { sampleQuiz } from "@/data/sampleQuiz";
+import { officialQuiz } from "@/data/officialQuiz";
 
 const Index = () => {
-  return <QuizController config={sampleQuiz} />;
+  return <QuizController config={officialQuiz} />;
 };
 
 export default Index;

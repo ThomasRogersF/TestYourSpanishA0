@@ -80,11 +80,6 @@ const MultipleChoice = ({
 
   return (
     <div className="space-y-6">
-      {/* Heading for multiple choice questions */}
-      <div className="text-lg font-medium text-gray-700 mb-4">
-        Select the correct answer to the question 🤔
-      </div>
-
       {/* Display image if imageUrl exists */}
       {question.imageUrl && (
         <div className="flex justify-center mb-6">
@@ -94,11 +89,21 @@ const MultipleChoice = ({
             className="max-w-full max-h-64 rounded-lg shadow-md object-contain"
             onError={(e) => {
               console.error("Failed to load image:", question.imageUrl);
-              e.currentTarget.style.display = 'none';
+              const img = e.currentTarget as HTMLImageElement;
+              if (!img.src.includes("/placeholder.svg")) {
+                // prevent error loop then swap to fallback placeholder
+                (img as any).onerror = null;
+                img.src = "/placeholder.svg";
+              }
             }}
           />
         </div>
       )}
+
+      {/* Heading for multiple choice questions placed above the answers */}
+      <div className="text-lg font-medium text-gray-700 mb-4">
+        Select the correct answer to the question 🤔
+      </div>
 
       {question.options && question.options.map((option) => (
         <div

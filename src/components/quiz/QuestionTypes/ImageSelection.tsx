@@ -20,17 +20,18 @@ const ImageSelection = ({
   onNext,
   onNotification
 }: ImageSelectionProps) => {
+  // Store selected value (not id) for consistency across utils
   const [selectedImage, setSelectedImage] = useState<string | null>(
-    currentAnswer ? currentAnswer.value as string : null
+    currentAnswer ? (currentAnswer.value as string) : null
   );
 
-  const handleSelect = (imageId: string) => {
-    setSelectedImage(imageId);
-    
+  const handleSelect = (optionValue: string) => {
+    setSelectedImage(optionValue);
+
     onAnswer({
       questionId: question.id,
       type: question.type,
-      value: imageId
+      value: optionValue
     });
   };
   
@@ -72,16 +73,16 @@ const ImageSelection = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {question.imageOptions && question.imageOptions.map((image) => (
-          <div 
+          <div
             key={image.id}
             className={cn(
               "quiz-image-option",
-              selectedImage === image.id && "quiz-image-option-selected"
+              selectedImage === image.value && "quiz-image-option-selected"
             )}
-            onClick={() => handleSelect(image.id)}
+            onClick={() => handleSelect(image.value)}
           >
-            <img 
-              src={image.src} 
+            <img
+              src={image.src}
               alt={image.alt}
               className="w-full h-48 object-cover"
             />

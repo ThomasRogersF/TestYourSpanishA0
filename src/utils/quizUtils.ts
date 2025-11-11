@@ -40,29 +40,73 @@ export const getPersonalizedResult = (
       id: "default",
       title: "Thank you for completing the quiz!",
       description: "We appreciate your participation.",
-      conditions: [] // Required by the ResultTemplate interface
+      conditions: []
     };
   }
-  
-  // Calculate score for each level
-  const levelScores = {
-    a1: calculateLevelScore(answers, "a1"),
-    a2: calculateLevelScore(answers, "a2"),
-    b1: calculateLevelScore(answers, "b1"),
-    b2: calculateLevelScore(answers, "b2")
-  };
-  
-  console.log("Level scores:", levelScores);
-  
-  // Determine the highest level with at least 2 correct answers
-  if (levelScores.b2 >= 2) {
-    return resultTemplates.find(t => t.id === "b2") || resultTemplates[0];
-  } else if (levelScores.b1 >= 2) {
-    return resultTemplates.find(t => t.id === "b1") || resultTemplates[0];
-  } else if (levelScores.a2 >= 2) {
-    return resultTemplates.find(t => t.id === "a2") || resultTemplates[0];
+
+  // Prefer condition-based selection if any template declares conditions
+  const templatesWithConditions = resultTemplates.filter(
+    (t) => Array.isArray(t.conditions) && t.conditions.length > 0
+  );
+
+  if (templatesWithConditions.length > 0) {
+    const answerMap = new Map<string, string | string[] | File | null>(
+      answers.map((a) => [a.questionId, a.value])
+    );
+
+    let best: { tpl: ResultTemplate; matches: number; conds: number } | null = null;
+
+    for (const tpl of templatesWithConditions) {
+      let matches = 0;
+      for (const cond of tpl.conditions) {
+        const v = answerMap.get(cond.questionId);
+        if (v != null && cond.value != null && v === cond.value) {
+          matches++;
+        }
+      }
+      const current = { tpl, matches, conds: tpl.conditions.length };
+      if (
+        !best ||
+        current.matches > best.matches ||
+        (current.matches === best.matches && current.conds > best.conds)
+      ) {
+        best = current;
+      }
+    }
+
+    return best?.tpl || resultTemplates[0];
+  }
+
+  // Otherwise, compute score% using per-question correctness and apply thresholds:
+  // Beginner ≤ 33%, Intermediate ≤ 66%, Advanced otherwise
+  const correct = countCorrectAnswers(answers);
+
+  // Try to read total number of questions from runtime config in localStorage
+  let totalQuestions = answers.length;
+  try {
+    const raw =
+      typeof localStorage !== "undefined" ? localStorage.getItem("quizConfig") : null;
+    if (raw) {
+      const cfg = JSON.parse(raw);
+      if (Array.isArray(cfg?.questions)) {
+        totalQuestions = cfg.questions.length;
+      }
+    }
+  } catch {
+    // ignore
+  }
+
+  const percent = totalQuestions > 0 ? (correct / totalQuestions) * 100 : 0;
+
+  const pickById = (id: string): ResultTemplate | undefined =>
+    resultTemplates.find((t) => t.id === id);
+
+  if (percent <= 33) {
+    return pickById("beginner") || resultTemplates[0];
+  } else if (percent <= 66) {
+    return pickById("intermediate") || resultTemplates[0];
   } else {
-    return resultTemplates.find(t => t.id === "a1") || resultTemplates[0];
+    return pickById("advanced") || resultTemplates[0];
   }
 };
 
@@ -229,22 +273,62 @@ export const ALL_CORRECT_ANSWERS: Record<string, string | string[]> = {
   "q25": "se_la_dijo"
 };
 
-// Function to count the number of correct answers using ALL_CORRECT_ANSWERS
+// Function to count the number of correct answers (prefers per-question correctness if available)
 const countCorrectAnswers = (answers: QuizAnswer[]): number => {
-  let correctCount = 0;
-  answers.forEach(answer => {
-    const expected = ALL_CORRECT_ANSWERS[answer.questionId];
-    if (expected !== undefined && answer.value === expected) {
-      correctCount++;
-    }
-  });
-  return correctCount;
+ let correctCount = 0;
+ for (const answer of answers) {
+   if (isAnswerCorrect(answer)) {
+     correctCount++;
+   }
+ }
+ return correctCount;
 };
 
 // Helper to evaluate a single answer's correctness
 export const isAnswerCorrect = (answer: QuizAnswer): boolean => {
-  const expected = ALL_CORRECT_ANSWERS[answer.questionId];
-  return expected !== undefined && answer.value === expected;
+  // Attempt to resolve expected answer from the runtime quiz config saved to localStorage
+  const getRuntimeCorrectAnswer = (): string | string[] | undefined => {
+    try {
+      const raw =
+        typeof localStorage !== "undefined" ? localStorage.getItem("quizConfig") : null;
+      if (!raw) return undefined;
+      const cfg = JSON.parse(raw);
+      const q = Array.isArray(cfg?.questions)
+        ? cfg.questions.find((qq: any) => qq.id === answer.questionId)
+        : undefined;
+      if (!q) return undefined;
+
+      // Type-specific resolution
+      if (q.type === "order") {
+        return q.orderQuestion?.correctAnswer;
+      }
+      if (q.type === "pronunciation") {
+        return q.pronunciationQuestion?.word;
+      }
+
+      // Prefer a per-question correctAnswer if present (added during template compilation)
+      if (Object.prototype.hasOwnProperty.call(q, "correctAnswer")) {
+        return (q as any).correctAnswer;
+      }
+
+      return undefined;
+    } catch {
+      return undefined;
+    }
+  };
+
+  const expected =
+    getRuntimeCorrectAnswer() ?? ALL_CORRECT_ANSWERS[answer.questionId];
+
+  if (expected === undefined || answer.value == null) return false;
+
+  if (Array.isArray(expected)) {
+    if (!Array.isArray(answer.value)) return false;
+    if (expected.length !== answer.value.length) return false;
+    return expected.every((v, i) => v === (answer.value as string[])[i]);
+  }
+
+  return String(answer.value) === String(expected);
 };
 
 // New utility functions for question templates
@@ -506,34 +590,62 @@ export const quizTemplateJSON = JSON.stringify(quizTemplateExample, null, 2);
 // Compile a quiz template into a quiz config
 export const compileQuizTemplate = (template: QuizTemplateCollection): QuizConfig => {
   // Convert template questions to quiz questions
-  const questions = template.questions.map(q => {
-    // Remove isCorrect from options for the actual quiz
-    const questionConfig: QuizQuestion = {
+  const questions = template.questions.map((q) => {
+    // Derive a correctAnswer when not explicitly provided by the template
+    let derivedCorrect: string | string[] | undefined = (q as any).correctAnswer;
+
+    const hasOptions = Array.isArray(q.options) && q.options.length > 0;
+    const hasImageOptions = Array.isArray(q.imageOptions) && q.imageOptions.length > 0;
+
+    if (derivedCorrect === undefined) {
+      if (hasOptions) {
+        const co = q.options!.find((o) => (o as any).isCorrect);
+        derivedCorrect = co?.value;
+      } else if (hasImageOptions) {
+        const co = q.imageOptions!.find((o) => (o as any).isCorrect);
+        derivedCorrect = co?.value;
+      } else if (q.type === "order") {
+        derivedCorrect = q.orderQuestion?.correctAnswer;
+      } else if (q.type === "pronunciation") {
+        derivedCorrect = q.pronunciationQuestion?.word;
+      }
+    }
+
+    // Remove isCorrect markers for runtime while preserving correctAnswer
+    const questionConfig: any = {
       ...q,
-      options: q.options?.map(o => ({
-        id: o.id,
-        text: o.text,
-        value: o.value
-      })),
-      imageOptions: q.imageOptions?.map(o => ({
-        id: o.id,
-        src: o.src,
-        alt: o.alt,
-        value: o.value
-      }))
+      options: hasOptions
+        ? q.options!.map((o) => ({
+            id: o.id,
+            text: o.text,
+            value: o.value,
+          }))
+        : undefined,
+      imageOptions: hasImageOptions
+        ? q.imageOptions!.map((o) => ({
+            id: o.id,
+            src: o.src,
+            alt: o.alt,
+            value: o.value,
+          }))
+        : undefined,
     };
-    
-    return questionConfig;
+
+    if (derivedCorrect !== undefined) {
+      questionConfig.correctAnswer = derivedCorrect;
+    }
+
+    return questionConfig as QuizQuestion;
   });
-  
-  // For simplicity, we'll just pass through the result templates
+
+  // Pass through result templates
   return {
     id: `quiz-${Date.now()}`, // Generate a unique ID
     title: "Quiz from Template",
     questions,
     resultTemplates: template.resultTemplates,
     webhookUrl: "", // This would need to be set
-    incentiveEnabled: false
+    incentiveEnabled: false,
   };
 };
 
